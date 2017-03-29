@@ -1,5 +1,6 @@
-const webpack = require('webpack');
 const path = require('path');
+const webpack = require('webpack');
+
 
 module.exports = {
   entry: path.join(__dirname, 'src', 'app-client.js'),
@@ -8,31 +9,23 @@ module.exports = {
     filename: 'bundle.js'
   },
   module: {
-    rules: [{test: path.join(__dirname, 'src'),
-      use: [{
-        loader: 'babel-loader',
-        options: {
-          cacheDirectory: 'babel_cache',
-          presets: [
-            'es2015',
-            'react'
-            ]
-        } //options
-      }] // use
-      
+    rules: [
+      {
+      test: /\.js$/,
+      exclude: /node_modules/,
+      include: path.join(__dirname, 'src'),
+       use: [
+         {
+         loader: 'babel-loader',
+         options: {
+           cacheDirectory: 'babel_cache',
+           presets: [
+             'es2015',
+             'react'
+             ]
+         } //options
+         } // babel loader
+       ] // use
     }] // rules
-  }, // module
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-    }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: { warnings: false },
-      mangle: true,
-      sourcemap: false,
-      beautify: false,
-      dead_code: true
-    })
-  ]
+  } // module
 };

@@ -18,5 +18,14 @@
     "babel-loader": "^6.4.1",
     "http-server": "^0.9.0",
     "webpack": "^2.3.2"
+  },
+   "scripts": {
+    "start": "npm run build && babel-node src/server.js",
+    "start:dev": "export NODE_ENV=development && npm run build:dev && nodemon --exec babel-node -- src/server.js",
+    "start:universal": "export UNIVERSAL=true && npm run start",
+    "start:dev:universal": "export NODE_ENV=development && export UNIVERSAL=true && npm run start:dev",
+    "build": "NODE_ENV=production webpack -p",
+    "build:dev": "webpack -d",
+    "build:dev:watch": "webpack -d --watch"
   }
 }

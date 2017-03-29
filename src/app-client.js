@@ -1,9 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import AppRoutes from './components/AppRoutes';
+import { render } from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { App } from './components/App';
 
-console.log("app client loaded");
+const AppClient = () => (
+  <Router>
+    <App />
+  </Router>
+);
+
 window.onload = () => {
-    console.log("app client fired");
-  ReactDOM.render(<AppRoutes/>, document.getElementById('main'));
+  render(<AppClient />, document.getElementById('main'));
 };

@@ -9,12 +9,13 @@ import {
 import Home from './components/Home';
 import Login from './components/Login';
 import PollPreview from './components/PollPreview';
-
+import NotFoundPage from './components/NotFoundPage';
 const routes = (
     <Router>
        <Route path="/" component={Home}/>
        <Route path="/login" component={Login}/>
        <Route path="poll/:id" component={PollPreview}/>
+       <Route path="*" component={NotFoundPage}/>
     </Router>
   );
 // const routes = () => (
@@ -35,4 +36,4 @@ const routes = (
 // )
 
 
-export default routes
+export default routes;

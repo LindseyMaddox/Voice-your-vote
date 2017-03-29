@@ -1,14 +1,11 @@
 import express from 'express';
 import React from 'react';
-
-var path = require('path');
+import ReactDOMServer from 'react-dom/server'
+import path from 'path';
 import { Server } from 'http';
 
-
-import { renderToString } from 'react-dom/server';
-import { StaticRouter as Router, matchPath } from 'react-router';
-import routes from './routes';
-import NotFoundPage from './components/NotFoundPage';
+import { StaticRouter as Router} from 'react-router';
+import { App } from './components/App';
 
 // initialize the server and configure support for ejs templates
 const app = express();
@@ -21,19 +18,30 @@ app.use(express.static(path.join(__dirname, 'static')));
 
 // universal routing and rendering
 app.get('*', (req, res) => {
-  let markup;
-   const match =  matchPath(req.url, routes, { exact: true } );
-console.log("url requested is " + req.url);
-  if(!match){
-      markup = renderToString(<NotFoundPage/>);
-        res.status(404);
-  }  else {
-    markup = renderToString(<Router context={{}} location={req.url}></Router>);
-     res.status(200);
-   }
- return res.render('index.ejs', { markup });
+  let markup = '';
+  let status = 200;
 
-    });
+  if (process.env.UNIVERSAL) {
+    const context = {};
+    markup = "totally tubular";
+    // markup = ReactDOMServer.renderToString(
+    //   <Router location={req.url} context={context}>
+    //     <App />
+    //   </Router>
+    // );
+
+    // context.url will contain the URL to redirect to if a <Redirect> was used
+    if (context.url) {
+      return res.redirect(302, context.url);
+    }
+
+    if (context.is404) {
+      status = 404;
+    }
+  }
+
+  return res.status(status).render('index', { markup });
+});
 
   app.listen(process.env.PORT || 8080, function () {
      console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);;
