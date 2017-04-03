@@ -2,11 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export const PollPreview = props => (
-  <Link to={`/poll/${props.id}`}>
-    <div className="poll-preview">
-      <h2 className="name">{props.name}</h2>
+  <div className="row poll-preview">
+    <div className="col-12 col-md-8 offset-md-4">
+      <Link to={`/poll/${props.id}`}>{props.name}
+      </Link>
     </div>
-  </Link>
+  </div>
 );
 
 export default PollPreview;

@@ -3,12 +3,11 @@ import { PollPreview } from './PollPreview';
 
 export const IndexPage = ({ polls }) => (
   <div className="home">
-    <div className="polls-selector">
-      {polls.map(
-       pollData => <PollPreview key={pollData.id} {...pollData} />
-      )}
+     <div className="col-10 offset-1 col-md-8 offset-md-2">
+        Test
     </div>
   </div>
 );
+
 
 export default IndexPage;
