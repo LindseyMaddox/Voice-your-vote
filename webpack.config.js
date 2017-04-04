@@ -1,31 +1,24 @@
-const path = require('path');
-const webpack = require('webpack');
+var webpack = require('webpack');
+var path = require('path');
 
+var BUILD_DIR = path.resolve(__dirname, 'public');
+var APP_DIR = path.resolve(__dirname, 'src');
 
-module.exports = {
-  entry: path.join(__dirname, 'src', 'app-client.js'),
-  output: {
-    path: path.join(__dirname, 'src', 'static', 'js'),
-    filename: 'bundle.js'
-  },
-  module: {
-    rules: [
-      {
-      test: /\.js$/,
-      exclude: /node_modules/,
-      include: path.join(__dirname, 'src'),
-       use: [
-         {
-         loader: 'babel-loader',
-         options: {
-           cacheDirectory: 'babel_cache',
-           presets: [
-             'es2015',
-             'react'
-             ]
-         } //options
-         } // babel loader
-       ] // use
-    }] // rules
-  } // module
+var config = {
+    entry: APP_DIR + '/index.js',
+    output: {
+        path: BUILD_DIR,
+        filename: 'bundle.js'
+    },
+    module : {
+        loaders : [
+            {
+                test : /\.js?/,
+                include : APP_DIR,
+                loader : 'babel'
+            }
+        ]
+    }
 };
+
+module.exports = config;
