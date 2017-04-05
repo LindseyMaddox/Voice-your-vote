@@ -11,20 +11,21 @@ import polls from './data/polls';
 render(
     <Router>
            <div>
-                <nav className="navbar navbar-default">
-                    <div className="container-fluid">
-                        <div className="navbar-header">
+             <nav class="navbar navbar-toggleable-sm navbar-light">
+			    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    			    <span class="navbar-toggler-icon"></span>
+  			    </button>
+  			    <div className="navbar-header">
                             <a className="navbar-brand" href="#">Voice your Vote</a>
-                        </div>
-                        <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                </div>
+				<div class="collapse navbar-collapse justify-content-end" id="navbarContent">
                             <ul className="nav navbar-nav">
                                 {/* Change from a to Link */}
-                                <li><Link to="/">Home</Link></li>
-                                <li><Link to="/login">Login</Link></li>
+                                <li className="nav-item"><Link to="/">Home</Link></li>
+                                <li className="nav-item"><Link to="/login">Login</Link></li>
                             </ul>
-                        </div>
-                    </div>
-                </nav>
+                </div>
+            </nav>
             <Switch>
                 <Route path="/" exact={true} component={IndexPage} polls={polls}/>
                 <Route path="/polls/:id" component={PollPage} />
