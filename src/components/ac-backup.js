@@ -1,8 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import AppRoutes from './components/AppRoutes';
-
-// window.onload = () => {
-
-   ReactDOM.render(<AppRoutes/>, document.getElementById('main'));
-// };
+<Main>
+            <Route path="/cars" component={Car} data={data}/>
+            <Route path="/cars/:id" component={CarDetail} data={data}/>
+        </Main>
