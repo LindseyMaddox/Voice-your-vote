@@ -27,7 +27,7 @@ render(
                 </nav>
             <Switch>
                 <Route path="/" exact={true} component={IndexPage} polls={polls}/>
-                <Route path="/polls/:id" component={PollPage} polls={polls}/>
+                <Route path="/polls/:id" component={PollPage} />
                 <Route path="/login" component={Login} />
             </Switch>
         </div>

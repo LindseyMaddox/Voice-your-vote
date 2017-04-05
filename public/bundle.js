@@ -10893,7 +10893,6 @@ var IndexPage = function (_React$Component) {
   _createClass(IndexPage, [{
     key: 'render',
     value: function render() {
-      console.log("In index page, polls are " + _polls2.default);
       return _react2.default.createElement(
         'div',
         { className: 'home' },
@@ -11042,7 +11041,6 @@ exports.default = Login;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.PollPage = undefined;
 
 var _react = __webpack_require__(4);
 
@@ -11066,7 +11064,7 @@ var find = function find(id) {
   });
 };
 
-var PollPage = exports.PollPage = function PollPage(_ref) {
+var PollPage = function PollPage(_ref) {
   var match = _ref.match;
 
   var poll = find(match.params.id);
@@ -11087,11 +11085,95 @@ var PollPage = exports.PollPage = function PollPage(_ref) {
       _react2.default.createElement(
         'div',
         { className: 'col-10 offset-1 col-md-4 offset-md-2' },
-        'Test for bad parts'
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'h2',
+            { className: 'poll-name' },
+            'Poll: ',
+            poll.name
+          )
+        ),
+        _react2.default.createElement(
+          'section',
+          { className: 'description' },
+          _react2.default.createElement(
+            'div',
+            { className: 'row' },
+            _react2.default.createElement(
+              'h4',
+              { className: 'poll-description' },
+              poll.description
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'form',
+          null,
+          _react2.default.createElement(
+            'div',
+            { className: 'form-group' },
+            _react2.default.createElement(
+              'label',
+              { htmlFor: 'option-select' },
+              'Vote for your favorite'
+            ),
+            _react2.default.createElement(
+              'select',
+              { id: 'option-select', className: 'form-control' },
+              _react2.default.createElement(
+                'option',
+                { defaultValue: true },
+                'Pick your favorite...'
+              ),
+              options.map(function (option) {
+                return _react2.default.createElement(
+                  'option',
+                  { key: option, value: option },
+                  option
+                );
+              })
+            )
+          ),
+          _react2.default.createElement(
+            'button',
+            { type: 'submit', id: 'vote-button', className: 'btn btn-primary' },
+            'Vote!'
+          )
+        )
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'col-10 offset-1 col-md-3 offset-md-1' },
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(_PieChart.Chart, { data: poll.options })
+        )
+      )
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: 'row' },
+      _react2.default.createElement(
+        'div',
+        { className: 'col-10 offset-1 col-md-4 offset-md-2' },
+        _react2.default.createElement(
+          'div',
+          { className: 'navigateBack' },
+          _react2.default.createElement(
+            _reactRouterDom.Link,
+            { to: '/' },
+            '\xAB Back to the index'
+          )
+        )
       )
     )
   );
 };
+
+exports.default = PollPage;
 
 /***/ }),
 /* 103 */
@@ -11349,7 +11431,7 @@ var PollPreview = exports.PollPreview = function PollPreview(props) {
       { className: 'col-12 col-md-8 offset-md-4' },
       _react2.default.createElement(
         _reactRouterDom.Link,
-        { to: '/poll/' + props.id },
+        { to: '/polls/' + props.id },
         props.name
       )
     )
@@ -11444,7 +11526,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
             _reactRouterDom.Switch,
             null,
             _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: _IndexPage2.default, polls: _polls2.default }),
-            _react2.default.createElement(_reactRouterDom.Route, { path: '/polls/:id', component: _PollPage2.default, polls: _polls2.default }),
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/polls/:id', component: _PollPage2.default }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/login', component: _Login2.default })
         )
     )
