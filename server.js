@@ -8,6 +8,12 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+const MongoClient = require('mongodb').MongoClient;
+var mongo_login = process.env.MONGO_LAB_LOGIN;
+var mongoUrl = "mongodb://" + mongo_login + "mongodb://<dbuser>:<dbpassword>@ds153400.mlab.com:53400/voice-your-vote"
+MongoClient.connect(mongoUrl, (err, db) => {
+  if (err) throw err;
+  var db = db;
 // serve static assets normally
 app.use(express.static(__dirname + '/public'));
 
@@ -23,3 +29,5 @@ app.post('/api/polls', function (req, res){
 
 app.listen(port);
 console.log("server started on port " + port);
+
+}); //end of connection
