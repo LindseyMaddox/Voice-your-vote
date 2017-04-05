@@ -12286,21 +12286,16 @@ var PollPage = function (_React$Component) {
   }
 
   _createClass(PollPage, [{
+    key: 'handleChange',
+    value: function handleChange(event) {
+      this.setState({ selection: event.target.value });
+    }
+  }, {
     key: 'handleSubmit',
     value: function handleSubmit(event) {
       event.preventDefault();
-      this.setState({
-        selection: this.pollSelection.value
-      });
 
-      this.sendToServer();
-    }
-  }, {
-    key: 'sendToServer',
-    value: function sendToServer() {
       var pollChoice = { id: this.props.id, name: this.state.selection };
-      console.log("submitted with " + JSON.stringify(pollChoice));
-
       (0, _isomorphicFetch2.default)('/api/polls', {
         method: 'post',
         headers: { 'Accept': 'application/json, text/plain, */*',
@@ -12317,9 +12312,6 @@ var PollPage = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
-      console.log("test for params on poll page, they're " + this.props);
       var poll = find(2);
       if (!poll) {
         return _react2.default.createElement(_NotFoundPage.NotFoundPage, null);
@@ -12373,7 +12365,7 @@ var PollPage = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                   'select',
-                  { id: 'option-select', className: 'form-control' },
+                  { id: 'option-select', className: 'form-control', value: this.state.selection, onChange: this.handleChange.bind(this) },
                   _react2.default.createElement(
                     'option',
                     { defaultValue: true },
@@ -12382,9 +12374,7 @@ var PollPage = function (_React$Component) {
                   options.map(function (option) {
                     return _react2.default.createElement(
                       'option',
-                      { key: option, value: option, ref: function ref(selection) {
-                          return _this2.pollSelection = selection;
-                        } },
+                      { key: option, value: option },
                       option
                     );
                   })

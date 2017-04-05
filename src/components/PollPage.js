@@ -17,18 +17,14 @@ class PollPage extends React.Component {
       selection: ""
     };
    }
-handleSubmit(event){
+   
+  handleChange(event) {
+    this.setState({selection: event.target.value});
+  }
+ handleSubmit(event) {
     event.preventDefault();
-    this.setState({
-      selection: this.pollSelection.value
-    });
     
-    this.sendToServer();
-}
-  sendToServer(){
     var pollChoice = { id: this.props.id, name: this.state.selection };
-  console.log("submitted with " + JSON.stringify(pollChoice));
-  
     fetch('/api/polls',{
       method: 'post',
       headers: { 'Accept': 'application/json, text/plain, */*',
@@ -67,10 +63,10 @@ handleSubmit(event){
             <form onSubmit={this.handleSubmit.bind(this)}>
               <div className="form-group">
               <label htmlFor="option-select">Vote for your favorite</label>
-                <select id="option-select" className="form-control">
+                <select id="option-select" className="form-control" value={this.state.selection} onChange={this.handleChange.bind(this)}>
                   <option defaultValue>Pick your favorite...</option>
                    {options.map(option => (
-            <option key={option} value={option} ref={(selection) => this.pollSelection = selection}>{option}</option>
+            <option key={option} value={option}>{option}</option>
           ))}
                 </select>
               </div>
