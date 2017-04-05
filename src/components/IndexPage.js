@@ -1,10 +1,9 @@
 import React from 'react';
 import { PollPreview } from './PollPreview';
+import polls from '../data/polls';
 
 class IndexPage extends React.Component {
   render() {
-    let polls = this.props.polls;
-    console.log("In index page, polls are " + polls);
     return (
         <div className="home">
          <div className="col-10 offset-1 col-md-8 offset-md-2">
