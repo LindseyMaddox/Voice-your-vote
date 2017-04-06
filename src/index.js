@@ -6,7 +6,6 @@ import {BrowserRouter as Router, Route, IndexRoute, Switch, Link} from 'react-ro
 import  IndexPage from './components/IndexPage';
 import  PollPage  from './components/PollPage';
 import  Login  from './components/Login';
-import polls from './data/polls';
 
 render(
     <Router>
@@ -27,7 +26,7 @@ render(
                 </div>
             </nav>
             <Switch>
-                <Route path="/" exact={true} component={IndexPage} polls={polls}/>
+                <Route path="/" exact={true} component={IndexPage} />
                 <Route path="/polls/:id" component={PollPage} />
                 <Route path="/login" component={Login} />
             </Switch>

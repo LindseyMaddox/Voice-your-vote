@@ -14,10 +14,29 @@ class PollPage extends React.Component {
    constructor(props) {
     super(props);
     this.state = {
-      selection: ""
+      data: [],
+      selection: "",
+      id: 1
     };
    }
+   componentDidMount(){
+     this.loadCommentsFromServer();
+   }
    
+   loadCommentsFromServer(){
+     let id = this.state.id;
+     console.log("test for id params, they're " + id);
+     fetch('/api/polls/'+id, {
+       method: 'get'
+     })
+       .then((response) => { if(response.ok){
+        console.log("response from server is " + JSON.stringify(response));
+        return response.json();
+        } throw new Error('Network response was not ok.');
+      })
+      .catch((error) =>  { console.log('There has been a problem with your fetch operation: ' + error.message);
+    });
+ }
   handleChange(event) {
     this.setState({selection: event.target.value});
   }
