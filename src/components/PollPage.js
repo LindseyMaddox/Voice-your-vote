@@ -7,30 +7,31 @@ import { Chart } from './PieChart';
 import axios from 'axios';
 
 class PollPage extends React.Component {
-   constructor(props) {
-    super(props);
+    constructor(props) {
+      super(props);
     this.state = {
-      poll: {},
+      poll: "",
       selection: "",
       id: this.props.match.params.id
     };
    }
-   
+
    componentDidMount(){
-       this.loadCommentsFromServer();
+     console.log("i'm in component did mount!");
+     this.loadPollFromServer();
    }
-   loadCommentsFromServer(){
+   
+    
+   loadPollFromServer(){
      let id = this.state.id;
-     axios.get('/api/polls/'+id)
-      .then(res => { console.log("in component did mount, poll is " + JSON.stringify(res.data));
- this.setState({ poll: res.data });
- console.log("and now the poll data is " + this.state.poll);
+     axios.get('/api/polls/' + id)
+      .then(res => { 
+ this.setState({ poll: res.data[0] });
  })
-    .catch(err => {
+      .catch(err => {
       console.log(err);
     });
  }
- 
  
   handleChange(event) {
     this.setState({selection: event.target.value});
@@ -42,8 +43,8 @@ class PollPage extends React.Component {
 }
   render(){
     const poll = this.state.poll;
-    console.log("in poll page render, poll is " + JSON.stringify(poll));
-    if(!poll){
+    console.log("poll is " + poll);
+    if(poll == {}){
         return <NotFoundPage />;
     }
   var options = [];

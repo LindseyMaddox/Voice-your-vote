@@ -12731,7 +12731,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         null,
         _react2.default.createElement(
             'nav',
-            { 'class': 'navbar navbar-toggleable-sm navbar-light' },
+            { className: 'navbar navbar-toggleable-sm navbar-light' },
             _react2.default.createElement(
                 'button',
                 { className: 'navbar-toggler navbar-toggler-right', type: 'button', 'data-toggle': 'collapse', 'data-target': '#navbarContent', 'aria-controls': 'navbarContent', 'aria-expanded': 'false', 'aria-label': 'Toggle navigation' },
@@ -12748,7 +12748,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
             ),
             _react2.default.createElement(
                 'div',
-                { 'class': 'collapse navbar-collapse justify-content-end', id: 'navbarContent' },
+                { className: 'collapse navbar-collapse justify-content-end', id: 'navbarContent' },
                 _react2.default.createElement(
                     'ul',
                     { className: 'nav navbar-nav' },
@@ -14726,7 +14726,7 @@ var PollPage = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (PollPage.__proto__ || Object.getPrototypeOf(PollPage)).call(this, props));
 
     _this.state = {
-      poll: {},
+      poll: "",
       selection: "",
       id: _this.props.match.params.id
     };
@@ -14736,18 +14736,17 @@ var PollPage = function (_React$Component) {
   _createClass(PollPage, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.loadCommentsFromServer();
+      console.log("i'm in component did mount!");
+      this.loadPollFromServer();
     }
   }, {
-    key: 'loadCommentsFromServer',
-    value: function loadCommentsFromServer() {
+    key: 'loadPollFromServer',
+    value: function loadPollFromServer() {
       var _this2 = this;
 
       var id = this.state.id;
       _axios2.default.get('/api/polls/' + id).then(function (res) {
-        console.log("in component did mount, poll is " + JSON.stringify(res.data));
-        _this2.setState({ poll: res.data });
-        console.log("and now the poll data is " + _this2.state.poll);
+        _this2.setState({ poll: res.data[0] });
       }).catch(function (err) {
         console.log(err);
       });
@@ -14768,8 +14767,7 @@ var PollPage = function (_React$Component) {
     key: 'render',
     value: function render() {
       var poll = this.state.poll;
-      console.log("in poll page render, poll is " + JSON.stringify(poll));
-      if (!poll) {
+      if (poll == {}) {
         return _react2.default.createElement(_NotFoundPage.NotFoundPage, null);
       }
       var options = [];

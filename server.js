@@ -44,10 +44,11 @@ app.get('/api/polls', function(req,res){
 });
 
 app.get('/api/polls/:id', function (req, res){
-    var id = req.params.id
-   getPoll(id, function(poll){
-       res.json(poll[0]);
-   });
+    var id = req.params.id;
+   getPoll(id, returnPoll);
+   function returnPoll(poll) {
+       res.json(poll);
+   }
 });
 
 function getAllPolls(callback){
@@ -57,7 +58,7 @@ function getAllPolls(callback){
 });
 }
 function getPoll(id,callback){
-    db.collection('polls').find(  { _id: ObjectId("58e63d5d734d1d12d73a30e2")  } ).toArray(function(err, poll) {
+    db.collection('polls').find(  { _id: ObjectId(id)  } ).toArray(function(err, poll) {
     if(err) throw err;
     callback(poll);
 });
@@ -70,8 +71,7 @@ app.post('/api/polls/create', function (req,res){
     });
 })
 app.post('/api/polls/:id', function (req, res){
-    // var id = req.params.id;
-    var id = "58e63d5d734d1d12d73a30e2";
+     var id = req.params.id;
     var selection = req.body.name;
     updateVoteCount(id, selection, function(poll){
        res.json({ message: 'Thanks for adding your vote'});

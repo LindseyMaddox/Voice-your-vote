@@ -11,14 +11,14 @@ import AddPoll from './components/AddPoll';
 render(
     <Router>
            <div>
-             <nav class="navbar navbar-toggleable-sm navbar-light">
+             <nav className="navbar navbar-toggleable-sm navbar-light">
 			    <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
     			    <span className="navbar-toggler-icon"></span>
   			    </button>
   			    <div className="navbar-header">
                             <a className="navbar-brand" href="#">Voice your Vote</a>
                 </div>
-				<div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+				<div className="collapse navbar-collapse justify-content-end" id="navbarContent">
                             <ul className="nav navbar-nav">
                                 {/* Change from a to Link */}
                                 <li className="nav-item"><Link to="/">Home</Link></li>
