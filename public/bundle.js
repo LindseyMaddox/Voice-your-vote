@@ -12076,17 +12076,20 @@ var IndexPage = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.loadCommentsFromServer();
+      //  .then((polls) => {
+      //   this.setState({
+      //     polls: polls,
+      //   });
+      //  });
     }
   }, {
     key: 'loadCommentsFromServer',
     value: function loadCommentsFromServer() {
-      (0, _isomorphicFetch2.default)('/api/polls', {
-        method: 'get'
-      }).then(function (response) {
+      (0, _isomorphicFetch2.default)('api/polls').then(function (response) {
         if (response.ok) {
-          console.log("response from server is " + JSON.stringify(response));
-          return response.json();
-        }throw new Error('Network response was not ok.');
+          console.log("response is " + JSON.stringify(response));
+        }
+        throw new Error('Network response was not ok.');
       }).catch(function (error) {
         console.log('There has been a problem with your fetch operation: ' + error.message);
       });
@@ -12289,9 +12292,9 @@ var PollPage = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (PollPage.__proto__ || Object.getPrototypeOf(PollPage)).call(this, props));
 
     _this.state = {
-      data: [],
+      poll: [],
       selection: "",
-      id: props.params
+      id: 1
     };
     return _this;
   }
@@ -12299,7 +12302,13 @@ var PollPage = function (_React$Component) {
   _createClass(PollPage, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.loadCommentsFromServer();
+      var _this2 = this;
+
+      this.loadCommentsFromServer().then(function (poll) {
+        _this2.setState({
+          poll: poll
+        });
+      });
     }
   }, {
     key: 'loadCommentsFromServer',
@@ -12310,7 +12319,6 @@ var PollPage = function (_React$Component) {
         method: 'get'
       }).then(function (response) {
         if (response.ok) {
-          console.log("response from server is " + JSON.stringify(response));
           return response.json();
         }throw new Error('Network response was not ok.');
       }).catch(function (error) {

@@ -14,13 +14,17 @@ class PollPage extends React.Component {
    constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      poll: [],
       selection: "",
       id: 1
     };
    }
    componentDidMount(){
-     this.loadCommentsFromServer();
+     this.loadCommentsFromServer().then((poll) => {
+      this.setState({
+        poll: poll,
+      });
+     });
    }
    
    loadCommentsFromServer(){
@@ -30,7 +34,6 @@ class PollPage extends React.Component {
        method: 'get'
      })
        .then((response) => { if(response.ok){
-        console.log("response from server is " + JSON.stringify(response));
         return response.json();
         } throw new Error('Network response was not ok.');
       })

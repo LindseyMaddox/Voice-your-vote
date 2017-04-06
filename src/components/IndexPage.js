@@ -13,19 +13,25 @@ class IndexPage extends React.Component {
    }
    componentDidMount(){
      this.loadCommentsFromServer();
+    //  .then((polls) => {
+    //   this.setState({
+    //     polls: polls,
+    //   });
+    //  });
    }
    
    loadCommentsFromServer(){
-     fetch('/api/polls', {
-       method: 'get'
-     })
-       .then((response) => { if(response.ok){
-        console.log("response from server is " + JSON.stringify(response));
-        return response.json();
-        } throw new Error('Network response was not ok.');
-      })
-      .catch((error) =>  { console.log('There has been a problem with your fetch operation: ' + error.message);
-    });
+        fetch('api/polls')
+        .then(function(response) {
+  if(response.ok) {
+   console.log("response is " + JSON.stringify(response));
+  }
+  throw new Error('Network response was not ok.');
+})
+.catch(function(error) {
+  console.log('There has been a problem with your fetch operation: ' + error.message);
+});
+          
  }
   render() {
     return (

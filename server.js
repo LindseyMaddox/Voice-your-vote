@@ -8,6 +8,15 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//To prevent errors from Cross Origin Resource Sharing, we will set 
+//our headers to allow CORS with middleware like so:
+app.use(function(req, res, next) {
+ res.setHeader('Access-Control-Allow-Origin', '*');
+ res.setHeader('Access-Control-Allow-Credentials', 'true');
+ res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
+ res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+ next();
+});
 const MongoClient = require('mongodb').MongoClient;
 var mongo_login = process.env.MONGO_LAB_LOGIN;
 var mongoUrl = "mongodb://llmaddox:Noc110228Pip@ds153400.mlab.com:53400/voice-your-vote";
@@ -20,30 +29,31 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.get('/api/polls', function(req,res){
-    var polls = getAllPolls();
-    console.log("polls are " + polls);
-   res.json(polls);
-})
+    getAllPolls(function(polls) {
+        console.log("polls are " + JSON.stringify(polls));
+        res.set("Content-Type", 'application/json');
+         res.json(polls);
+    });
+   
+});
 
 app.get('/api/polls/:id', function (req, res){
     var id = req.params.id
-   var poll = getPoll(id);
-   console.log("poll is " + poll);
-   res.json(poll);
+   getPoll(id, function(poll){
+       res.json(poll);
+   });
 });
 
-function getAllPolls(){
+function getAllPolls(callback){
     db.collection('polls').find( ).toArray(function(err, polls) {
     if(err) throw err;
-       console.log(polls);
-        return polls;
+     callback(polls);
 });
 }
-function getPoll(id){
-    db.collection('polls').find(  {  "name": "Best Band"  } ).toArray(function(err, polls) {
+function getPoll(id,callback){
+    db.collection('polls').find(  { _id: "58e63d5d734d1d12d73a30e2"  } ).toArray(function(err, poll) {
     if(err) throw err;
-       console.log(polls);
-        return polls;
+    callback(poll);
 });
 }
 
