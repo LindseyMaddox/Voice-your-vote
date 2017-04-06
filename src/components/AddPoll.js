@@ -74,7 +74,6 @@ handleNameChange(event) {
               <button type="submit" id="new-poll-button" className="btn btn-primary">Add Poll</button>
             </form>
         </div>
-        <div>Test: {this.state.pollName} </div>
     </div>
   </div>
     );

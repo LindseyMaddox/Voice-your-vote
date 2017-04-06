@@ -14249,13 +14249,6 @@ var AddPoll = function (_React$Component) {
                 'Add Poll'
               )
             )
-          ),
-          _react2.default.createElement(
-            'div',
-            null,
-            'Test: ',
-            this.state.pollName,
-            ' '
           )
         )
       );
@@ -14734,27 +14727,23 @@ var PollPage = function (_React$Component) {
 
     _this.state = {
       poll: {},
-      selection: ""
+      selection: "",
+      id: _this.props.match.params.id
     };
     return _this;
   }
 
   _createClass(PollPage, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      this.loadCommentsFromServer();
-    }
-  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      console.log("check state...poll is " + this.state.poll);
+      this.loadCommentsFromServer();
     }
   }, {
     key: 'loadCommentsFromServer',
     value: function loadCommentsFromServer() {
       var _this2 = this;
 
-      var id = "58e62644a654bd9f30ace54e";
+      var id = this.state.id;
       _axios2.default.get('/api/polls/' + id).then(function (res) {
         console.log("in component did mount, poll is " + JSON.stringify(res.data));
         _this2.setState({ poll: res.data });

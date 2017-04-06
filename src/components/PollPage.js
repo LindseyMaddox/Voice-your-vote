@@ -11,18 +11,16 @@ class PollPage extends React.Component {
     super(props);
     this.state = {
       poll: {},
-      selection: ""
+      selection: "",
+      id: this.props.match.params.id
     };
-   }
-   componentWillMount(){
-     this.loadCommentsFromServer();
    }
    
    componentDidMount(){
-     console.log("check state...poll is " + this.state.poll);
+       this.loadCommentsFromServer();
    }
    loadCommentsFromServer(){
-     let id = "58e62644a654bd9f30ace54e";
+     let id = this.state.id;
      axios.get('/api/polls/'+id)
       .then(res => { console.log("in component did mount, poll is " + JSON.stringify(res.data));
  this.setState({ poll: res.data });
