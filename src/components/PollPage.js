@@ -3,11 +3,8 @@ import {
   Link
 } from 'react-router-dom';
 import { NotFoundPage } from './NotFoundPage';
-import polls from '../data/polls';
 import { Chart } from './PieChart';
 import axios from 'axios';
-
-const find = (id) => polls.find(p => p.id == id);
 
 class PollPage extends React.Component {
    constructor(props) {
@@ -17,20 +14,25 @@ class PollPage extends React.Component {
       selection: ""
     };
    }
-   componentDidMount(){
+   componentWillMount(){
      this.loadCommentsFromServer();
    }
    
+   componentDidMount(){
+     console.log("check state...poll is " + this.state.poll);
+   }
    loadCommentsFromServer(){
      let id = "58e62644a654bd9f30ace54e";
      axios.get('/api/polls/'+id)
-      .then(res => {
+      .then(res => { console.log("in component did mount, poll is " + JSON.stringify(res.data));
  this.setState({ poll: res.data });
+ console.log("and now the poll data is " + this.state.poll);
  })
     .catch(err => {
       console.log(err);
     });
  }
+ 
  
   handleChange(event) {
     this.setState({selection: event.target.value});
@@ -42,11 +44,11 @@ class PollPage extends React.Component {
 }
   render(){
     const poll = this.state.poll;
+    console.log("in poll page render, poll is " + JSON.stringify(poll));
     if(!poll){
         return <NotFoundPage />;
     }
-  console.log("poll is " + JSON.stringify(poll) + " and name is " + poll.name);
-    var options = [];
+  var options = [];
          for(var i = 0; i < poll.options.length; i++){
            options.push(poll.options[i]["name"]);
          }

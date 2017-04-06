@@ -11,11 +11,11 @@ class IndexPage extends React.Component {
     };
    }
    componentDidMount(){
-     this.loadCommentsFromServer();
+     this.loadPollsFromServer();
    }
    
     
-   loadCommentsFromServer(){
+   loadPollsFromServer(){
      axios.get('/api/polls/')
       .then(res => {
  this.setState({ polls: res.data });
@@ -31,7 +31,7 @@ class IndexPage extends React.Component {
          <div className="col-10 offset-1 col-md-8 offset-md-2">
             <div className="row polls-header"><h3>Polls</h3></div>
              <div className="polls-list">      
-              {this.state.polls.map((poll) => <PollPreview key={poll.id} {...poll} />)}
+              {this.state.polls.map((poll) => <PollPreview key={poll["_id"]} {...poll} />)}
              </div>
         </div>
       </div>
