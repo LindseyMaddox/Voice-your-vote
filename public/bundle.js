@@ -12734,8 +12734,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
             { 'class': 'navbar navbar-toggleable-sm navbar-light' },
             _react2.default.createElement(
                 'button',
-                { 'class': 'navbar-toggler navbar-toggler-right', type: 'button', 'data-toggle': 'collapse', 'data-target': '#navbarContent', 'aria-controls': 'navbarContent', 'aria-expanded': 'false', 'aria-label': 'Toggle navigation' },
-                _react2.default.createElement('span', { 'class': 'navbar-toggler-icon' })
+                { className: 'navbar-toggler navbar-toggler-right', type: 'button', 'data-toggle': 'collapse', 'data-target': '#navbarContent', 'aria-controls': 'navbarContent', 'aria-expanded': 'false', 'aria-label': 'Toggle navigation' },
+                _react2.default.createElement('span', { className: 'navbar-toggler-icon' })
             ),
             _react2.default.createElement(
                 'div',
