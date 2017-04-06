@@ -5,8 +5,7 @@ import {
 import { NotFoundPage } from './NotFoundPage';
 import polls from '../data/polls';
 import { Chart } from './PieChart';
-require('es6-promise').polyfill();
-import fetch from 'isomorphic-fetch';
+import axios from 'axios';
 
 const find = (id) => polls.find(p => p.id == id);
 
@@ -14,62 +13,43 @@ class PollPage extends React.Component {
    constructor(props) {
     super(props);
     this.state = {
-      poll: [],
-      selection: "",
-      id: 1
+      poll: {},
+      selection: ""
     };
    }
    componentDidMount(){
-     this.loadCommentsFromServer().then((poll) => {
-      this.setState({
-        poll: poll,
-      });
-     });
+     this.loadCommentsFromServer();
    }
    
    loadCommentsFromServer(){
-     let id = this.state.id;
-     console.log("test for id params, they're " + id);
-     fetch('/api/polls/'+id, {
-       method: 'get'
-     })
-       .then((response) => { if(response.ok){
-        return response.json();
-        } throw new Error('Network response was not ok.');
-      })
-      .catch((error) =>  { console.log('There has been a problem with your fetch operation: ' + error.message);
+     let id = "58e62644a654bd9f30ace54e";
+     axios.get('/api/polls/'+id)
+      .then(res => {
+ this.setState({ poll: res.data });
+ })
+    .catch(err => {
+      console.log(err);
     });
  }
+ 
   handleChange(event) {
     this.setState({selection: event.target.value});
   }
  handleSubmit(event) {
     event.preventDefault();
     
-    var pollChoice = { id: this.props.id, name: this.state.selection };
-    fetch('/api/polls',{
-      method: 'post',
-      headers: { 'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(pollChoice) }).
-    then((response) => { if(response.ok){
-    return response.json();
-  } throw new Error('Network response was not ok.');
-})
-.catch((error) =>  { console.log('There has been a problem with your fetch operation: ' + error.message);
- });
- 
+    var pollChoice = { name: this.state.selection };
 }
   render(){
-    const poll = find(2);
+    const poll = this.state.poll;
     if(!poll){
         return <NotFoundPage />;
     }
+  console.log("poll is " + JSON.stringify(poll) + " and name is " + poll.name);
     var options = [];
-        for(var i = 0; i < poll.options.length; i++){
+         for(var i = 0; i < poll.options.length; i++){
            options.push(poll.options[i]["name"]);
-        }
+         }
       return (
       <div>
         <div className="poll row">
@@ -97,7 +77,7 @@ class PollPage extends React.Component {
           </div>
           <div className="col-10 offset-1 col-md-3 offset-md-1">
             <div className="row">
-              <Chart data={poll.options} />
+               <Chart data={poll.options} />
             </div>
           </div>
         </div>

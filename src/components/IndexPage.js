@@ -1,7 +1,6 @@
 import React from 'react';
 import { PollPreview } from './PollPreview';
-require('es6-promise').polyfill();
-import fetch from 'isomorphic-fetch';
+import axios from 'axios';
 
 class IndexPage extends React.Component {
     constructor(props) {
@@ -13,26 +12,19 @@ class IndexPage extends React.Component {
    }
    componentDidMount(){
      this.loadCommentsFromServer();
-    //  .then((polls) => {
-    //   this.setState({
-    //     polls: polls,
-    //   });
-    //  });
    }
    
+    
    loadCommentsFromServer(){
-        fetch('api/polls')
-        .then(function(response) {
-  if(response.ok) {
-   console.log("response is " + JSON.stringify(response));
-  }
-  throw new Error('Network response was not ok.');
-})
-.catch(function(error) {
-  console.log('There has been a problem with your fetch operation: ' + error.message);
-});
-          
+     axios.get('/api/polls/')
+      .then(res => {
+ this.setState({ polls: res.data });
+ })
+      .catch(err => {
+      console.log(err);
+    });
  }
+ 
   render() {
     return (
         <div className="home">

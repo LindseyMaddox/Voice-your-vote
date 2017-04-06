@@ -17,10 +17,17 @@ app.use(function(req, res, next) {
  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
  next();
 });
+
 const MongoClient = require('mongodb').MongoClient;
+
+//for dev only
+if(app.settings.env == "development"){
+   require('dotenv').config(); 
+}
 var mongo_login = process.env.MONGO_LAB_LOGIN;
-var mongoUrl = "mongodb://llmaddox:Noc110228Pip@ds153400.mlab.com:53400/voice-your-vote";
-//var mongoUrl = "mongodb://" + mongo_login + "@ds153400.mlab.com:53400/voice-your-vote"
+var ObjectId = require('mongodb').ObjectId; 
+var mongoUrl = "mongodb://" + mongo_login + "@ds153400.mlab.com:53400/voice-your-vote";
+
 MongoClient.connect(mongoUrl, (err, db) => {
   if (err) throw err;
   var db = db;
@@ -40,7 +47,7 @@ app.get('/api/polls', function(req,res){
 app.get('/api/polls/:id', function (req, res){
     var id = req.params.id
    getPoll(id, function(poll){
-       res.json(poll);
+       res.json(poll[0]);
    });
 });
 
@@ -51,16 +58,29 @@ function getAllPolls(callback){
 });
 }
 function getPoll(id,callback){
-    db.collection('polls').find(  { _id: "58e63d5d734d1d12d73a30e2"  } ).toArray(function(err, poll) {
+    db.collection('polls').find(  { _id: ObjectId("58e63d5d734d1d12d73a30e2")  } ).toArray(function(err, poll) {
     if(err) throw err;
     callback(poll);
 });
 }
 
-app.post('/api/polls', function (req, res){
+app.post('/api/polls/:id', function (req, res){
+    // var id = req.params.id;
+    var id = "58e63d5d734d1d12d73a30e2";
+    var selection = req.body.name;
+    updateVoteCount(id, selection, function(poll){
+       res.json({ message: 'Thanks for adding your vote'});
+   });
     console.log("test that server is getting the request " + JSON.stringify(req.body));
  
 });
+
+    function updateVoteCount(id,selection,callback){
+        db.collection('polls').update ({ _id: ObjectId(id), "options.name": selection },{ $inc: { "options.$.votes": 1 } }, function(err,record){
+            if (err) throw err;
+            console.log("after update, record is now " + record);
+        });
+    }
 
 // Handles all non api routes so you do not get a not found error
 app.get('*', function (req,res){
