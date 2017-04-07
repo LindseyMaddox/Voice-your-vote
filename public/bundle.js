@@ -14166,8 +14166,6 @@ var AddPoll = function (_React$Component) {
     key: 'handleSubmit',
     value: function handleSubmit(event) {
       event.preventDefault();
-      console.log("In handle submit event, name is " + this.state.pollName);
-
       this.postPollToServer();
     }
   }, {
@@ -14581,14 +14579,14 @@ var Pie = exports.Pie = function Pie(props) {
   function getText(d) {
     return d.data.name;
   }
-  function transformAmount(d) {
-    return "translate(" + label.centroid(d) + ")";
+  function transformAmount(i, x) {
+    return "translate(" + x + "," + (i * 40 - 40) + ")";
   }
   var arcGen = d3.arc().innerRadius(0).outerRadius(100);
 
   var color = d3.scaleOrdinal(["#ff9933", "#4d88ff", "#00cc99", "#9933ff"]);
   function getColor(d) {
-    return color(d.data.votes);
+    return color(d.data.name);
   }
 
   return _react2.default.createElement(
@@ -14604,12 +14602,13 @@ var Pie = exports.Pie = function Pie(props) {
           fill: getColor(d),
           stroke: 'white',
           d: arcGen(d) }),
+        _react2.default.createElement("rect", { fill: getColor(d), transform: transformAmount(i, 113), height: "10", width: "10" }),
         _react2.default.createElement(
           "text",
           {
             key: 'text' + i,
             stroke: 'black',
-            d: label(d), transform: transformAmount(d) },
+            d: label(d), transform: transformAmount(i, 130), fontSize: "14px" },
           getText(d)
         )
       );
@@ -14660,23 +14659,14 @@ var Chart = exports.Chart = function (_React$Component) {
   }
 
   _createClass(Chart, [{
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      console.log("test for next props with chart, they're " + nextProps);
-    }
-  }, {
     key: 'render',
     value: function render() {
       var data = this.state.data.options;
-      console.log("test for props, data is " + JSON.stringify(this.props));
       var width = "375";
       var height = "300";
       var radius = Math.min(width, height) / 2;
-      console.log("in pie chart, data is " + data);
-      var svg = void 0;
-      if (data.length == 0) {
-        svg = "Chart loading";
-      } else {
+      var svg = "Chart loading";
+      if (data.length > 0) {
         svg = _react2.default.createElement(
           'svg',
           { width: width + 'px', height: height + 'px' },
@@ -14748,8 +14738,8 @@ var PollPage = function (_React$Component) {
   }
 
   _createClass(PollPage, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
       this.loadPollFromServer();
     }
   }, {
@@ -14793,6 +14783,19 @@ var PollPage = function (_React$Component) {
       this.postPollVoteToServer();
     }
   }, {
+    key: 'handleDelete',
+    value: function handleDelete() {
+      var _this4 = this;
+
+      //probably should confirm first
+      var id = this.state.id;
+      _axios2.default.delete('/api/polls/' + id).then(function (res) {
+        _this4.setState({ message: res.data.message });
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
       var poll = this.state.poll;
@@ -14803,6 +14806,11 @@ var PollPage = function (_React$Component) {
       var options = [];
       for (var i = 0; i < poll.options.length; i++) {
         options.push(poll.options[i]["name"]);
+      }
+      //don't led chart render until api is done
+      var chart = void 0;
+      if (poll.options.length != 0) {
+        chart = _react2.default.createElement(_PieChart.Chart, { data: poll });
       }
       return _react2.default.createElement(
         'div',
@@ -14894,7 +14902,20 @@ var PollPage = function (_React$Component) {
             _react2.default.createElement(
               'div',
               { className: 'row' },
-              _react2.default.createElement(_PieChart.Chart, { data: poll })
+              chart
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-10 offset-1 col-md-4 offset-md-2' },
+            _react2.default.createElement(
+              'button',
+              { className: 'btn btn-default', onClick: this.handleDelete.bind(this) },
+              'Delete Poll'
             )
           )
         ),

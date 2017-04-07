@@ -29,8 +29,6 @@ handleNameChange(event) {
   }
     handleSubmit(event){
         event.preventDefault();
-             console.log("In handle submit event, name is " + this.state.pollName)
-   
         this.postPollToServer();
     }
     postPollToServer(){

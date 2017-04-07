@@ -17,7 +17,7 @@ class PollPage extends React.Component {
     };
    }
    
-   componentWillMount(){
+   componentDidMount(){
       this.loadPollFromServer();
    }
     
@@ -54,6 +54,17 @@ class PollPage extends React.Component {
     var pollChoice = { name: this.state.selection };
     this.postPollVoteToServer();
 }
+  handleDelete(){
+    //probably should confirm first
+       let id = this.state.id;
+     axios.delete('/api/polls/' + id)
+      .then(res => { 
+       this.setState({ message: res.data.message });
+ })
+      .catch(err => {
+      console.log(err);
+    });
+  }
   render(){
     const poll = this.state.poll;
     let message = this.state.message;
@@ -63,6 +74,11 @@ class PollPage extends React.Component {
     var options = [];
    for(var i = 0; i < poll.options.length; i++){
            options.push(poll.options[i]["name"]);
+         }
+         //don't led chart render until api is done
+      let chart;
+         if(poll.options.length !=0){
+           chart = <Chart data={poll} />;
          }
       return (
       <div>
@@ -98,8 +114,15 @@ class PollPage extends React.Component {
           </div>
           <div className="col-10 offset-1 col-md-3 offset-md-1">
             <div className="row">
-               <Chart data={poll} /> 
+               {chart}
             </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-10 offset-1 col-md-4 offset-md-2">
+            <button className="btn btn-default" onClick={this.handleDelete.bind(this)}>
+              Delete Poll
+            </button>
           </div>
         </div>
         <div className="row">

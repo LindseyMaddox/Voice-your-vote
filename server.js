@@ -73,29 +73,47 @@ app.post('/api/polls/create', function (req,res){
 app.post('/api/polls/:id', function (req, res){
      var id = req.params.id;
     var selection = req.body.name;
-    updateVoteCount(id, selection, function(poll){
+    updateVoteCount(id, selection, respondToUpdate);
+    function respondToUpdate(){
        res.json({ message: 'Thanks for adding your vote'});
-   });
+   };
 });
 
+app.delete('/api/polls/:id', function (req, res){
+     var id = req.params.id;
+console.log("made it to the app delete method in express");
+    deletePoll(id, respondToDeletion);
+    function respondToDeletion(){
+       res.json( {"message": "successfully deleted poll"});
+   };
+});
+    
+
     function updateVoteCount(id,selection,callback){
-        db.collection('polls').update ({ _id: ObjectId(id), "options.name": selection },{ $inc: { "options.$.votes": 1 } }, function(err,record){
+        db.collection('polls').update({ _id: ObjectId(id), "options.name": selection },{ $inc: { "options.$.votes": 1 } }, function(err,record){
             if (err) throw err;
-            console.log("after update, record is now " + record);
-            callback(record);
+            callback();
         });
     }
+    
     function addNewPoll(record, callback){
         var option1 = { name: record["options"], votes: 0 };
         var options = [];
         //once we have multiple options, we can switch this to an each.
         options.push(option1);
         var item = { "name": record["name"], "description": record["description"], options };
-         db.collection('polls').insert( item ), function(err,result){ 
+         db.collection('polls').insert( item , function(err,result){ 
              if(err) throw err;
              console.log("just added the following record to the database: " + result);
              callback(result);
-         };
+         });
+    }
+      function deletePoll(id, callback){
+       db.collection('polls').remove( { "_id": ObjectId(id) }, function(err,result){ 
+             if(err) throw err;
+             callback();
+         });
+         
     }
 // Handles all non api routes so you do not get a not found error
 app.get('*', function (req,res){
