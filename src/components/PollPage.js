@@ -40,6 +40,7 @@ class PollPage extends React.Component {
      })
       .then(res => { 
        this.setState({ message: res.data.message });
+       this.loadPollFromServer();
  })
       .catch(err => {
       console.log(err);
@@ -60,7 +61,7 @@ class PollPage extends React.Component {
      axios.delete('/api/polls/' + id)
       .then(res => { 
        this.setState({ message: res.data.message });
- })
+    })
       .catch(err => {
       console.log(err);
     });
@@ -72,14 +73,14 @@ class PollPage extends React.Component {
         return <NotFoundPage />;
     }
     var options = [];
-   for(var i = 0; i < poll.options.length; i++){
-           options.push(poll.options[i]["name"]);
-         }
+    for(var i = 0; i < poll.options.length; i++){
+      options.push(poll.options[i]["name"]);
+    }
          //don't led chart render until api is done
-      let chart;
-         if(poll.options.length !=0){
-           chart = <Chart data={poll} />;
-         }
+    let chart;
+    if(poll.options.length !=0){
+      chart = <Chart data={poll} />;
+    }
       return (
       <div>
        <div className="poll row">

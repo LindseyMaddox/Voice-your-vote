@@ -11,6 +11,14 @@ export class Chart extends React.Component {
     };
   }
   
+  componentWillReceiveProps(nextProps){
+    if(this.props != nextProps){
+      this.setState({
+        data: nextProps.data
+      });
+    }
+  }
+  
   render() {
       let data = this.state.data.options;
       var width = "375";

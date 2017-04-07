@@ -14659,6 +14659,15 @@ var Chart = exports.Chart = function (_React$Component) {
   }
 
   _createClass(Chart, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (this.props != nextProps) {
+        this.setState({
+          data: nextProps.data
+        });
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var data = this.state.data.options;
@@ -14765,6 +14774,7 @@ var PollPage = function (_React$Component) {
         "name": selection
       }).then(function (res) {
         _this3.setState({ message: res.data.message });
+        _this3.loadPollFromServer();
       }).catch(function (err) {
         console.log(err);
       });
