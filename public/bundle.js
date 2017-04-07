@@ -14660,21 +14660,34 @@ var Chart = exports.Chart = function (_React$Component) {
   }
 
   _createClass(Chart, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      console.log("test for next props with chart, they're " + nextProps);
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var data = this.state.data;
+      var data = this.state.data.options;
+      console.log("test for props, data is " + JSON.stringify(this.props));
       var width = "375";
       var height = "300";
       var radius = Math.min(width, height) / 2;
-      console.log("radius is " + radius + " in the piechart main fx");
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
+      console.log("in pie chart, data is " + data);
+      var svg = void 0;
+      if (data.length == 0) {
+        svg = "Chart loading";
+      } else {
+        svg = _react2.default.createElement(
           'svg',
           { width: width + 'px', height: height + 'px' },
           _react2.default.createElement(_Pie.Pie, { data: data, radius: radius })
-        )
+        );
+      }
+      // console.log("radius is " + radius + " in the piechart main fx");
+      return _react2.default.createElement(
+        'div',
+        null,
+        svg
       );
     }
   }]);
@@ -14726,17 +14739,17 @@ var PollPage = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (PollPage.__proto__ || Object.getPrototypeOf(PollPage)).call(this, props));
 
     _this.state = {
-      poll: "",
+      poll: { "name": "Placeholder Poll", "options": [] },
       selection: "",
+      message: "",
       id: _this.props.match.params.id
     };
     return _this;
   }
 
   _createClass(PollPage, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      console.log("i'm in component did mount!");
+    key: 'componentWillMount',
+    value: function componentWillMount() {
       this.loadPollFromServer();
     }
   }, {
@@ -14752,6 +14765,21 @@ var PollPage = function (_React$Component) {
       });
     }
   }, {
+    key: 'postPollVoteToServer',
+    value: function postPollVoteToServer() {
+      var _this3 = this;
+
+      var id = this.state.id;
+      var selection = this.state.selection;
+      _axios2.default.post('/api/polls/' + id, {
+        "name": selection
+      }).then(function (res) {
+        _this3.setState({ message: res.data.message });
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  }, {
     key: 'handleChange',
     value: function handleChange(event) {
       this.setState({ selection: event.target.value });
@@ -14762,11 +14790,13 @@ var PollPage = function (_React$Component) {
       event.preventDefault();
 
       var pollChoice = { name: this.state.selection };
+      this.postPollVoteToServer();
     }
   }, {
     key: 'render',
     value: function render() {
       var poll = this.state.poll;
+      var message = this.state.message;
       if (poll == {}) {
         return _react2.default.createElement(_NotFoundPage.NotFoundPage, null);
       }
@@ -14777,6 +14807,23 @@ var PollPage = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
+        _react2.default.createElement(
+          'div',
+          { className: 'poll row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-10 offset-1 col-md-4 offset-md-2' },
+            _react2.default.createElement(
+              'div',
+              { className: 'row' },
+              _react2.default.createElement(
+                'h4',
+                { className: 'success-message' },
+                message
+              )
+            )
+          )
+        ),
         _react2.default.createElement(
           'div',
           { className: 'poll row' },
@@ -14847,7 +14894,7 @@ var PollPage = function (_React$Component) {
             _react2.default.createElement(
               'div',
               { className: 'row' },
-              _react2.default.createElement(_PieChart.Chart, { data: poll.options })
+              _react2.default.createElement(_PieChart.Chart, { data: poll })
             )
           )
         ),

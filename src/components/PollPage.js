@@ -10,17 +10,16 @@ class PollPage extends React.Component {
     constructor(props) {
       super(props);
     this.state = {
-      poll: "",
+      poll: { "name": "Placeholder Poll", "options": []},
       selection: "",
+      message: "",
       id: this.props.match.params.id
     };
    }
-
-   componentDidMount(){
-     console.log("i'm in component did mount!");
-     this.loadPollFromServer();
-   }
    
+   componentWillMount(){
+      this.loadPollFromServer();
+   }
     
    loadPollFromServer(){
      let id = this.state.id;
@@ -33,6 +32,19 @@ class PollPage extends React.Component {
     });
  }
  
+    postPollVoteToServer(){
+     let id = this.state.id;
+     let selection = this.state.selection;
+     axios.post('/api/polls/' + id, {
+       "name": selection
+     })
+      .then(res => { 
+       this.setState({ message: res.data.message });
+ })
+      .catch(err => {
+      console.log(err);
+    });
+ }
   handleChange(event) {
     this.setState({selection: event.target.value});
   }
@@ -40,19 +52,27 @@ class PollPage extends React.Component {
     event.preventDefault();
     
     var pollChoice = { name: this.state.selection };
+    this.postPollVoteToServer();
 }
   render(){
     const poll = this.state.poll;
-    console.log("poll is " + poll);
+    let message = this.state.message;
     if(poll == {}){
         return <NotFoundPage />;
     }
-  var options = [];
-         for(var i = 0; i < poll.options.length; i++){
+    var options = [];
+   for(var i = 0; i < poll.options.length; i++){
            options.push(poll.options[i]["name"]);
          }
       return (
       <div>
+       <div className="poll row">
+          <div className="col-10 offset-1 col-md-4 offset-md-2">
+            <div className="row">
+              <h4 className="success-message">{message}</h4>
+            </div>
+          </div>
+        </div>
         <div className="poll row">
           <div className="col-10 offset-1 col-md-4 offset-md-2">
             <div className="row">
@@ -78,7 +98,7 @@ class PollPage extends React.Component {
           </div>
           <div className="col-10 offset-1 col-md-3 offset-md-1">
             <div className="row">
-               <Chart data={poll.options} />
+               <Chart data={poll} /> 
             </div>
           </div>
         </div>
