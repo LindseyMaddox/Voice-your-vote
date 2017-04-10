@@ -98,14 +98,11 @@ console.log("made it to the app delete method in express");
     }
     
     function addNewPoll(record, callback){
-        var option1 = { name: record["options"], votes: 0 };
-        var options = [];
-        //once we have multiple options, we can switch this to an each.
-        options.push(option1);
-        var item = { "name": record["name"], "description": record["description"], options };
+        console.log("in database add method, name is " + record["name"]);
+        var item = { "name": record["name"], "description": record["description"], options: record["options"] };
          db.collection('polls').insert( item , function(err,result){ 
              if(err) throw err;
-             console.log("just added the following record to the database: " + result);
+             console.log("just added the following record to the database: " + JSON.stringify(result.ops));
              callback(result);
          });
     }

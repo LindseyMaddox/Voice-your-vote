@@ -14139,6 +14139,7 @@ var AddPoll = function (_React$Component) {
             pollName: "",
             description: "",
             optionsList: [{ "name": "" }, { "name": "" }],
+            filteredOptionsList: [],
             numOfPollOptions: 2
         };
         return _this;
@@ -14162,12 +14163,10 @@ var AddPoll = function (_React$Component) {
         key: 'handleOptionsChange',
         value: function handleOptionsChange(event) {
             var id = event.target.id;
-            console.log("commented out regex to see if it is causing the error");
-            //   const index = id.match(/\d+/)[0];
-            var options = this.state.options;
-            options[1] = { "name": event.target.value };
+            var index = id.match(/\d+/)[0];
+            var options = this.state.optionsList;
+            options[index] = { "name": event.target.value, "votes": 0 };
 
-            console.log("index is fake index of 1" + " and options[1] is " + options[1]);
             this.setState({
                 options: options
             });
@@ -14176,28 +14175,39 @@ var AddPoll = function (_React$Component) {
         key: 'handleAddOptions',
         value: function handleAddOptions(event) {
             event.preventDefault();
-            var options = options.push({ "name": "" });
+            var options = this.state.optionsList;
+            options.push({ "name": "" });
             this.setState({
-                options: options,
+                optionsList: options,
                 numOfPollOptions: this.state.numOfPollOptions + 1
+
             });
         }
     }, {
         key: 'handleSubmit',
         value: function handleSubmit(event) {
             event.preventDefault();
-            this.postPollToServer();
+            this.removeEmptyOptions(this.postPollToServer);
+        }
+    }, {
+        key: 'removeEmptyOptions',
+        value: function removeEmptyOptions(callback) {
+            var options = this.state.optionsList;
+            var filteredList = [];
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].name != "") {
+                    filteredList.push(options[i]);
+                }
+            }
+            callback(this.state.pollName, this.state.description, filteredList);
         }
     }, {
         key: 'postPollToServer',
-        value: function postPollToServer() {
-            var pollName = this.state.pollName;
-            var description = this.state.description;
-            var options = this.state.options;
+        value: function postPollToServer(name, description, filteredOptionsList) {
             _axios2.default.post('/api/polls/create', {
-                'name': pollName,
+                'name': name,
                 'description': description,
-                'options': options }).then(function (response) {
+                'options': filteredOptionsList }).then(function (response) {
                 console.log(response);
             }).catch(function (error) {
                 console.log(error);
@@ -14219,7 +14229,7 @@ var AddPoll = function (_React$Component) {
                         'Options'
                     ),
                     _react2.default.createElement('input', (_React$createElement = { type: 'text', name: 'Options', className: 'form-control', placeholder: 'Option'
-                    }, _defineProperty(_React$createElement, 'className', "new-poll-options" + [i]), _defineProperty(_React$createElement, 'onChange', this.handleOptionsChange.bind(this)), _defineProperty(_React$createElement, 'value', this.state.options[0].name), _React$createElement))
+                    }, _defineProperty(_React$createElement, 'className', 'new-poll-options'), _defineProperty(_React$createElement, 'id', "new-poll-options" + i), _defineProperty(_React$createElement, 'onChange', this.handleOptionsChange.bind(this)), _defineProperty(_React$createElement, 'value', this.state.optionsList[i].name), _React$createElement))
                 );
                 options.push(optionBlock);
             }

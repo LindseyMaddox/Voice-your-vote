@@ -9,6 +9,7 @@ class AddPoll extends React.Component {
      pollName: "",
      description: "",
      optionsList: [{"name": ""}, {"name": ""}],
+     filteredOptionsList: [],
      numOfPollOptions: 2
     };
    }
@@ -25,22 +26,21 @@ handleNameChange(event) {
   }
 
    handleOptionsChange(event) {
-       const id = event.target.id;
-       console.log("commented out regex to see if it is causing the error");
-   const index = id.match(/\d+/)[0];
-        const options = this.state.options;
-    options[index] = {"name": event.target.value };
+        const id = event.target.id;
+        const index = id.match(/\d+/)[0];
+        const options = this.state.optionsList;
+        options[index] = {"name": event.target.value, "votes": 0 };
 
-      console.log("index is " + index + " and options[index] is " + options[index]);
-   this.setState({
+        this.setState({
            options: options
-         });
+          });
   }
     handleAddOptions(event){
         event.preventDefault();
-        const options = options.push({"name": ""});
+        const options = this.state.optionsList;
+        options.push({"name": ""});
         this.setState({
-            options: options,
+            optionsList: options,
             numOfPollOptions: this.state.numOfPollOptions + 1
     
         });
@@ -48,16 +48,25 @@ handleNameChange(event) {
     
     handleSubmit(event){
         event.preventDefault();
-        this.postPollToServer();
+        this.removeEmptyOptions(this.postPollToServer);
+       
     }
-    postPollToServer(){
-        let pollName = this.state.pollName;
-         let description = this.state.description;
-        let options = this.state.options;
-        axios.post('/api/polls/create', {
-            'name': pollName,
+    removeEmptyOptions(callback){
+        let options = this.state.optionsList;
+        let filteredList = [];
+        for(var i =0; i < options.length; i++){
+            if(options[i].name != ""){
+               filteredList.push(options[i]);
+            }
+        }
+        callback(this.state.pollName, this.state.description,filteredList);
+    }
+    
+    postPollToServer(name,description,filteredOptionsList){
+       axios.post('/api/polls/create', {
+            'name': name,
     'description': description,
-   'options': options })
+   'options': filteredOptionsList })
   .then(function (response) {
     console.log(response);
   })
@@ -71,7 +80,7 @@ handleNameChange(event) {
             var optionBlock =   <div className="form-group">
       <label htmlFor="newPollOptions">Options</label>
                 <input type="text" name="Options" className="form-control" placeholder="Option" 
-                 className={"new-poll-options" + [i]} onChange={this.handleOptionsChange.bind(this)} value={this.state.options[i].name}></input>
+                 className="new-poll-options" id={"new-poll-options" + i} onChange={this.handleOptionsChange.bind(this)} value={this.state.optionsList[i].name}></input>
               </div>;
           options.push(optionBlock);
       }
