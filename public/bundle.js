@@ -14815,7 +14815,8 @@ var PollPage = function (_React$Component) {
       poll: { "name": "Placeholder Poll", "options": [] },
       selection: "",
       message: "",
-      id: _this.props.match.params.id
+      id: _this.props.match.params.id,
+      loaded: false
     };
     return _this;
   }
@@ -14823,16 +14824,25 @@ var PollPage = function (_React$Component) {
   _createClass(PollPage, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.loadPollFromServer();
+      this.loadPollFromServer(this.setLoadedTrue);
+    }
+  }, {
+    key: 'setLoadedTrue',
+    value: function setLoadedTrue() {
+      this.setState({
+        loaded: true
+      });
     }
   }, {
     key: 'loadPollFromServer',
-    value: function loadPollFromServer() {
+    value: function loadPollFromServer(callback) {
       var _this2 = this;
 
       var id = this.state.id;
       _axios2.default.get('/api/polls/' + id).then(function (res) {
+        console.log("error poll response " + res.data[0]);
         _this2.setState({ poll: res.data[0] });
+        callback();
       }).catch(function (err) {
         console.log(err);
       });
@@ -14884,7 +14894,8 @@ var PollPage = function (_React$Component) {
     value: function render() {
       var poll = this.state.poll;
       var message = this.state.message;
-      if (poll == {}) {
+      var loaded = this.state.loaded;
+      if (loaded && !poll) {
         return _react2.default.createElement(_NotFoundPage.NotFoundPage, null);
       }
       var options = [];

@@ -13,19 +13,27 @@ class PollPage extends React.Component {
       poll: { "name": "Placeholder Poll", "options": []},
       selection: "",
       message: "",
-      id: this.props.match.params.id
+      id: this.props.match.params.id,
+      loaded: false
     };
    }
    
    componentDidMount(){
-      this.loadPollFromServer();
+      this.loadPollFromServer(this.setLoadedTrue);
    }
-    
-   loadPollFromServer(){
+ 
+  setLoadedTrue(){
+       this.setState({
+       loaded: true
+      });
+  }
+   loadPollFromServer(callback){
      let id = this.state.id;
      axios.get('/api/polls/' + id)
       .then(res => { 
+        console.log("error poll response " + res.data[0]);
  this.setState({ poll: res.data[0] });
+ callback();
  })
       .catch(err => {
       console.log(err);
@@ -69,7 +77,8 @@ class PollPage extends React.Component {
   render(){
     const poll = this.state.poll;
     let message = this.state.message;
-    if(poll == {}){
+    let loaded = this.state.loaded;
+    if(loaded && !poll){
         return <NotFoundPage />;
     }
     var options = [];
