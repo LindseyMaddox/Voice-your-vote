@@ -17,6 +17,8 @@ app.use(function(req, res, next) {
  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
  next();
 });
+const authRoutes = require('./server/auth');
+app.use('/auth', authRoutes);
 
 const MongoClient = require('mongodb').MongoClient;
 
@@ -75,6 +77,7 @@ app.post('/api/polls/:id', function (req, res){
     var selection = req.body.name;
     updateVoteCount(id, selection, respondToUpdate);
     function respondToUpdate(){
+        res.redirect('/');
        res.json({ message: 'Thanks for adding your vote'});
    };
 });

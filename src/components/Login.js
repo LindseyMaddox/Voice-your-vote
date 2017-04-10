@@ -22,8 +22,13 @@ export default class Login extends React.Component {
                 <input type="password" className="form-control" id="signupPassword" placeholder="Password"></input>
                  <small id="passwordHelp" className="form-text text-muted">Password must be at least 10 characters.</small>
               </div>
-              <button type="submit" id="signup-submit-button" className="btn btn-primary">Submit</button>
+              <button type="submit" id="signup-submit-button" className="btn btn-primary">Log in</button>
             </form>
+        </div>
+    </div>
+    <div className="row">
+        <div className="col-10 offset-1 col-md-6 offset-md-2 col-lg-4">
+            No account yet? <Link to="/signup">Sign up</Link> now
         </div>
     </div>
   </div>

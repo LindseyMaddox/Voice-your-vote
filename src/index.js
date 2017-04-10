@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Route, IndexRoute, Switch, Link} from 'react-ro
 import  IndexPage from './components/IndexPage';
 import  PollPage  from './components/PollPage';
 import  Login  from './components/Login';
+import  Signup  from './components/Signup';
 import AddPoll from './components/AddPoll';
 
 render(
@@ -31,6 +32,7 @@ render(
                 <Route path="/polls/new" component={AddPoll} />
                 <Route path="/polls/:id" component={PollPage} />
                 <Route path="/login" component={Login} />
+                <Route path="/signup" component={Signup} />
             </Switch>
         </div>
     </Router>,
