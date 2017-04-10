@@ -16,6 +16,9 @@ class IndexPage extends React.Component {
    
     
    loadPollsFromServer(){
+       var config = {
+  headers: {'Authorization': 'bearer ${Auth.getToken()}'}
+};
      axios.get('/api/polls/')
       .then(res => {
  this.setState({ polls: res.data });

@@ -9,7 +9,15 @@ import  Login  from './components/Login';
 import  Signup  from './components/Signup';
 import AddPoll from './components/AddPoll';
 
+
 render(
+    // function requireAuth(nextState, replace) {
+    //   if (!loggedIn()) {
+    //     replace({
+    //       pathname: '/login'
+    //     })
+    //   }
+    // }
     <Router>
            <div>
              <nav className="navbar navbar-toggleable-sm navbar-light">
@@ -29,7 +37,7 @@ render(
             </nav>
             <Switch>
                 <Route path="/" exact={true} component={IndexPage} />
-                <Route path="/polls/new" component={AddPoll} />
+                <Route path="/polls/new" component={AddPoll} onEnter={requireAuth} />
                 <Route path="/polls/:id" component={PollPage} />
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={Signup} />

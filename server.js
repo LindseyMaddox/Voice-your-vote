@@ -1,103 +1,124 @@
-// =======================
-var express     = require('express');
-var app         = express();
-var bodyParser  = require('body-parser');
-var mongoose    = require('mongoose');
-
-var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
-var config = require('./config'); // get our config file
-var User   = require('./app/models/user'); // get our mongoose model
-    
-// =======================
-// configuration =========
-// =======================
-var port = process.env.PORT || 8080; // used to create, sign, and verify tokens
-mongoose.connect(config.database); // connect to database
-app.set('superSecret', config.secret); // secret variable
-
-// use body parser so we can get info from POST and/or URL parameters
-app.use(bodyParser.urlencoded({ extended: false }));
+const express = require('express');
+const path = require('path');
+var bodyParser = require('body-parser')
+const port = process.env.PORT || 3000;
+const app = express();
+//now we should configure the API to use bodyParser and look for 
+//JSON data in the request body
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// =======================
-// routes ================
-// =======================
-// basic route
-app.get('/', function(req, res) {
-    res.send('Hello! The API is at http://localhost:' + port + '/api');
+//To prevent errors from Cross Origin Resource Sharing, we will set 
+//our headers to allow CORS with middleware like so:
+app.use(function(req, res, next) {
+ res.setHeader('Access-Control-Allow-Origin', '*');
+ res.setHeader('Access-Control-Allow-Credentials', 'true');
+ res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
+ res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+ next();
 });
 
-app.get('/setup', function(req, res) {
+const MongoClient = require('mongodb').MongoClient;
 
-  // create a sample user
-  var nick = new User({ 
-    username: 'Link Cerminara', 
-    password: 'password50'
-  });
+//for dev only
+if(app.settings.env == "development"){
+   require('dotenv').config(); 
+}
+var mongo_login = process.env.MONGO_LAB_LOGIN;
+var ObjectId = require('mongodb').ObjectId; 
+var mongoUrl = "mongodb://" + mongo_login + "@ds153400.mlab.com:53400/voice-your-vote";
 
-  // save the sample user
-  nick.save(function(err) {
-    if (err) throw err;
+MongoClient.connect(mongoUrl, (err, db) => {
+  if (err) throw err;
+  var db = db;
+// serve static assets normally
+app.use(express.static(__dirname + '/public'));
 
-    console.log('User saved successfully');
-    res.json({ success: true });
-  });
+
+app.get('/api/polls', function(req,res){
+    getAllPolls(function(polls) {
+        res.set("Content-Type", 'application/json');
+         res.json(polls);
+    });
+   
 });
 
-// API ROUTES -------------------
-// we'll get to these in a second
-// API ROUTES -------------------
+app.get('/api/polls/:id', function (req, res){
+    var id = req.params.id;
+   getPoll(id, returnPoll);
+   function returnPoll(poll) {
+       res.json(poll);
+   }
+});
 
-// get an instance of the router for api routes
-var apiRoutes = express.Router(); 
+function getAllPolls(callback){
+    db.collection('polls').find( ).toArray(function(err, polls) {
+    if(err) throw err;
+     callback(polls);
+});
+}
+function getPoll(id,callback){
+    db.collection('polls').find(  { _id: ObjectId(id)  } ).toArray(function(err, poll) {
+    if(err) throw err;
+    callback(poll);
+});
+}
 
-// TODO: route to authenticate a user (POST http://localhost:8080/api/authenticate)
+app.post('/api/polls/create', function (req,res){
+    addNewPoll(req.body, function(poll){
+       // res.json({message:"Thanks for creating a poll. Will redirect later"});
+        res.redirect('/'); // or to new poll
+    });
+})
+app.post('/api/polls/:id', function (req, res){
+     var id = req.params.id;
+    var selection = req.body.name;
+    updateVoteCount(id, selection, respondToUpdate);
+    function respondToUpdate(){
+       res.json({ message: 'Thanks for adding your vote'});
+   };
+});
 
-// TODO: route middleware to verify a token
+app.delete('/api/polls/:id', function (req, res){
+     var id = req.params.id;
+console.log("made it to the app delete method in express");
+    deletePoll(id, respondToDeletion);
+    function respondToDeletion(){
+       res.json( {"message": "successfully deleted poll"});
+   };
+});
+    
 
-// route to show a random message (GET http://localhost:8080/api/)
-apiRoutes.post('/authenticate', function(req, res) {
-
-  // find the user
-  User.findOne({
-    name: req.body.username
-  }, function(err, user) {
-
-    if (err) throw err;
-
-    if (!user) {
-      res.json({ success: false, message: 'Authentication failed. User not found.' });
-    } else if (user) {
-
-      // check if password matches
-      if (user.password != req.body.password) {
-        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
-      } else {
-
-        // if user is found and password is right
-        // create a token
-        var token = jwt.sign(user, app.get('superSecret'), {
-          expiresInMinutes: 1440 // expires in 24 hours
+    function updateVoteCount(id,selection,callback){
+        db.collection('polls').update({ _id: ObjectId(id), "options.name": selection },{ $inc: { "options.$.votes": 1 } }, function(err,record){
+            if (err) throw err;
+            callback();
         });
-
-        // return the information including token as JSON
-        res.json({
-          success: true,
-          message: 'Enjoy your token!',
-          token: token
-        });
-      }   
-
+        
     }
-
-  });
+    
+    function addNewPoll(record, callback){
+        console.log("in database add method, name is " + record["name"]);
+        var item = { "name": record["name"], "description": record["description"], options: record["options"] };
+         db.collection('polls').insert( item , function(err,result){ 
+             if(err) throw err;
+             console.log("just added the following record to the database: " + JSON.stringify(result.ops));
+             callback(result);
+         });
+    }
+      function deletePoll(id, callback){
+       db.collection('polls').remove( { "_id": ObjectId(id) }, function(err,result){ 
+             if(err) throw err;
+             callback();
+         });
+         
+    }
+// Handles all non api routes so you do not get a not found error
+app.get('*', function (req,res){
+    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
- 
 
-// apply the routes to our application with the prefix /api
-app.use('/api', apiRoutes);
-// =======================
-// start the server ======
-// =======================
 app.listen(port);
-console.log('Magic happens at http://localhost:' + port);
+console.log("server started on port " + port);
+
+}); //end of connection
