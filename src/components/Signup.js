@@ -33,7 +33,9 @@ export default class Signup extends React.Component {
             "userName": user.name,
     "passwordToken": passwordToken })
   .then(function (response) {
-    console.log(response);
+    this.setState({
+        errors: response.data.errors
+    })
   })
   .catch(function (error) {
     console.log(error);

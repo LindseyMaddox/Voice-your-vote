@@ -70,6 +70,14 @@ app.post('/api/polls/create', function (req,res){
         res.redirect('/'); // or to new poll
     });
 })
+app.post('/api/polls/:id/edit', function (req, res){
+     var id = req.params.id;
+    var options = req.body.options;
+    updatePollInfo(id, options, respondToUpdate);
+    function respondToUpdate(){
+       res.json({ message: 'Poll updated'});
+   };
+});
 app.post('/api/polls/:id', function (req, res){
      var id = req.params.id;
     var selection = req.body.name;
@@ -105,6 +113,13 @@ console.log("made it to the app delete method in express");
              console.log("just added the following record to the database: " + JSON.stringify(result.ops));
              callback(result);
          });
+    }
+     function updatePollInfo(id,options,callback){
+        db.collection('polls').update({ _id: ObjectId(id) },{ $set: { "options": options } }, function(err,record){
+            if (err) throw err;
+            callback();
+        });
+        
     }
       function deletePoll(id, callback){
        db.collection('polls').remove( { "_id": ObjectId(id) }, function(err,result){ 

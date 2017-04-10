@@ -8,7 +8,7 @@ import  PollPage  from './components/PollPage';
 import  Login  from './components/Login';
 import  Signup  from './components/Signup';
 import AddPoll from './components/AddPoll';
-
+import EditPoll from './components/EditPoll';
 
 render(
     // function requireAuth(nextState, replace) {
@@ -37,7 +37,8 @@ render(
             </nav>
             <Switch>
                 <Route path="/" exact={true} component={IndexPage} />
-                <Route path="/polls/new" component={AddPoll} onEnter={requireAuth} />
+                <Route path="/polls/new" component={AddPoll} />
+                <Route path="/polls/:id/edit" component={EditPoll} />
                 <Route path="/polls/:id" component={PollPage} />
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={Signup} />

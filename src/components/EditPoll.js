@@ -2,14 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-class AddPoll extends React.Component {
+class EditPoll extends React.Component {
    constructor(props) {
     super(props);
     this.state = {
+     id: "",
      pollName: "",
      description: "",
-     optionsList: [{"name": ""}, {"name": ""}],
-     numOfAdditionalPollOptions: 1
+     originalOptionsList: [{"name": ""}],
+     additionalOptionsList: [{"name": ""}]
     };
    }
 
@@ -20,7 +21,7 @@ class AddPoll extends React.Component {
      let id = this.state.id;
      axios.get('/api/polls/' + id)
       .then(res => { 
- this.setState({ pollName: res.data[0].name, description: res.data[0].name, optionsList: res.data[0].options });
+ this.setState({ pollName: res.data[0].name, description: res.data[0].name, originalOptionsList: res.data[0].options });
  })
       .catch(err => {
       console.log(err);
@@ -38,12 +39,10 @@ class AddPoll extends React.Component {
   }
     handleAddOptions(event){
         event.preventDefault();
-        const options = this.state.optionsList;
+        const options = this.state.additionalOptionsList;
         options.push({"name": ""});
         this.setState({
-            optionsList: options,
-            numOfPollOptions: this.state.numOfPollOptions + 1
-    
+            additionalOptionsList: options,
         });
     }
     
@@ -60,31 +59,63 @@ class AddPoll extends React.Component {
                filteredList.push(options[i]);
             }
         }
-        callback(this.state.pollName, this.state.description,filteredList);
+        callback(filteredList);
     }
     
-    postPollToServer(name,description,filteredOptionsList){
-//       axios.post('/api/polls/update', {
-//             'name': name,
-//     'description': description,
-//   'options': filteredOptionsList })
-//   .then(function (response) {
-//     console.log(response);
-//   })
-//   .catch(function (error) {
-//     console.log(error);
-//   });
+    postPollToServer(filteredOptionsList){
+        let id = this.state.id;
+       axios.post('/api/polls/' + id + '/edit', {
+   'options': filteredOptionsList })
+   .then(function (response) {
+     console.log(response);
+   })
+   .catch(function (error) {
+     console.log(error);
+   });
     }
+  
+    // addOptionsBlock(list,blockList,status){
+    //     for(var i = 0; i < list.length; i++){
+    //         var optionBlock =   <div className="form-group">
+    //   <label htmlFor="newPollOptions">Options</label>;
+    //         if(status == "disabled"){
+    //              optionBlock += <input type="text" name="Options" className="form-control" placeholder="Option" 
+    //              className="new-poll-options" id={"new-poll-options" + i} disabled></input>;
+    //         } else  {
+    //           optionBlock += <input type="text" name="Options" className="form-control" placeholder="Option" 
+    //              className="new-poll-options" id={"new-poll-options" + i} onChange={this.handleOptionsChange.bind(this)} value={this.state.additionalOptionsList[i].name}></input>;
+    //         }
+
+    //           optionsBlock +=</div>;
+    //       blockList.push(optionBlock);
+    // }
+    // }
   render() {
       let options = [];
-      for(var i = 0; i < this.state.numOfAdditionalPollOptions; i++){
-            var optionBlock =   <div className="form-group">
-      <label htmlFor="newPollOptions">Options</label>
+
+     // this.addOptionsBlock(this.state.additionalOptionsList,options,"active");
+      //this.addOptions.Block(this.state.originalOptionsList,options,"disabled")
+
+  var optionBlock;
+     for(var i = 0; i < this.state.originalOptionsList.length; i++){
+         optionBlock =   
+         <div className="form-group">
+             <label htmlFor={"poll-options-" + i}>Options</label>;
                 <input type="text" name="Options" className="form-control" placeholder="Option" 
-                 className="new-poll-options" id={"new-poll-options" + i} onChange={this.handleOptionsChange.bind(this)} value={this.state.optionsList[i].name}></input>
-              </div>;
-          options.push(optionBlock);
-      }
+                  className="original-poll-options" id={"poll-options" + i} disabled></input>
+        </div>;
+        options.push(optionBlock);
+    }
+     for(var item = 0; item < this.state.additionalOptionsList.length; item++){
+         optionBlock =   
+         <div className="form-group">
+             <label htmlFor={"poll-options-" + item}>Options</label>;
+                <input type="text" name="Options" className="form-control" placeholder="Option" 
+                  className="new-poll-options" id={"poll-options" + item} onChange={this.handleChange.bind(this)} value={this.state.additionalOptionsList[i].name}></input>
+        </div>;
+        options.push(optionBlock);
+    }
+
     return (
        <div className="home">
     <div className="row">
@@ -116,4 +147,14 @@ class AddPoll extends React.Component {
   }
 }
 
-export default AddPoll;
+function addOptionsBlock(list,blockList,status){
+    for(var i = 0; i < list.length; i++){
+            var optionBlock =   <div className="form-group">
+      <label htmlFor="newPollOptions">Options</label>
+                <input type="text" name="Options" className="form-control" placeholder="Option" 
+                 className="new-poll-options" id={"new-poll-options" + i} onChange={this.handleOptionsChange.bind(this)} value={this.state.optionsList[i].name}></input>
+              </div>;
+          blockList.push(optionBlock);
+    }
+}
+export default EditPoll;
