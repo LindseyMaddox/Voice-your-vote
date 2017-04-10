@@ -7,7 +7,9 @@ const app = express();
 //JSON data in the request body
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+// serve static assets normally
 
+app.use(express.static('./public/'));
 //To prevent errors from Cross Origin Resource Sharing, we will set 
 //our headers to allow CORS with middleware like so:
 app.use(function(req, res, next) {
@@ -33,9 +35,6 @@ var mongoUrl = "mongodb://" + mongo_login + "@ds153400.mlab.com:53400/voice-your
 MongoClient.connect(mongoUrl, (err, db) => {
   if (err) throw err;
   var db = db;
-// serve static assets normally
-app.use(express.static(__dirname + '/public'));
-
 
 app.get('/api/polls', function(req,res){
     getAllPolls(function(polls) {

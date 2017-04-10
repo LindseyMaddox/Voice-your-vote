@@ -1524,7 +1524,7 @@ var CallbackQueue = __webpack_require__(76);
 var PooledClass = __webpack_require__(19);
 var ReactFeatureFlags = __webpack_require__(81);
 var ReactReconciler = __webpack_require__(25);
-var Transaction = __webpack_require__(35);
+var Transaction = __webpack_require__(36);
 
 var invariant = __webpack_require__(1);
 
@@ -3759,7 +3759,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-var _assign = __webpack_require__(39);
+var _assign = __webpack_require__(40);
 
 var ReactCurrentOwner = __webpack_require__(13);
 
@@ -4213,7 +4213,7 @@ module.exports = invariant;
 
 
 var DOMNamespaces = __webpack_require__(43);
-var setInnerHTML = __webpack_require__(37);
+var setInnerHTML = __webpack_require__(38);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(50);
 var setTextContent = __webpack_require__(94);
@@ -4509,7 +4509,7 @@ module.exports = ReactReconciler;
 
 
 
-var _assign = __webpack_require__(39);
+var _assign = __webpack_require__(40);
 
 var ReactChildren = __webpack_require__(251);
 var ReactComponent = __webpack_require__(63);
@@ -4606,7 +4606,7 @@ module.exports = React;
 
 var _prodInvariant = __webpack_require__(2);
 
-var EventPluginRegistry = __webpack_require__(32);
+var EventPluginRegistry = __webpack_require__(33);
 var EventPluginUtils = __webpack_require__(44);
 var ReactErrorUtils = __webpack_require__(48);
 
@@ -5197,6 +5197,12 @@ var createPath = exports.createPath = function createPath(location) {
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__(111);
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright 2013-present, Facebook, Inc.
@@ -5455,7 +5461,7 @@ module.exports = EventPluginRegistry;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5473,7 +5479,7 @@ module.exports = EventPluginRegistry;
 
 var _assign = __webpack_require__(6);
 
-var EventPluginRegistry = __webpack_require__(32);
+var EventPluginRegistry = __webpack_require__(33);
 var ReactEventEmitterMixin = __webpack_require__(171);
 var ViewportMetrics = __webpack_require__(87);
 
@@ -5788,7 +5794,7 @@ var ReactBrowserEventEmitter = _assign({}, ReactEventEmitterMixin, {
 module.exports = ReactBrowserEventEmitter;
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5865,7 +5871,7 @@ SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
 module.exports = SyntheticMouseEvent;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6096,7 +6102,7 @@ module.exports = TransactionImpl;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6224,7 +6230,7 @@ function escapeTextContentForBrowser(text) {
 module.exports = escapeTextContentForBrowser;
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6327,7 +6333,7 @@ if (ExecutionEnvironment.canUseDOM) {
 module.exports = setInnerHTML;
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6395,7 +6401,7 @@ module.exports = warning;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6490,12 +6496,6 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(111);
 
 /***/ }),
 /* 41 */
@@ -6619,7 +6619,7 @@ var ReactDOMComponentTree = __webpack_require__(5);
 var ReactInstrumentation = __webpack_require__(10);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(50);
-var setInnerHTML = __webpack_require__(37);
+var setInnerHTML = __webpack_require__(38);
 var setTextContent = __webpack_require__(94);
 
 function getNodeAfter(parentNode, node) {
@@ -8487,7 +8487,7 @@ var locationsAreEqual = exports.locationsAreEqual = function locationsAreEqual(a
 
 exports.__esModule = true;
 
-var _warning = __webpack_require__(38);
+var _warning = __webpack_require__(39);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -10537,7 +10537,7 @@ var _prodInvariant = __webpack_require__(2);
 var DOMLazyTree = __webpack_require__(24);
 var DOMProperty = __webpack_require__(17);
 var React = __webpack_require__(26);
-var ReactBrowserEventEmitter = __webpack_require__(33);
+var ReactBrowserEventEmitter = __webpack_require__(34);
 var ReactCurrentOwner = __webpack_require__(13);
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactDOMContainerInfo = __webpack_require__(154);
@@ -10553,7 +10553,7 @@ var ReactUpdates = __webpack_require__(12);
 var emptyObject = __webpack_require__(97);
 var instantiateReactComponent = __webpack_require__(92);
 var invariant = __webpack_require__(1);
-var setInnerHTML = __webpack_require__(37);
+var setInnerHTML = __webpack_require__(38);
 var shouldUpdateReactComponent = __webpack_require__(55);
 var warning = __webpack_require__(3);
 
@@ -11540,8 +11540,8 @@ module.exports = isTextInputElement;
 
 
 var ExecutionEnvironment = __webpack_require__(7);
-var escapeTextContentForBrowser = __webpack_require__(36);
-var setInnerHTML = __webpack_require__(37);
+var escapeTextContentForBrowser = __webpack_require__(37);
+var setInnerHTML = __webpack_require__(38);
 
 /**
  * Set the textContent property of a node, ensuring that whitespace is preserved
@@ -14118,7 +14118,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(20);
 
-var _axios = __webpack_require__(40);
+var _axios = __webpack_require__(32);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -14337,7 +14337,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _PollPreview = __webpack_require__(135);
 
-var _axios = __webpack_require__(40);
+var _axios = __webpack_require__(32);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -14791,7 +14791,7 @@ var _NotFoundPage = __webpack_require__(131);
 
 var _PieChart = __webpack_require__(133);
 
-var _axios = __webpack_require__(40);
+var _axios = __webpack_require__(32);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -15075,7 +15075,7 @@ exports.default = PollPreview;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -15086,6 +15086,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(20);
 
+var _axios = __webpack_require__(32);
+
+var _axios2 = _interopRequireDefault(_axios);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -15095,142 +15099,148 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Signup = function (_React$Component) {
-    _inherits(Signup, _React$Component);
+  _inherits(Signup, _React$Component);
 
-    function Signup(props) {
-        _classCallCheck(this, Signup);
+  function Signup(props) {
+    _classCallCheck(this, Signup);
 
-        var _this = _possibleConstructorReturn(this, (Signup.__proto__ || Object.getPrototypeOf(Signup)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Signup.__proto__ || Object.getPrototypeOf(Signup)).call(this, props));
 
-        _this.state = {
-            errors: {},
-            user: {
-                email: '',
-                password: '',
-                passwordConfirmation: ''
-            }
-        };
-        return _this;
+    _this.state = {
+      errors: {},
+      user: {
+        email: '',
+        password: '',
+        passwordConfirmation: ''
+      }
+    };
+    return _this;
+  }
+
+  _createClass(Signup, [{
+    key: 'handleChange',
+    value: function handleChange(event) {
+      var field = event.target.name;
+      var user = this.state.user;
+      user[field] = event.target.value;
+
+      console.log("change is " + field + " and now user is " + user);
+      this.setState({
+        user: user
+      });
     }
-
-    _createClass(Signup, [{
-        key: 'handleChange',
-        value: function handleChange(event) {
-            var field = event.target.name;
-            var user = this.state.user;
-            user[field] = event.target.value;
-
-            console.log("change is " + field + " and now user is " + user);
-            this.setState({
-                user: user
-            });
-        }
-    }, {
-        key: 'handleSubmit',
-        value: function handleSubmit(event) {
-            event.preventDefault();
-            console.log('email:', this.state.user.email);
-            console.log('password:', this.state.user.password);
-            console.log('password confirm:', this.state.user.passwordConfirmation);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var errors = this.state.errors;
-            return _react2.default.createElement(
+  }, {
+    key: 'handleSubmit',
+    value: function handleSubmit(event) {
+      event.preventDefault();
+      var user = this.state.user;
+      var passwordToken = "to be encrypted";
+      _axios2.default.post('/api/auth/signup', {
+        "userName": user.name,
+        "passwordToken": passwordToken }).then(function (response) {
+        console.log(response);
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var errors = this.state.errors;
+      return _react2.default.createElement(
+        'div',
+        { className: 'home' },
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-10 offset-1 col-md-8 offset-md-2' },
+            _react2.default.createElement(
+              'h1',
+              null,
+              'Sign up'
+            )
+          )
+        ),
+        errors.summary && _react2.default.createElement(
+          'p',
+          { className: 'error-message' },
+          errors.summary
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
+            _react2.default.createElement(
+              'form',
+              { onSubmit: this.handleSubmit.bind(this) },
+              _react2.default.createElement(
                 'div',
-                { className: 'home' },
+                { className: 'form-group' },
                 _react2.default.createElement(
-                    'div',
-                    { className: 'row' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'col-10 offset-1 col-md-8 offset-md-2' },
-                        _react2.default.createElement(
-                            'h1',
-                            null,
-                            'Sign up'
-                        )
-                    )
+                  'label',
+                  { htmlFor: 'signupEmail' },
+                  'Email address'
                 ),
-                errors.summary && _react2.default.createElement(
-                    'p',
-                    { className: 'error-message' },
-                    errors.summary
-                ),
+                _react2.default.createElement('input', { type: 'email', name: 'email', className: 'form-control', id: 'signupEmail', 'aria-describedby': 'emailHelp',
+                  placeholder: 'Enter email', onChange: this.handleChange.bind(this), value: this.state.user.email })
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'form-group' },
                 _react2.default.createElement(
-                    'div',
-                    { className: 'row' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
-                        _react2.default.createElement(
-                            'form',
-                            { onSubmit: this.handleSubmit.bind(this) },
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'form-group' },
-                                _react2.default.createElement(
-                                    'label',
-                                    { htmlFor: 'signupEmail' },
-                                    'Email address'
-                                ),
-                                _react2.default.createElement('input', { type: 'email', name: 'email', className: 'form-control', id: 'signupEmail', 'aria-describedby': 'emailHelp',
-                                    placeholder: 'Enter email', onChange: this.handleChange.bind(this), value: this.state.user.email })
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'form-group' },
-                                _react2.default.createElement(
-                                    'label',
-                                    { htmlFor: 'signupPassword' },
-                                    'Password'
-                                ),
-                                _react2.default.createElement('input', { name: 'password', type: 'password', className: 'form-control', id: 'signupPassword', placeholder: 'Password', onChange: this.handleChange.bind(this), value: this.state.user.password }),
-                                _react2.default.createElement(
-                                    'small',
-                                    { id: 'passwordHelp', className: 'form-text text-muted' },
-                                    'Password must be at least 10 characters.'
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'form-group' },
-                                _react2.default.createElement(
-                                    'label',
-                                    { htmlFor: 'signupPasswordConfirmation' },
-                                    'Password Confirmation'
-                                ),
-                                _react2.default.createElement('input', { name: 'passwordConfirmation', type: 'password', className: 'form-control', id: 'signupPasswordConfirmation', placeholder: 'Confirm Password', onChange: this.handleChange.bind(this), value: this.state.user.passwordConfirmation })
-                            ),
-                            _react2.default.createElement(
-                                'button',
-                                { type: 'submit', id: 'signup-submit-button', className: 'btn btn-primary' },
-                                'Sign up'
-                            )
-                        )
-                    )
+                  'label',
+                  { htmlFor: 'signupPassword' },
+                  'Password'
                 ),
+                _react2.default.createElement('input', { name: 'password', type: 'password', className: 'form-control', id: 'signupPassword', placeholder: 'Password', onChange: this.handleChange.bind(this), value: this.state.user.password }),
                 _react2.default.createElement(
-                    'div',
-                    { className: 'row' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
-                        'No account yet? ',
-                        _react2.default.createElement(
-                            _reactRouterDom.Link,
-                            { to: '/signup' },
-                            'Sign up'
-                        ),
-                        ' now'
-                    )
+                  'small',
+                  { id: 'passwordHelp', className: 'form-text text-muted' },
+                  'Password must be at least 10 characters.'
                 )
-            );
-        }
-    }]);
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'form-group' },
+                _react2.default.createElement(
+                  'label',
+                  { htmlFor: 'signupPasswordConfirmation' },
+                  'Password Confirmation'
+                ),
+                _react2.default.createElement('input', { name: 'passwordConfirmation', type: 'password', className: 'form-control', id: 'signupPasswordConfirmation', placeholder: 'Confirm Password', onChange: this.handleChange.bind(this), value: this.state.user.passwordConfirmation })
+              ),
+              _react2.default.createElement(
+                'button',
+                { type: 'submit', id: 'signup-submit-button', className: 'btn btn-primary' },
+                'Sign up'
+              )
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
+            'No account yet? ',
+            _react2.default.createElement(
+              _reactRouterDom.Link,
+              { to: '/signup' },
+              'Sign up'
+            ),
+            ' now'
+          )
+        )
+      );
+    }
+  }]);
 
-    return Signup;
+  return Signup;
 }(_react2.default.Component);
 
 exports.default = Signup;
@@ -32955,7 +32965,7 @@ module.exports = DefaultEventPluginOrder;
 
 var EventPropagators = __webpack_require__(28);
 var ReactDOMComponentTree = __webpack_require__(5);
-var SyntheticMouseEvent = __webpack_require__(34);
+var SyntheticMouseEvent = __webpack_require__(35);
 
 var eventTypes = {
   mouseEnter: {
@@ -34607,8 +34617,8 @@ var DOMNamespaces = __webpack_require__(43);
 var DOMProperty = __webpack_require__(17);
 var DOMPropertyOperations = __webpack_require__(77);
 var EventPluginHub = __webpack_require__(27);
-var EventPluginRegistry = __webpack_require__(32);
-var ReactBrowserEventEmitter = __webpack_require__(33);
+var EventPluginRegistry = __webpack_require__(33);
+var ReactBrowserEventEmitter = __webpack_require__(34);
 var ReactDOMComponentFlags = __webpack_require__(78);
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactDOMInput = __webpack_require__(158);
@@ -34620,7 +34630,7 @@ var ReactMultiChild = __webpack_require__(177);
 var ReactServerRenderingTransaction = __webpack_require__(182);
 
 var emptyFunction = __webpack_require__(16);
-var escapeTextContentForBrowser = __webpack_require__(36);
+var escapeTextContentForBrowser = __webpack_require__(37);
 var invariant = __webpack_require__(1);
 var isEventSupported = __webpack_require__(54);
 var shallowEqual = __webpack_require__(57);
@@ -36554,7 +36564,7 @@ var DOMChildrenOperations = __webpack_require__(42);
 var DOMLazyTree = __webpack_require__(24);
 var ReactDOMComponentTree = __webpack_require__(5);
 
-var escapeTextContentForBrowser = __webpack_require__(36);
+var escapeTextContentForBrowser = __webpack_require__(37);
 var invariant = __webpack_require__(1);
 var validateDOMNesting = __webpack_require__(56);
 
@@ -37026,7 +37036,7 @@ module.exports = {
 
 
 var DOMProperty = __webpack_require__(17);
-var EventPluginRegistry = __webpack_require__(32);
+var EventPluginRegistry = __webpack_require__(33);
 var ReactComponentTreeHook = __webpack_require__(8);
 
 var warning = __webpack_require__(3);
@@ -37513,7 +37523,7 @@ module.exports = ReactDebugTool;
 var _assign = __webpack_require__(6);
 
 var ReactUpdates = __webpack_require__(12);
-var Transaction = __webpack_require__(35);
+var Transaction = __webpack_require__(36);
 
 var emptyFunction = __webpack_require__(16);
 
@@ -37941,7 +37951,7 @@ var EventPluginHub = __webpack_require__(27);
 var EventPluginUtils = __webpack_require__(44);
 var ReactComponentEnvironment = __webpack_require__(47);
 var ReactEmptyComponent = __webpack_require__(80);
-var ReactBrowserEventEmitter = __webpack_require__(33);
+var ReactBrowserEventEmitter = __webpack_require__(34);
 var ReactHostComponent = __webpack_require__(82);
 var ReactUpdates = __webpack_require__(12);
 
@@ -38664,10 +38674,10 @@ var _assign = __webpack_require__(6);
 
 var CallbackQueue = __webpack_require__(76);
 var PooledClass = __webpack_require__(19);
-var ReactBrowserEventEmitter = __webpack_require__(33);
+var ReactBrowserEventEmitter = __webpack_require__(34);
 var ReactInputSelection = __webpack_require__(83);
 var ReactInstrumentation = __webpack_require__(10);
-var Transaction = __webpack_require__(35);
+var Transaction = __webpack_require__(36);
 var ReactUpdateQueue = __webpack_require__(49);
 
 /**
@@ -38941,7 +38951,7 @@ module.exports = ReactRef;
 var _assign = __webpack_require__(6);
 
 var PooledClass = __webpack_require__(19);
-var Transaction = __webpack_require__(35);
+var Transaction = __webpack_require__(36);
 var ReactInstrumentation = __webpack_require__(10);
 var ReactServerUpdateQueue = __webpack_require__(183);
 
@@ -39712,7 +39722,7 @@ var SyntheticClipboardEvent = __webpack_require__(189);
 var SyntheticEvent = __webpack_require__(15);
 var SyntheticFocusEvent = __webpack_require__(192);
 var SyntheticKeyboardEvent = __webpack_require__(194);
-var SyntheticMouseEvent = __webpack_require__(34);
+var SyntheticMouseEvent = __webpack_require__(35);
 var SyntheticDragEvent = __webpack_require__(191);
 var SyntheticTouchEvent = __webpack_require__(195);
 var SyntheticTransitionEvent = __webpack_require__(196);
@@ -40063,7 +40073,7 @@ module.exports = SyntheticCompositionEvent;
 
 
 
-var SyntheticMouseEvent = __webpack_require__(34);
+var SyntheticMouseEvent = __webpack_require__(35);
 
 /**
  * @interface DragEvent
@@ -40370,7 +40380,7 @@ module.exports = SyntheticTransitionEvent;
 
 
 
-var SyntheticMouseEvent = __webpack_require__(34);
+var SyntheticMouseEvent = __webpack_require__(35);
 
 /**
  * @interface WheelEvent
@@ -41168,7 +41178,7 @@ module.exports = getVendorPrefixedEventName;
 
 
 
-var escapeTextContentForBrowser = __webpack_require__(36);
+var escapeTextContentForBrowser = __webpack_require__(37);
 
 /**
  * Escapes attribute value to prevent scripting attacks.
@@ -42218,7 +42228,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _warning = __webpack_require__(38);
+var _warning = __webpack_require__(39);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -42530,7 +42540,7 @@ exports.__esModule = true;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _warning = __webpack_require__(38);
+var _warning = __webpack_require__(39);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -42860,7 +42870,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _warning = __webpack_require__(38);
+var _warning = __webpack_require__(39);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -44493,7 +44503,7 @@ module.exports = ReactChildren;
 
 
 var _prodInvariant = __webpack_require__(22),
-    _assign = __webpack_require__(39);
+    _assign = __webpack_require__(40);
 
 var ReactComponent = __webpack_require__(63);
 var ReactElement = __webpack_require__(21);
@@ -45831,7 +45841,7 @@ module.exports = ReactPropTypes;
 
 
 
-var _assign = __webpack_require__(39);
+var _assign = __webpack_require__(40);
 
 var ReactComponent = __webpack_require__(63);
 var ReactNoopUpdateQueue = __webpack_require__(64);
