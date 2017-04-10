@@ -8,7 +8,8 @@ class AddPoll extends React.Component {
     this.state = {
      pollName: "",
      description: "",
-     options: ""
+     optionsList: [{"name": ""}, {"name": ""}],
+     numOfPollOptions: 2
     };
    }
    
@@ -22,11 +23,29 @@ handleNameChange(event) {
           description: event.target.value
         });
   }
+
    handleOptionsChange(event) {
+       const id = event.target.id;
+       console.log("commented out regex to see if it is causing the error");
+   const index = id.match(/\d+/)[0];
+        const options = this.state.options;
+    options[index] = {"name": event.target.value };
+
+      console.log("index is " + index + " and options[index] is " + options[index]);
    this.setState({
-          options: event.target.value
-        });
+           options: options
+         });
   }
+    handleAddOptions(event){
+        event.preventDefault();
+        const options = options.push({"name": ""});
+        this.setState({
+            options: options,
+            numOfPollOptions: this.state.numOfPollOptions + 1
+    
+        });
+    }
+    
     handleSubmit(event){
         event.preventDefault();
         this.postPollToServer();
@@ -47,6 +66,15 @@ handleNameChange(event) {
   });
     }
   render() {
+      let options = [];
+      for(var i = 0; i < this.state.numOfPollOptions; i++){
+            var optionBlock =   <div className="form-group">
+      <label htmlFor="newPollOptions">Options</label>
+                <input type="text" name="Options" className="form-control" placeholder="Option" 
+                 className={"new-poll-options" + [i]} onChange={this.handleOptionsChange.bind(this)} value={this.state.options[i].name}></input>
+              </div>;
+          options.push(optionBlock);
+      }
     return (
        <div className="home">
     <div className="row">
@@ -65,10 +93,10 @@ handleNameChange(event) {
                 <label htmlFor="newPollDescription">Description</label>
                 <input type="text" name="Description" className="form-control" id="newPollDescription" placeholder="Description" onChange={this.handleDescriptionChange.bind(this)} value={this.state.description}></input>
               </div>
-              <div className="form-group">
-                <label htmlFor="newPollOptions">Options</label>
-                <input type="text" name="Options" className="form-control" id="newPollOptions" placeholder="Option1" onChange={this.handleOptionsChange.bind(this)} value={this.state.options}></input>
+              <div className="options-list">
+                   {options.map(option => ( <div>{option}</div>))}
               </div>
+              <button id="create-new-option-button" className="btn btn-default" onClick={this.handleAddOptions.bind(this)}>Add Option</button>
               <button type="submit" id="new-poll-button" className="btn btn-primary">Add Poll</button>
             </form>
         </div>

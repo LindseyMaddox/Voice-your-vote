@@ -14102,7 +14102,7 @@ module.exports = function spread(callback) {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -14119,6 +14119,8 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -14126,134 +14128,175 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var AddPoll = function (_React$Component) {
-  _inherits(AddPoll, _React$Component);
+    _inherits(AddPoll, _React$Component);
 
-  function AddPoll(props) {
-    _classCallCheck(this, AddPoll);
+    function AddPoll(props) {
+        _classCallCheck(this, AddPoll);
 
-    var _this = _possibleConstructorReturn(this, (AddPoll.__proto__ || Object.getPrototypeOf(AddPoll)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (AddPoll.__proto__ || Object.getPrototypeOf(AddPoll)).call(this, props));
 
-    _this.state = {
-      pollName: "",
-      description: "",
-      options: ""
-    };
-    return _this;
-  }
+        _this.state = {
+            pollName: "",
+            description: "",
+            optionsList: [{ "name": "" }, { "name": "" }],
+            numOfPollOptions: 2
+        };
+        return _this;
+    }
 
-  _createClass(AddPoll, [{
-    key: 'handleNameChange',
-    value: function handleNameChange(event) {
-      this.setState({
-        pollName: event.target.value
-      });
-    }
-  }, {
-    key: 'handleDescriptionChange',
-    value: function handleDescriptionChange(event) {
-      this.setState({
-        description: event.target.value
-      });
-    }
-  }, {
-    key: 'handleOptionsChange',
-    value: function handleOptionsChange(event) {
-      this.setState({
-        options: event.target.value
-      });
-    }
-  }, {
-    key: 'handleSubmit',
-    value: function handleSubmit(event) {
-      event.preventDefault();
-      this.postPollToServer();
-    }
-  }, {
-    key: 'postPollToServer',
-    value: function postPollToServer() {
-      var pollName = this.state.pollName;
-      var description = this.state.description;
-      var options = this.state.options;
-      _axios2.default.post('/api/polls/create', {
-        'name': pollName,
-        'description': description,
-        'options': options }).then(function (response) {
-        console.log(response);
-      }).catch(function (error) {
-        console.log(error);
-      });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { className: 'home' },
-        _react2.default.createElement(
-          'div',
-          { className: 'row' },
-          _react2.default.createElement(
-            'div',
-            { className: 'col-10 offset-1 col-md-8 offset-md-2' },
-            _react2.default.createElement(
-              'h1',
-              null,
-              'Create New Poll'
-            )
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'row' },
-          _react2.default.createElement(
-            'div',
-            { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
-            _react2.default.createElement(
-              'form',
-              { onSubmit: this.handleSubmit.bind(this) },
-              _react2.default.createElement(
+    _createClass(AddPoll, [{
+        key: 'handleNameChange',
+        value: function handleNameChange(event) {
+            this.setState({
+                pollName: event.target.value
+            });
+        }
+    }, {
+        key: 'handleDescriptionChange',
+        value: function handleDescriptionChange(event) {
+            this.setState({
+                description: event.target.value
+            });
+        }
+    }, {
+        key: 'handleOptionsChange',
+        value: function handleOptionsChange(event) {
+            var id = event.target.id;
+            console.log("commented out regex to see if it is causing the error");
+            //   const index = id.match(/\d+/)[0];
+            var options = this.state.options;
+            options[1] = { "name": event.target.value };
+
+            console.log("index is fake index of 1" + " and options[1] is " + options[1]);
+            this.setState({
+                options: options
+            });
+        }
+    }, {
+        key: 'handleAddOptions',
+        value: function handleAddOptions(event) {
+            event.preventDefault();
+            var options = options.push({ "name": "" });
+            this.setState({
+                options: options,
+                numOfPollOptions: this.state.numOfPollOptions + 1
+            });
+        }
+    }, {
+        key: 'handleSubmit',
+        value: function handleSubmit(event) {
+            event.preventDefault();
+            this.postPollToServer();
+        }
+    }, {
+        key: 'postPollToServer',
+        value: function postPollToServer() {
+            var pollName = this.state.pollName;
+            var description = this.state.description;
+            var options = this.state.options;
+            _axios2.default.post('/api/polls/create', {
+                'name': pollName,
+                'description': description,
+                'options': options }).then(function (response) {
+                console.log(response);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var options = [];
+            for (var i = 0; i < this.state.numOfPollOptions; i++) {
+                var _React$createElement;
+
+                var optionBlock = _react2.default.createElement(
+                    'div',
+                    { className: 'form-group' },
+                    _react2.default.createElement(
+                        'label',
+                        { htmlFor: 'newPollOptions' },
+                        'Options'
+                    ),
+                    _react2.default.createElement('input', (_React$createElement = { type: 'text', name: 'Options', className: 'form-control', placeholder: 'Option'
+                    }, _defineProperty(_React$createElement, 'className', "new-poll-options" + [i]), _defineProperty(_React$createElement, 'onChange', this.handleOptionsChange.bind(this)), _defineProperty(_React$createElement, 'value', this.state.options[0].name), _React$createElement))
+                );
+                options.push(optionBlock);
+            }
+            return _react2.default.createElement(
                 'div',
-                { className: 'form-group' },
+                { className: 'home' },
                 _react2.default.createElement(
-                  'label',
-                  { htmlFor: 'newPollName' },
-                  'Poll Name'
+                    'div',
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-10 offset-1 col-md-8 offset-md-2' },
+                        _react2.default.createElement(
+                            'h1',
+                            null,
+                            'Create New Poll'
+                        )
+                    )
                 ),
-                _react2.default.createElement('input', { type: 'text', name: 'pollName', className: 'form-control', id: 'newPollName', placeholder: 'Name...', onChange: this.handleNameChange.bind(this), value: this.state.pollName })
-              ),
-              _react2.default.createElement(
-                'div',
-                { className: 'form-group' },
                 _react2.default.createElement(
-                  'label',
-                  { htmlFor: 'newPollDescription' },
-                  'Description'
-                ),
-                _react2.default.createElement('input', { type: 'text', name: 'Description', className: 'form-control', id: 'newPollDescription', placeholder: 'Description', onChange: this.handleDescriptionChange.bind(this), value: this.state.description })
-              ),
-              _react2.default.createElement(
-                'div',
-                { className: 'form-group' },
-                _react2.default.createElement(
-                  'label',
-                  { htmlFor: 'newPollOptions' },
-                  'Options'
-                ),
-                _react2.default.createElement('input', { type: 'text', name: 'Options', className: 'form-control', id: 'newPollOptions', placeholder: 'Option1', onChange: this.handleOptionsChange.bind(this), value: this.state.options })
-              ),
-              _react2.default.createElement(
-                'button',
-                { type: 'submit', id: 'new-poll-button', className: 'btn btn-primary' },
-                'Add Poll'
-              )
-            )
-          )
-        )
-      );
-    }
-  }]);
+                    'div',
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
+                        _react2.default.createElement(
+                            'form',
+                            { onSubmit: this.handleSubmit.bind(this) },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'form-group' },
+                                _react2.default.createElement(
+                                    'label',
+                                    { htmlFor: 'newPollName' },
+                                    'Poll Name'
+                                ),
+                                _react2.default.createElement('input', { type: 'text', name: 'pollName', className: 'form-control', id: 'newPollName', placeholder: 'Name...', onChange: this.handleNameChange.bind(this), value: this.state.pollName })
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'form-group' },
+                                _react2.default.createElement(
+                                    'label',
+                                    { htmlFor: 'newPollDescription' },
+                                    'Description'
+                                ),
+                                _react2.default.createElement('input', { type: 'text', name: 'Description', className: 'form-control', id: 'newPollDescription', placeholder: 'Description', onChange: this.handleDescriptionChange.bind(this), value: this.state.description })
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'options-list' },
+                                options.map(function (option) {
+                                    return _react2.default.createElement(
+                                        'div',
+                                        null,
+                                        option
+                                    );
+                                })
+                            ),
+                            _react2.default.createElement(
+                                'button',
+                                { id: 'create-new-option-button', className: 'btn btn-default', onClick: this.handleAddOptions.bind(this) },
+                                'Add Option'
+                            ),
+                            _react2.default.createElement(
+                                'button',
+                                { type: 'submit', id: 'new-poll-button', className: 'btn btn-primary' },
+                                'Add Poll'
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
 
-  return AddPoll;
+    return AddPoll;
 }(_react2.default.Component);
 
 exports.default = AddPoll;
@@ -14579,12 +14622,13 @@ var Pie = exports.Pie = function Pie(props) {
   function getText(d) {
     return d.data.name;
   }
-  function transformAmount(i, x) {
-    return "translate(" + x + "," + (i * 40 - 40) + ")";
+  function transformAmount(i, x, offset) {
+    return "translate(" + x + "," + (i * 40 - offset) + ")";
   }
+
   var arcGen = d3.arc().innerRadius(0).outerRadius(100);
 
-  var color = d3.scaleOrdinal(["#ff9933", "#4d88ff", "#00cc99", "#9933ff"]);
+  var color = d3.scaleOrdinal(d3.schemeCategory10);
   function getColor(d) {
     return color(d.data.name);
   }
@@ -14602,13 +14646,13 @@ var Pie = exports.Pie = function Pie(props) {
           fill: getColor(d),
           stroke: 'white',
           d: arcGen(d) }),
-        _react2.default.createElement("rect", { fill: getColor(d), transform: transformAmount(i, 113), height: "10", width: "10" }),
+        _react2.default.createElement("rect", { fill: getColor(d), transform: transformAmount(i, 113, 35), height: "10", width: "10" }),
         _react2.default.createElement(
           "text",
           {
             key: 'text' + i,
             stroke: 'black',
-            d: label(d), transform: transformAmount(i, 130), fontSize: "14px" },
+            d: label(d), transform: transformAmount(i, 130, 40), fontSize: "14px" },
           getText(d)
         )
       );

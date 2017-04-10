@@ -94,6 +94,7 @@ console.log("made it to the app delete method in express");
             if (err) throw err;
             callback();
         });
+        
     }
     
     function addNewPoll(record, callback){
