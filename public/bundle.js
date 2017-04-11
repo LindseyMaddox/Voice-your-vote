@@ -14375,7 +14375,7 @@ var EditPoll = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (EditPoll.__proto__ || Object.getPrototypeOf(EditPoll)).call(this, props));
 
         _this.state = {
-            id: "",
+            id: _this.props.match.params.id,
             pollName: "",
             description: "",
             originalOptionsList: [{ "name": "" }],
@@ -14396,7 +14396,11 @@ var EditPoll = function (_React$Component) {
 
             var id = this.state.id;
             _axios2.default.get('/api/polls/' + id).then(function (res) {
-                _this2.setState({ pollName: res.data[0].name, description: res.data[0].name, originalOptionsList: res.data[0].options });
+                _this2.setState({
+                    pollName: res.data[0].name,
+                    description: res.data[0].description,
+                    originalOptionsList: res.data[0].options
+                });
             }).catch(function (err) {
                 console.log(err);
             });
@@ -14406,7 +14410,7 @@ var EditPoll = function (_React$Component) {
         value: function handleChange(event) {
             var id = event.target.id;
             var index = id.match(/\d+/)[0];
-            var options = this.state.optionsList;
+            var options = this.state.additionalOptionsList;
             options[index] = { "name": event.target.value, "votes": 0 };
 
             this.setState({
@@ -14432,19 +14436,18 @@ var EditPoll = function (_React$Component) {
     }, {
         key: 'removeEmptyOptions',
         value: function removeEmptyOptions(callback) {
-            var options = this.state.optionsList;
+            var options = this.state.additionalOptionsList;
             var filteredList = [];
             for (var i = 0; i < options.length; i++) {
                 if (options[i].name != "") {
                     filteredList.push(options[i]);
                 }
             }
-            callback(filteredList);
+            callback(filteredList, this.state.id);
         }
     }, {
         key: 'postPollToServer',
-        value: function postPollToServer(filteredOptionsList) {
-            var id = this.state.id;
+        value: function postPollToServer(filteredOptionsList, id) {
             _axios2.default.post('/api/polls/' + id + '/edit', {
                 'options': filteredOptionsList }).then(function (response) {
                 console.log(response);
@@ -14452,34 +14455,12 @@ var EditPoll = function (_React$Component) {
                 console.log(error);
             });
         }
-
-        // addOptionsBlock(list,blockList,status){
-        //     for(var i = 0; i < list.length; i++){
-        //         var optionBlock =   <div className="form-group">
-        //   <label htmlFor="newPollOptions">Options</label>;
-        //         if(status == "disabled"){
-        //              optionBlock += <input type="text" name="Options" className="form-control" placeholder="Option" 
-        //              className="new-poll-options" id={"new-poll-options" + i} disabled></input>;
-        //         } else  {
-        //           optionBlock += <input type="text" name="Options" className="form-control" placeholder="Option" 
-        //              className="new-poll-options" id={"new-poll-options" + i} onChange={this.handleOptionsChange.bind(this)} value={this.state.additionalOptionsList[i].name}></input>;
-        //         }
-
-        //           optionsBlock +=</div>;
-        //       blockList.push(optionBlock);
-        // }
-        // }
-
     }, {
         key: 'render',
         value: function render() {
-            var options = [];
-
-            // this.addOptionsBlock(this.state.additionalOptionsList,options,"active");
-            //this.addOptions.Block(this.state.originalOptionsList,options,"disabled")
-
-            var optionBlock;
-            for (var i = 0; i < this.state.originalOptionsList.length; i++) {
+            var newOptions = [];
+            var optionBlock = void 0;
+            for (var i = 0; i < this.state.additionalOptionsList.length; i++) {
                 var _React$createElement;
 
                 optionBlock = _react2.default.createElement(
@@ -14488,32 +14469,24 @@ var EditPoll = function (_React$Component) {
                     _react2.default.createElement(
                         'label',
                         { htmlFor: "poll-options-" + i },
-                        'Options'
+                        'New Option'
                     ),
-                    ';',
-                    _react2.default.createElement('input', (_React$createElement = { type: 'text', name: 'Options', className: 'form-control', placeholder: 'Option'
-                    }, _defineProperty(_React$createElement, 'className', 'original-poll-options'), _defineProperty(_React$createElement, 'id', "poll-options" + i), _defineProperty(_React$createElement, 'disabled', true), _React$createElement))
+                    _react2.default.createElement('input', (_React$createElement = { type: 'text', className: 'form-control', placeholder: 'Option'
+                    }, _defineProperty(_React$createElement, 'className', 'new-poll-options'), _defineProperty(_React$createElement, 'id', "poll-options-" + i), _defineProperty(_React$createElement, 'onChange', this.handleChange.bind(this)), _defineProperty(_React$createElement, 'value', this.state.additionalOptionsList[i].name), _React$createElement))
                 );
-                options.push(optionBlock);
+                newOptions.push(optionBlock);
             }
-            for (var item = 0; item < this.state.additionalOptionsList.length; item++) {
-                var _React$createElement2;
+            var pollName = this.state.pollName;
+            var description = this.state.description;
+            var originalOptions = [];
 
-                optionBlock = _react2.default.createElement(
-                    'div',
-                    { className: 'form-group' },
-                    _react2.default.createElement(
-                        'label',
-                        { htmlFor: "poll-options-" + item },
-                        'Options'
-                    ),
-                    ';',
-                    _react2.default.createElement('input', (_React$createElement2 = { type: 'text', name: 'Options', className: 'form-control', placeholder: 'Option'
-                    }, _defineProperty(_React$createElement2, 'className', 'new-poll-options'), _defineProperty(_React$createElement2, 'id', "poll-options" + item), _defineProperty(_React$createElement2, 'onChange', this.handleChange.bind(this)), _defineProperty(_React$createElement2, 'value', this.state.additionalOptionsList[i].name), _React$createElement2))
-                );
-                options.push(optionBlock);
+            for (i = 0; i < this.state.originalOptionsList.length; i++) {
+                for (var prop in this.state.originalOptionsList[i]) {
+                    if (prop == "name") {
+                        originalOptions.push(this.state.originalOptionsList[i][prop]);
+                    }
+                }
             }
-
             return _react2.default.createElement(
                 'div',
                 { className: 'home' },
@@ -14537,32 +14510,43 @@ var EditPoll = function (_React$Component) {
                         'div',
                         { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
                         _react2.default.createElement(
+                            'div',
+                            { className: 'row' },
+                            _react2.default.createElement(
+                                'h2',
+                                { className: 'poll-name' },
+                                'Poll: ',
+                                pollName
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'row' },
+                            description
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'row' },
+                            'Existing Options'
+                        ),
+                        _react2.default.createElement(
+                            'ul',
+                            { className: 'original-options-list' },
+                            originalOptions.map(function (option) {
+                                return _react2.default.createElement(
+                                    'li',
+                                    null,
+                                    option
+                                );
+                            })
+                        ),
+                        _react2.default.createElement(
                             'form',
                             { onSubmit: this.handleSubmit.bind(this) },
                             _react2.default.createElement(
                                 'div',
-                                { className: 'form-group' },
-                                _react2.default.createElement(
-                                    'label',
-                                    { htmlFor: 'newPollName' },
-                                    'Poll Name'
-                                ),
-                                _react2.default.createElement('input', { type: 'text', name: 'pollName', className: 'form-control', id: 'newPollName', placeholder: 'Name...', disabled: true })
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'form-group' },
-                                _react2.default.createElement(
-                                    'label',
-                                    { htmlFor: 'newPollDescription' },
-                                    'Description'
-                                ),
-                                _react2.default.createElement('input', { type: 'text', name: 'Description', className: 'form-control', id: 'newPollDescription', placeholder: 'Description', disabled: true })
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'options-list' },
-                                options.map(function (option) {
+                                { className: 'new-options-list' },
+                                newOptions.map(function (option) {
                                     return _react2.default.createElement(
                                         'div',
                                         null,
@@ -14571,14 +14555,22 @@ var EditPoll = function (_React$Component) {
                                 })
                             ),
                             _react2.default.createElement(
-                                'button',
-                                { id: 'create-new-option-button', className: 'btn btn-default', onClick: this.handleAddOptions.bind(this) },
-                                'Add Option'
+                                'div',
+                                { className: 'row' },
+                                _react2.default.createElement(
+                                    'button',
+                                    { id: 'create-new-option-button', className: 'btn btn-default btn-sm', onClick: this.handleAddOptions.bind(this) },
+                                    'Add Option'
+                                )
                             ),
                             _react2.default.createElement(
-                                'button',
-                                { type: 'submit', id: 'new-poll-button', className: 'btn btn-primary' },
-                                'Add Poll'
+                                'div',
+                                { className: 'row submit-button-row' },
+                                _react2.default.createElement(
+                                    'button',
+                                    { type: 'submit', id: 'new-poll-button', className: 'btn btn-primary' },
+                                    'Add Options'
+                                )
                             )
                         )
                     )
@@ -14590,24 +14582,6 @@ var EditPoll = function (_React$Component) {
     return EditPoll;
 }(_react2.default.Component);
 
-function addOptionsBlock(list, blockList, status) {
-    for (var i = 0; i < list.length; i++) {
-        var _React$createElement3;
-
-        var optionBlock = _react2.default.createElement(
-            'div',
-            { className: 'form-group' },
-            _react2.default.createElement(
-                'label',
-                { htmlFor: 'newPollOptions' },
-                'Options'
-            ),
-            _react2.default.createElement('input', (_React$createElement3 = { type: 'text', name: 'Options', className: 'form-control', placeholder: 'Option'
-            }, _defineProperty(_React$createElement3, 'className', 'new-poll-options'), _defineProperty(_React$createElement3, 'id', "new-poll-options" + i), _defineProperty(_React$createElement3, 'onChange', this.handleOptionsChange.bind(this)), _defineProperty(_React$createElement3, 'value', this.state.optionsList[i].name), _React$createElement3))
-        );
-        blockList.push(optionBlock);
-    }
-}
 exports.default = EditPoll;
 
 /***/ }),
@@ -15121,14 +15095,12 @@ var PollPage = function (_React$Component) {
   _createClass(PollPage, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.loadPollFromServer(this.setLoadedTrue);
-    }
-  }, {
-    key: 'setLoadedTrue',
-    value: function setLoadedTrue() {
-      this.setState({
-        loaded: true
-      });
+      this.loadPollFromServer(setLoadedTrue);
+      function setLoadedTrue() {
+        this.setState({
+          loaded: true
+        });
+      }
     }
   }, {
     key: 'loadPollFromServer',
@@ -15561,6 +15533,73 @@ exports.default = Signup;
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Auth = function () {
+  function Auth() {
+    _classCallCheck(this, Auth);
+  }
+
+  _createClass(Auth, null, [{
+    key: 'authenticateUser',
+
+
+    /**
+     * Authenticate a user. Save a token string in Local Storage
+     *
+     * @param {string} token
+     */
+    value: function authenticateUser(token) {
+      localStorage.setItem('token', token);
+    }
+
+    /**
+     * Check if a user is authenticated - check if a token is saved in Local Storage
+     *
+     * @returns {boolean}
+     */
+
+  }, {
+    key: 'isUserAuthenticated',
+    value: function isUserAuthenticated() {
+      return localStorage.getItem('token') !== null;
+    }
+
+    /**
+     * Deauthenticate a user. Remove a token from Local Storage.
+     *
+     */
+
+  }, {
+    key: 'deauthenticateUser',
+    value: function deauthenticateUser() {
+      localStorage.removeItem('token');
+    }
+
+    /**
+     * Get a token value.
+     *
+     * @returns {string}
+     */
+
+  }, {
+    key: 'getToken',
+    value: function getToken() {
+      return localStorage.getItem('token');
+    }
+  }]);
+
+  return Auth;
+}();
+
+exports.default = Auth;
 
 /***/ }),
 /* 139 */

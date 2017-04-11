@@ -19,14 +19,15 @@ class PollPage extends React.Component {
    }
    
    componentDidMount(){
-      this.loadPollFromServer(this.setLoadedTrue);
-   }
- 
-  setLoadedTrue(){
+      this.loadPollFromServer(setLoadedTrue);
+       function setLoadedTrue(){
        this.setState({
        loaded: true
       });
   }
+   }
+ 
+ 
    loadPollFromServer(callback){
      let id = this.state.id;
      axios.get('/api/polls/' + id)
