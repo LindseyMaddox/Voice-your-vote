@@ -27,20 +27,19 @@ export default class Signup extends React.Component {
    handleSubmit(event){
        event.preventDefault();
        var that = this;
-       let user = this.state.user;
-       let password = this.state.password;
-       let passwordConfirmation = this.state.passwordConfirmation;
+       let email = this.state.user.email;
+       let password = this.state.user.password;
+       let passwordConfirmation = this.state.user.passwordConfirmation;
        let passwordToken = "to be encrypted";
            axios.post('/auth/signup', {
-            'email': "fier",
-    "password": "blah",
-    "passwordConfirmation": "blah"})
+            'email': email,
+    "password": password,
+    "passwordConfirmation": passwordConfirmation})
    .then(function (response) {
        console.log("woohoo! response is " + JSON.stringify(response.status));
   })
   .catch(function (error) {
-        if(error.response.status == 400){
-            console.log("400 error. check for details " + JSON.stringify(error.response.data.errors));
+        if(error.response.status >= 400 && error.response.status < 500){
             that.setState({
                 errors: error.response.data.errors
             });
@@ -62,7 +61,7 @@ export default class Signup extends React.Component {
        <div className="home">
     <div className="row">
         <div className="col-10 offset-1 col-md-8 offset-md-2">
-            <h1>{this.state.blah}</h1>
+            <h1>Sign up</h1>
         </div>
     </div>
       <div className="row">

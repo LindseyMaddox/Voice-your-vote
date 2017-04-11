@@ -81,7 +81,7 @@ function validateLoginForm(payload) {
   };
 }
 
-router.post('/signup', (req, res,next) => {
+router.post('/signup', (req,res,next) => {
    const validationResult = validateSignupForm(req.body);
    if (!validationResult.success) {
      return res.status(400).json({
@@ -100,16 +100,16 @@ router.post('/signup', (req, res,next) => {
           success: false,
           message: 'Check the form for errors.',
           errors: {
-            email: 'This email is already taken.'
+            email: 'This email is already taken. Please enter a new email'
           }
         });
       }
 
-      return res.status(400).json({
-        success: false,
-        message: 'Could not process the form.'
-      });
-    }
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: 'Could not process the form.'
+    //   });
+     }
 
     return res.status(200).json({
       success: true,
@@ -119,8 +119,8 @@ router.post('/signup', (req, res,next) => {
 });
 
 
-router.post('/login', (req, res) => {
-  const validationResult = validateLoginForm(req.body);
+router.post('/login', (req, res, next) => {
+const validationResult = validateLoginForm(req.body);
   if (!validationResult.success) {
     return res.status(400).json({
       success: false,
@@ -129,8 +129,32 @@ router.post('/login', (req, res) => {
     });
   }
 
-  return res.status(200).end();
+
+  return passport.authenticate('local-login', (err, token, userData) => {
+    if (err) {
+      if (err.name === 'IncorrectCredentialsError') {
+        return res.status(400).json({
+          success: false,
+          message: err.message
+        });
+      }
+
+      return res.status(400).json({
+        success: false,
+        message: 'Could not process the form.'
+      });
+    }
+
+
+    return res.json({
+      success: true,
+      message: 'You have successfully logged in!',
+      token,
+      user: userData
+    });
+  })(req, res, next);
 });
+
 
 
 module.exports = router;

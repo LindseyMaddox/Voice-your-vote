@@ -438,7 +438,7 @@ module.exports = warning;
 "use strict";
 
 
-module.exports = __webpack_require__(26);
+module.exports = __webpack_require__(27);
 
 
 /***/ }),
@@ -1523,7 +1523,7 @@ var _prodInvariant = __webpack_require__(2),
 var CallbackQueue = __webpack_require__(76);
 var PooledClass = __webpack_require__(20);
 var ReactFeatureFlags = __webpack_require__(81);
-var ReactReconciler = __webpack_require__(25);
+var ReactReconciler = __webpack_require__(26);
 var Transaction = __webpack_require__(36);
 
 var invariant = __webpack_require__(1);
@@ -4199,6 +4199,12 @@ module.exports = invariant;
 /* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__(111);
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /**
  * Copyright 2015-present, Facebook, Inc.
@@ -4319,7 +4325,7 @@ DOMLazyTree.queueText = queueText;
 module.exports = DOMLazyTree;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4493,7 +4499,7 @@ module.exports = ReactReconciler;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4586,12 +4592,6 @@ var React = {
 
 module.exports = React;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(111);
 
 /***/ }),
 /* 28 */
@@ -6613,7 +6613,7 @@ module.exports = defaults;
 
 
 
-var DOMLazyTree = __webpack_require__(24);
+var DOMLazyTree = __webpack_require__(25);
 var Danger = __webpack_require__(146);
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactInstrumentation = __webpack_require__(10);
@@ -7167,7 +7167,7 @@ module.exports = KeyEscapeUtils;
 
 var _prodInvariant = __webpack_require__(2);
 
-var React = __webpack_require__(26);
+var React = __webpack_require__(27);
 var ReactPropTypesSecret = __webpack_require__(86);
 
 var invariant = __webpack_require__(1);
@@ -10534,9 +10534,9 @@ module.exports = ReactInputSelection;
 
 var _prodInvariant = __webpack_require__(2);
 
-var DOMLazyTree = __webpack_require__(24);
+var DOMLazyTree = __webpack_require__(25);
 var DOMProperty = __webpack_require__(17);
-var React = __webpack_require__(26);
+var React = __webpack_require__(27);
 var ReactBrowserEventEmitter = __webpack_require__(34);
 var ReactCurrentOwner = __webpack_require__(13);
 var ReactDOMComponentTree = __webpack_require__(5);
@@ -10546,7 +10546,7 @@ var ReactFeatureFlags = __webpack_require__(81);
 var ReactInstanceMap = __webpack_require__(30);
 var ReactInstrumentation = __webpack_require__(10);
 var ReactMarkupChecksum = __webpack_require__(178);
-var ReactReconciler = __webpack_require__(25);
+var ReactReconciler = __webpack_require__(26);
 var ReactUpdateQueue = __webpack_require__(49);
 var ReactUpdates = __webpack_require__(12);
 
@@ -11079,7 +11079,7 @@ module.exports = ReactMount;
 
 var _prodInvariant = __webpack_require__(2);
 
-var React = __webpack_require__(26);
+var React = __webpack_require__(27);
 
 var invariant = __webpack_require__(1);
 
@@ -14131,7 +14131,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(18);
 
-var _axios = __webpack_require__(27);
+var _axios = __webpack_require__(24);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -14352,7 +14352,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(18);
 
-var _axios = __webpack_require__(27);
+var _axios = __webpack_require__(24);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -14606,7 +14606,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _PollPreview = __webpack_require__(136);
 
-var _axios = __webpack_require__(27);
+var _axios = __webpack_require__(24);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -14706,6 +14706,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(18);
 
+var _axios = __webpack_require__(24);
+
+var _axios2 = _interopRequireDefault(_axios);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -14717,15 +14721,90 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Login = function (_React$Component) {
     _inherits(Login, _React$Component);
 
-    function Login() {
+    function Login(props) {
         _classCallCheck(this, Login);
 
-        return _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this, props));
+
+        _this.state = {
+            errors: {},
+            genericErrorMessage: false,
+            user: {
+                email: '',
+                password: ''
+            }
+        };
+        return _this;
     }
 
     _createClass(Login, [{
+        key: 'handleChange',
+        value: function handleChange(event) {
+            var field = event.target.name;
+            var user = this.state.user;
+            user[field] = event.target.value;
+
+            this.setState({
+                user: user
+            });
+        }
+    }, {
+        key: 'handleSubmit',
+        value: function handleSubmit(event) {
+            event.preventDefault();
+            var that = this;
+            var email = this.state.user.email;
+            var password = this.state.user.password;
+            _axios2.default.post('/auth/login', {
+                'email': email,
+                "password": password }).then(function (response) {
+                console.log("woohoo, you've got access! response is " + JSON.stringify(response.status));
+            }).catch(function (error) {
+                if (error.response.status >= 400 && error.response.status < 500) {
+                    if (error.response.data.errors) {
+                        that.setState({
+                            errors: error.response.data.errors
+                        });
+                    } else {
+                        console.log("no error hash; setting generic to true");
+                        that.setState({
+                            genericErrorMessage: true,
+                            errors: ""
+                        });
+                    }
+                }
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var errors = this.state.errors;
+            var errorDiv = "";
+            var errorMessage = void 0;
+            if (this.state.genericErrorMessage) {
+                errorMessage = "We couldn't log you in! Please check that your username and password are correct.";
+            }
+            if (Object.keys(errors).length > 0) {
+                errorMessage = _react2.default.createElement(
+                    'p',
+                    null,
+                    'We couldn\'t log you in. Why? '
+                );
+                {
+                    Object.values(errors).map(function (error) {
+                        return _react2.default.createElement(
+                            'li',
+                            null,
+                            error
+                        );
+                    });
+                };
+            }
+            errorDiv = _react2.default.createElement(
+                'div',
+                { className: 'errors' },
+                errorMessage
+            );
             return _react2.default.createElement(
                 'div',
                 { className: 'home' },
@@ -14748,9 +14827,18 @@ var Login = function (_React$Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
+                        errorDiv
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
                         _react2.default.createElement(
                             'form',
-                            null,
+                            { onSubmit: this.handleSubmit.bind(this) },
                             _react2.default.createElement(
                                 'div',
                                 { className: 'form-group' },
@@ -14759,7 +14847,7 @@ var Login = function (_React$Component) {
                                     { htmlFor: 'signupEmail' },
                                     'Email address'
                                 ),
-                                _react2.default.createElement('input', { type: 'email', className: 'form-control', id: 'signupEmail', 'aria-describedby': 'emailHelp', placeholder: 'Enter email' })
+                                _react2.default.createElement('input', { type: 'email', name: 'email', className: 'form-control', id: 'signupEmail', 'aria-describedby': 'emailHelp', placeholder: 'Email', onChange: this.handleChange.bind(this), value: this.state.user.email })
                             ),
                             _react2.default.createElement(
                                 'div',
@@ -14769,12 +14857,7 @@ var Login = function (_React$Component) {
                                     { htmlFor: 'signupPassword' },
                                     'Password'
                                 ),
-                                _react2.default.createElement('input', { type: 'password', className: 'form-control', id: 'signupPassword', placeholder: 'Password' }),
-                                _react2.default.createElement(
-                                    'small',
-                                    { id: 'passwordHelp', className: 'form-text text-muted' },
-                                    'Password must be at least 10 characters.'
-                                )
+                                _react2.default.createElement('input', { type: 'password', name: 'password', className: 'form-control', id: 'signupPassword', placeholder: 'Password', onChange: this.handleChange.bind(this), value: this.state.user.password })
                             ),
                             _react2.default.createElement(
                                 'button',
@@ -15063,7 +15146,7 @@ var _NotFoundPage = __webpack_require__(132);
 
 var _PieChart = __webpack_require__(134);
 
-var _axios = __webpack_require__(27);
+var _axios = __webpack_require__(24);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -15373,7 +15456,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(18);
 
-var _axios = __webpack_require__(27);
+var _axios = __webpack_require__(24);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -15420,18 +15503,17 @@ var Signup = function (_React$Component) {
         value: function handleSubmit(event) {
             event.preventDefault();
             var that = this;
-            var user = this.state.user;
-            var password = this.state.password;
-            var passwordConfirmation = this.state.passwordConfirmation;
+            var email = this.state.user.email;
+            var password = this.state.user.password;
+            var passwordConfirmation = this.state.user.passwordConfirmation;
             var passwordToken = "to be encrypted";
             _axios2.default.post('/auth/signup', {
-                'email': "fier",
-                "password": "blah",
-                "passwordConfirmation": "blah blah" }).then(function (response) {
+                'email': email,
+                "password": password,
+                "passwordConfirmation": passwordConfirmation }).then(function (response) {
                 console.log("woohoo! response is " + JSON.stringify(response.status));
             }).catch(function (error) {
-                if (error.response.status == 400) {
-                    console.log("400 error. check for details " + JSON.stringify(error.response.data.errors));
+                if (error.response.status >= 400 && error.response.status < 500) {
                     that.setState({
                         errors: error.response.data.errors
                     });
@@ -15474,7 +15556,7 @@ var Signup = function (_React$Component) {
                         _react2.default.createElement(
                             'h1',
                             null,
-                            this.state.blah
+                            'Sign up'
                         )
                     )
                 ),
@@ -33273,7 +33355,7 @@ module.exports = ChangeEventPlugin;
 
 var _prodInvariant = __webpack_require__(2);
 
-var DOMLazyTree = __webpack_require__(24);
+var DOMLazyTree = __webpack_require__(25);
 var ExecutionEnvironment = __webpack_require__(7);
 
 var createNodesFromMarkup = __webpack_require__(216);
@@ -33778,7 +33860,7 @@ module.exports = HTMLDOMPropertyConfig;
 
 
 
-var ReactReconciler = __webpack_require__(25);
+var ReactReconciler = __webpack_require__(26);
 
 var instantiateReactComponent = __webpack_require__(92);
 var KeyEscapeUtils = __webpack_require__(45);
@@ -33976,14 +34058,14 @@ module.exports = ReactComponentBrowserEnvironment;
 var _prodInvariant = __webpack_require__(2),
     _assign = __webpack_require__(6);
 
-var React = __webpack_require__(26);
+var React = __webpack_require__(27);
 var ReactComponentEnvironment = __webpack_require__(47);
 var ReactCurrentOwner = __webpack_require__(13);
 var ReactErrorUtils = __webpack_require__(48);
 var ReactInstanceMap = __webpack_require__(30);
 var ReactInstrumentation = __webpack_require__(10);
 var ReactNodeTypes = __webpack_require__(85);
-var ReactReconciler = __webpack_require__(25);
+var ReactReconciler = __webpack_require__(26);
 
 if (process.env.NODE_ENV !== 'production') {
   var checkReactTypeSpec = __webpack_require__(201);
@@ -34886,7 +34968,7 @@ module.exports = ReactCompositeComponent;
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactDefaultInjection = __webpack_require__(171);
 var ReactMount = __webpack_require__(84);
-var ReactReconciler = __webpack_require__(25);
+var ReactReconciler = __webpack_require__(26);
 var ReactUpdates = __webpack_require__(12);
 var ReactVersion = __webpack_require__(186);
 
@@ -35005,7 +35087,7 @@ var _prodInvariant = __webpack_require__(2),
 
 var AutoFocusUtils = __webpack_require__(142);
 var CSSPropertyOperations = __webpack_require__(144);
-var DOMLazyTree = __webpack_require__(24);
+var DOMLazyTree = __webpack_require__(25);
 var DOMNamespaces = __webpack_require__(43);
 var DOMProperty = __webpack_require__(17);
 var DOMPropertyOperations = __webpack_require__(77);
@@ -36046,7 +36128,7 @@ module.exports = ReactDOMContainerInfo;
 
 var _assign = __webpack_require__(6);
 
-var DOMLazyTree = __webpack_require__(24);
+var DOMLazyTree = __webpack_require__(25);
 var ReactDOMComponentTree = __webpack_require__(5);
 
 var ReactDOMEmptyComponent = function (instantiate) {
@@ -36606,7 +36688,7 @@ module.exports = ReactDOMNullInputValuePropHook;
 
 var _assign = __webpack_require__(6);
 
-var React = __webpack_require__(26);
+var React = __webpack_require__(27);
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactDOMSelect = __webpack_require__(79);
 
@@ -36954,7 +37036,7 @@ var _prodInvariant = __webpack_require__(2),
     _assign = __webpack_require__(6);
 
 var DOMChildrenOperations = __webpack_require__(42);
-var DOMLazyTree = __webpack_require__(24);
+var DOMLazyTree = __webpack_require__(25);
 var ReactDOMComponentTree = __webpack_require__(5);
 
 var escapeTextContentForBrowser = __webpack_require__(37);
@@ -38483,7 +38565,7 @@ var ReactInstanceMap = __webpack_require__(30);
 var ReactInstrumentation = __webpack_require__(10);
 
 var ReactCurrentOwner = __webpack_require__(13);
-var ReactReconciler = __webpack_require__(25);
+var ReactReconciler = __webpack_require__(26);
 var ReactChildReconciler = __webpack_require__(151);
 
 var emptyFunction = __webpack_require__(16);

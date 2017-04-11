@@ -20,7 +20,8 @@ module.exports = new PassportLocalStrategy({
 
   // find a user by email address
   return User.findOne({ email: userData.email }, (err, user) => {
-    if (err) { return done(err); }
+
+    if (err) {      console.log("there was an error " + err);return done(err); }
 
     if (!user) {
       const error = new Error('Incorrect email or password');

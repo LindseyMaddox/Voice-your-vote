@@ -1,6 +1,10 @@
 #vote-navbar {
     margin-bottom: 25px;
 }
+.errors {
+    color: red;
+    padding-bottom: 30px;
+}
 h1 {
     padding-bottom: 25px;
 }
