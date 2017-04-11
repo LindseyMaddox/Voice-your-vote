@@ -56,11 +56,12 @@ class EditPoll extends React.Component {
        
     }
     removeEmptyOptions(callback){
-        let options = this.state.additionalOptionsList;
-        let filteredList = [];
-        for(var i =0; i < options.length; i++){
-            if(options[i].name != ""){
-               filteredList.push(options[i]);
+        let newOptions = this.state.additionalOptionsList;
+        let originalOptions = this.state.originalOptionsList;
+        let filteredList = originalOptions;
+        for(var i =0; i < newOptions.length; i++){
+            if(newOptions[i].name != ""){
+               filteredList.push(newOptions[i]);
             }
         }
         callback(filteredList, this.state.id);

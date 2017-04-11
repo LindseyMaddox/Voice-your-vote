@@ -14436,11 +14436,12 @@ var EditPoll = function (_React$Component) {
     }, {
         key: 'removeEmptyOptions',
         value: function removeEmptyOptions(callback) {
-            var options = this.state.additionalOptionsList;
-            var filteredList = [];
-            for (var i = 0; i < options.length; i++) {
-                if (options[i].name != "") {
-                    filteredList.push(options[i]);
+            var newOptions = this.state.additionalOptionsList;
+            var originalOptions = this.state.originalOptionsList;
+            var filteredList = originalOptions;
+            for (var i = 0; i < newOptions.length; i++) {
+                if (newOptions[i].name != "") {
+                    filteredList.push(newOptions[i]);
                 }
             }
             callback(filteredList, this.state.id);
@@ -15095,12 +15096,15 @@ var PollPage = function (_React$Component) {
   _createClass(PollPage, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.loadPollFromServer(setLoadedTrue);
-      function setLoadedTrue() {
-        this.setState({
-          loaded: true
-        });
-      }
+      this.loadPollFromServer(this.setLoadedTrue.bind(this));
+    }
+  }, {
+    key: 'setLoadedTrue',
+    value: function setLoadedTrue() {
+      console.log("loaded is going to be true and poll name is " + this.state.poll.name);
+      this.setState({
+        loaded: true
+      });
     }
   }, {
     key: 'loadPollFromServer',
@@ -15109,8 +15113,10 @@ var PollPage = function (_React$Component) {
 
       var id = this.state.id;
       _axios2.default.get('/api/polls/' + id).then(function (res) {
-        console.log("error poll response " + res.data[0]);
-        _this2.setState({ poll: res.data[0] });
+        if (res.data.length != 0) {
+          console.log("check for error, res.data is " + res.data);
+          _this2.setState({ poll: res.data[0] });
+        }
         callback();
       }).catch(function (err) {
         console.log(err);
@@ -15164,17 +15170,18 @@ var PollPage = function (_React$Component) {
       var poll = this.state.poll;
       var message = this.state.message;
       var loaded = this.state.loaded;
-      if (loaded && !poll) {
+      if (!loaded) {
+        return _react2.default.createElement(
+          'h2',
+          null,
+          ' Loading data '
+        );
+      } else if (loaded && poll.name == "Placeholder Poll") {
         return _react2.default.createElement(_NotFoundPage.NotFoundPage, null);
       }
       var options = [];
       for (var i = 0; i < poll.options.length; i++) {
         options.push(poll.options[i]["name"]);
-      }
-      //don't led chart render until api is done
-      var chart = void 0;
-      if (poll.options.length != 0) {
-        chart = _react2.default.createElement(_PieChart.Chart, { data: poll });
       }
       return _react2.default.createElement(
         'div',
@@ -15266,7 +15273,7 @@ var PollPage = function (_React$Component) {
             _react2.default.createElement(
               'div',
               { className: 'row' },
-              chart
+              _react2.default.createElement(_PieChart.Chart, { data: poll })
             )
           )
         ),

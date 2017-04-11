@@ -19,22 +19,25 @@ class PollPage extends React.Component {
    }
    
    componentDidMount(){
-      this.loadPollFromServer(setLoadedTrue);
-       function setLoadedTrue(){
+      this.loadPollFromServer(this.setLoadedTrue.bind(this));
+   }
+ 
+    setLoadedTrue(){
+      console.log("loaded is going to be true and poll name is " + this.state.poll.name);
        this.setState({
        loaded: true
       });
-  }
-   }
- 
- 
+    }
+    
    loadPollFromServer(callback){
      let id = this.state.id;
      axios.get('/api/polls/' + id)
       .then(res => { 
-        console.log("error poll response " + res.data[0]);
- this.setState({ poll: res.data[0] });
- callback();
+        if(res.data.length != 0){
+          console.log("check for error, res.data is " + res.data);
+           this.setState({ poll: res.data[0] });
+        }
+        callback();
  })
       .catch(err => {
       console.log(err);
@@ -79,17 +82,14 @@ class PollPage extends React.Component {
     const poll = this.state.poll;
     let message = this.state.message;
     let loaded = this.state.loaded;
-    if(loaded && !poll){
+    if(!loaded) {
+      return <h2> Loading data </h2>;
+    } else if (loaded && poll.name == "Placeholder Poll"){
         return <NotFoundPage />;
     }
     var options = [];
     for(var i = 0; i < poll.options.length; i++){
       options.push(poll.options[i]["name"]);
-    }
-         //don't led chart render until api is done
-    let chart;
-    if(poll.options.length !=0){
-      chart = <Chart data={poll} />;
     }
       return (
       <div>
@@ -125,7 +125,7 @@ class PollPage extends React.Component {
           </div>
           <div className="col-10 offset-1 col-md-3 offset-md-1">
             <div className="row">
-               {chart}
+               <Chart data={poll} />
             </div>
           </div>
         </div>
@@ -147,6 +147,5 @@ class PollPage extends React.Component {
     );
   }
 }
-
 
 export default PollPage;
