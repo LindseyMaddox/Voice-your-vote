@@ -15422,12 +15422,11 @@ var Signup = function (_React$Component) {
       event.preventDefault();
       var user = this.state.user;
       var passwordToken = "to be encrypted";
-      _axios2.default.post('/api/auth/signup', {
-        "userName": user.name,
-        "passwordToken": passwordToken }).then(function (response) {
-        this.setState({
-          errors: response.data.errors
-        });
+      console.log("in submit, user email is " + user.email);
+      _axios2.default.post('/auth/signup', {
+        'email': "fier@fake.com",
+        'password': passwordToken }).then(function (response) {
+        console.log(response);
       }).catch(function (error) {
         console.log(error);
       });

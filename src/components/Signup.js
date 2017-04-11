@@ -29,13 +29,12 @@ export default class Signup extends React.Component {
        event.preventDefault();
        let user = this.state.user;
        let passwordToken = "to be encrypted";
-        axios.post('/api/auth/signup', {
-            "userName": user.name,
-    "passwordToken": passwordToken })
+       console.log("in submit, user email is " + user.email);
+           axios.post('/auth/signup', {
+            'email': "fier@fake.com",
+    'password': passwordToken })
   .then(function (response) {
-    this.setState({
-        errors: response.data.errors
-    })
+    console.log(response);
   })
   .catch(function (error) {
     console.log(error);

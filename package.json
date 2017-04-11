@@ -2,7 +2,7 @@
   "name": "voice-your-vote",
   "version": "0.0.0",
   "description": "Voting app for freeCodeCamp",
-  "main": "server.js",
+  "main": "server_with_auth.js",
   "repository": "",
   "author": "Lindsey Maddox",
   "dependencies": {

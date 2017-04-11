@@ -4,6 +4,7 @@ const validator = require('validator');
 
 const router = new express.Router();
 
+
 /**
  * Validate the sign up form
  *
@@ -12,6 +13,7 @@ const router = new express.Router();
  *                   errors tips, and a global message for the whole form.
  */
 function validateSignupForm(payload) {
+  console.log("payload is " + JSON.stringify(payload));
   const errors = {};
   let isFormValid = true;
   let message = '';
@@ -81,14 +83,14 @@ function validateLoginForm(payload) {
 }
 
 router.post('/signup', (req, res) => {
-  const validationResult = validateSignupForm(req.body);
-  if (!validationResult.success) {
-    return res.status(400).json({
-      success: false,
-      message: validationResult.message,
-      errors: validationResult.errors
-    });
-  }
+   const validationResult = validateSignupForm(req.body);
+   if (!validationResult.success) {
+     return res.status(400).json({
+       success: false,
+       message: validationResult.message,
+       errors: validationResult.errors
+     });
+   }
 
   return res.status(200).end();
 });
