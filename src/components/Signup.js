@@ -21,12 +21,12 @@ export default class Signup extends React.Component {
       user[field] = event.target.value;
 
         this.setState({
-           user: user,
-           errors: {"stupid error": "error test" }
+           user: user
        });
    }
    handleSubmit(event){
        event.preventDefault();
+       var that = this;
        let user = this.state.user;
        let password = this.state.password;
        let passwordConfirmation = this.state.passwordConfirmation;
@@ -34,14 +34,14 @@ export default class Signup extends React.Component {
            axios.post('/auth/signup', {
             'email': "fier",
     "password": "blah",
-    "passwordConfirmation": "blah blah"})
+    "passwordConfirmation": "blah"})
    .then(function (response) {
        console.log("woohoo! response is " + JSON.stringify(response.status));
   })
   .catch(function (error) {
         if(error.response.status == 400){
             console.log("400 error. check for details " + JSON.stringify(error.response.data.errors));
-            this.setState({
+            that.setState({
                 errors: error.response.data.errors
             });
         }
@@ -49,22 +49,25 @@ export default class Signup extends React.Component {
   }
 
   render() {
-    let errors = "";
-    console.log("test to see why errors aren't coming through. Errors are " + JSON.stringify(this.state.errors));
-    if(this.state.errors.length > 0) {
-        errors = <p>There were errors processing your signup: {Object.values(this.state.errors)}</p>;
-        console.log("there were errors with the signup: " + Object.values(this.state.errors));
+      let errors = this.state.errors;
+     let errorDiv = "";
+    
+    if(Object.keys(errors).length > 0) {
+        errorDiv = <div className="errors">
+                    <p>There were errors processing your signup: </p>
+                    {Object.values(this.state.errors).map(error => ( <li>{error}</li>))}
+                 </div>;
     };
     return (
        <div className="home">
     <div className="row">
         <div className="col-10 offset-1 col-md-8 offset-md-2">
-            <h1>Sign up</h1>
+            <h1>{this.state.blah}</h1>
         </div>
     </div>
       <div className="row">
         <div className="col-10 offset-1 col-md-6 offset-md-2 col-lg-4">
-            {errors}
+            {errorDiv}
         </div>
       </div>
     <div className="row">

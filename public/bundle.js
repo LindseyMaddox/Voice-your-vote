@@ -15412,14 +15412,14 @@ var Signup = function (_React$Component) {
             user[field] = event.target.value;
 
             this.setState({
-                user: user,
-                errors: { "stupid error": "error test" }
+                user: user
             });
         }
     }, {
         key: 'handleSubmit',
         value: function handleSubmit(event) {
             event.preventDefault();
+            var that = this;
             var user = this.state.user;
             var password = this.state.password;
             var passwordConfirmation = this.state.passwordConfirmation;
@@ -15432,7 +15432,7 @@ var Signup = function (_React$Component) {
             }).catch(function (error) {
                 if (error.response.status == 400) {
                     console.log("400 error. check for details " + JSON.stringify(error.response.data.errors));
-                    this.setState({
+                    that.setState({
                         errors: error.response.data.errors
                     });
                 }
@@ -15441,16 +15441,26 @@ var Signup = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var errors = "";
-            console.log("test to see why errors aren't coming through. Errors are " + JSON.stringify(this.state.errors));
-            if (this.state.errors.length > 0) {
-                errors = _react2.default.createElement(
-                    'p',
-                    null,
-                    'There were errors processing your signup: ',
-                    Object.values(this.state.errors)
+            var errors = this.state.errors;
+            var errorDiv = "";
+
+            if (Object.keys(errors).length > 0) {
+                errorDiv = _react2.default.createElement(
+                    'div',
+                    { className: 'errors' },
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        'There were errors processing your signup: '
+                    ),
+                    Object.values(this.state.errors).map(function (error) {
+                        return _react2.default.createElement(
+                            'li',
+                            null,
+                            error
+                        );
+                    })
                 );
-                console.log("there were errors with the signup: " + Object.values(this.state.errors));
             };
             return _react2.default.createElement(
                 'div',
@@ -15464,7 +15474,7 @@ var Signup = function (_React$Component) {
                         _react2.default.createElement(
                             'h1',
                             null,
-                            'Sign up'
+                            this.state.blah
                         )
                     )
                 ),
@@ -15474,7 +15484,7 @@ var Signup = function (_React$Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
-                        errors
+                        errorDiv
                     )
                 ),
                 _react2.default.createElement(
