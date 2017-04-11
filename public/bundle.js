@@ -15362,7 +15362,7 @@ exports.default = PollPreview;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -15386,149 +15386,170 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Signup = function (_React$Component) {
-  _inherits(Signup, _React$Component);
+    _inherits(Signup, _React$Component);
 
-  function Signup(props) {
-    _classCallCheck(this, Signup);
+    function Signup(props) {
+        _classCallCheck(this, Signup);
 
-    var _this = _possibleConstructorReturn(this, (Signup.__proto__ || Object.getPrototypeOf(Signup)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Signup.__proto__ || Object.getPrototypeOf(Signup)).call(this, props));
 
-    _this.state = {
-      errors: {},
-      user: {
-        email: '',
-        password: '',
-        passwordConfirmation: ''
-      }
-    };
-    return _this;
-  }
-
-  _createClass(Signup, [{
-    key: 'handleChange',
-    value: function handleChange(event) {
-      var field = event.target.name;
-      var user = this.state.user;
-      user[field] = event.target.value;
-
-      console.log("change is " + field + " and now user is " + user);
-      this.setState({
-        user: user
-      });
+        _this.state = {
+            errors: {},
+            user: {
+                email: '',
+                password: '',
+                passwordConfirmation: ''
+            }
+        };
+        return _this;
     }
-  }, {
-    key: 'handleSubmit',
-    value: function handleSubmit(event) {
-      event.preventDefault();
-      var user = this.state.user;
-      var passwordToken = "to be encrypted";
-      console.log("in submit, user email is " + user.email);
-      _axios2.default.post('/auth/signup', {
-        'email': "fier@fake.com",
-        'password': passwordToken }).then(function (response) {
-        console.log(response);
-      }).catch(function (error) {
-        console.log(error);
-      });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var errors = this.state.errors;
-      return _react2.default.createElement(
-        'div',
-        { className: 'home' },
-        _react2.default.createElement(
-          'div',
-          { className: 'row' },
-          _react2.default.createElement(
-            'div',
-            { className: 'col-10 offset-1 col-md-8 offset-md-2' },
-            _react2.default.createElement(
-              'h1',
-              null,
-              'Sign up'
-            )
-          )
-        ),
-        errors.summary && _react2.default.createElement(
-          'p',
-          { className: 'error-message' },
-          errors.summary
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'row' },
-          _react2.default.createElement(
-            'div',
-            { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
-            _react2.default.createElement(
-              'form',
-              { onSubmit: this.handleSubmit.bind(this) },
-              _react2.default.createElement(
+
+    _createClass(Signup, [{
+        key: 'handleChange',
+        value: function handleChange(event) {
+            var field = event.target.name;
+            var user = this.state.user;
+            user[field] = event.target.value;
+
+            this.setState({
+                user: user,
+                errors: { "stupid error": "error test" }
+            });
+        }
+    }, {
+        key: 'handleSubmit',
+        value: function handleSubmit(event) {
+            event.preventDefault();
+            var user = this.state.user;
+            var password = this.state.password;
+            var passwordConfirmation = this.state.passwordConfirmation;
+            var passwordToken = "to be encrypted";
+            _axios2.default.post('/auth/signup', {
+                'email': "fier",
+                "password": "blah",
+                "passwordConfirmation": "blah blah" }).then(function (response) {
+                console.log("woohoo! response is " + JSON.stringify(response.status));
+            }).catch(function (error) {
+                if (error.response.status == 400) {
+                    console.log("400 error. check for details " + JSON.stringify(error.response.data.errors));
+                    this.setState({
+                        errors: error.response.data.errors
+                    });
+                }
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var errors = "";
+            console.log("test to see why errors aren't coming through. Errors are " + JSON.stringify(this.state.errors));
+            if (this.state.errors.length > 0) {
+                errors = _react2.default.createElement(
+                    'p',
+                    null,
+                    'There were errors processing your signup: ',
+                    Object.values(this.state.errors)
+                );
+                console.log("there were errors with the signup: " + Object.values(this.state.errors));
+            };
+            return _react2.default.createElement(
                 'div',
-                { className: 'form-group' },
+                { className: 'home' },
                 _react2.default.createElement(
-                  'label',
-                  { htmlFor: 'signupEmail' },
-                  'Email address'
+                    'div',
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-10 offset-1 col-md-8 offset-md-2' },
+                        _react2.default.createElement(
+                            'h1',
+                            null,
+                            'Sign up'
+                        )
+                    )
                 ),
-                _react2.default.createElement('input', { type: 'email', name: 'email', className: 'form-control', id: 'signupEmail', 'aria-describedby': 'emailHelp',
-                  placeholder: 'Enter email', onChange: this.handleChange.bind(this), value: this.state.user.email })
-              ),
-              _react2.default.createElement(
-                'div',
-                { className: 'form-group' },
                 _react2.default.createElement(
-                  'label',
-                  { htmlFor: 'signupPassword' },
-                  'Password'
+                    'div',
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
+                        errors
+                    )
                 ),
-                _react2.default.createElement('input', { name: 'password', type: 'password', className: 'form-control', id: 'signupPassword', placeholder: 'Password', onChange: this.handleChange.bind(this), value: this.state.user.password }),
                 _react2.default.createElement(
-                  'small',
-                  { id: 'passwordHelp', className: 'form-text text-muted' },
-                  'Password must be at least 10 characters.'
+                    'div',
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
+                        _react2.default.createElement(
+                            'form',
+                            { onSubmit: this.handleSubmit.bind(this) },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'form-group' },
+                                _react2.default.createElement(
+                                    'label',
+                                    { htmlFor: 'signupEmail' },
+                                    'Email address'
+                                ),
+                                _react2.default.createElement('input', { type: 'email', name: 'email', className: 'form-control', id: 'signupEmail', 'aria-describedby': 'emailHelp',
+                                    placeholder: 'Enter email', onChange: this.handleChange.bind(this), value: this.state.user.email })
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'form-group' },
+                                _react2.default.createElement(
+                                    'label',
+                                    { htmlFor: 'signupPassword' },
+                                    'Password'
+                                ),
+                                _react2.default.createElement('input', { name: 'password', type: 'password', className: 'form-control', id: 'signupPassword', placeholder: 'Password', onChange: this.handleChange.bind(this), value: this.state.user.password }),
+                                _react2.default.createElement(
+                                    'small',
+                                    { id: 'passwordHelp', className: 'form-text text-muted' },
+                                    'Password must be at least 10 characters.'
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'form-group' },
+                                _react2.default.createElement(
+                                    'label',
+                                    { htmlFor: 'signupPasswordConfirmation' },
+                                    'Password Confirmation'
+                                ),
+                                _react2.default.createElement('input', { name: 'passwordConfirmation', type: 'password', className: 'form-control', id: 'signupPasswordConfirmation', placeholder: 'Confirm Password', onChange: this.handleChange.bind(this), value: this.state.user.passwordConfirmation })
+                            ),
+                            _react2.default.createElement(
+                                'button',
+                                { type: 'submit', id: 'signup-submit-button', className: 'btn btn-primary' },
+                                'Sign up'
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
+                        'No account yet? ',
+                        _react2.default.createElement(
+                            _reactRouterDom.Link,
+                            { to: '/signup' },
+                            'Sign up'
+                        ),
+                        ' now'
+                    )
                 )
-              ),
-              _react2.default.createElement(
-                'div',
-                { className: 'form-group' },
-                _react2.default.createElement(
-                  'label',
-                  { htmlFor: 'signupPasswordConfirmation' },
-                  'Password Confirmation'
-                ),
-                _react2.default.createElement('input', { name: 'passwordConfirmation', type: 'password', className: 'form-control', id: 'signupPasswordConfirmation', placeholder: 'Confirm Password', onChange: this.handleChange.bind(this), value: this.state.user.passwordConfirmation })
-              ),
-              _react2.default.createElement(
-                'button',
-                { type: 'submit', id: 'signup-submit-button', className: 'btn btn-primary' },
-                'Sign up'
-              )
-            )
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'row' },
-          _react2.default.createElement(
-            'div',
-            { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
-            'No account yet? ',
-            _react2.default.createElement(
-              _reactRouterDom.Link,
-              { to: '/signup' },
-              'Sign up'
-            ),
-            ' now'
-          )
-        )
-      );
-    }
-  }]);
+            );
+        }
+    }]);
 
-  return Signup;
+    return Signup;
 }(_react2.default.Component);
 
 exports.default = Signup;

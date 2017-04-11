@@ -20,29 +20,41 @@ export default class Signup extends React.Component {
       const user = this.state.user;
       user[field] = event.target.value;
 
-    console.log("change is "+ field + " and now user is " + user);
-       this.setState({
-           user: user
+        this.setState({
+           user: user,
+           errors: {"stupid error": "error test" }
        });
    }
    handleSubmit(event){
        event.preventDefault();
        let user = this.state.user;
+       let password = this.state.password;
+       let passwordConfirmation = this.state.passwordConfirmation;
        let passwordToken = "to be encrypted";
-       console.log("in submit, user email is " + user.email);
            axios.post('/auth/signup', {
-            'email': "fier@fake.com",
-    'password': passwordToken })
-  .then(function (response) {
-    console.log(response);
+            'email': "fier",
+    "password": "blah",
+    "passwordConfirmation": "blah blah"})
+   .then(function (response) {
+       console.log("woohoo! response is " + JSON.stringify(response.status));
   })
   .catch(function (error) {
-    console.log(error);
+        if(error.response.status == 400){
+            console.log("400 error. check for details " + JSON.stringify(error.response.data.errors));
+            this.setState({
+                errors: error.response.data.errors
+            });
+        }
   });
   }
 
   render() {
-    let errors = this.state.errors;
+    let errors = "";
+    console.log("test to see why errors aren't coming through. Errors are " + JSON.stringify(this.state.errors));
+    if(this.state.errors.length > 0) {
+        errors = <p>There were errors processing your signup: {Object.values(this.state.errors)}</p>;
+        console.log("there were errors with the signup: " + Object.values(this.state.errors));
+    };
     return (
        <div className="home">
     <div className="row">
@@ -50,8 +62,11 @@ export default class Signup extends React.Component {
             <h1>Sign up</h1>
         </div>
     </div>
-    {errors.summary && <p className="error-message">{errors.summary}</p>}
-
+      <div className="row">
+        <div className="col-10 offset-1 col-md-6 offset-md-2 col-lg-4">
+            {errors}
+        </div>
+      </div>
     <div className="row">
         <div className="col-10 offset-1 col-md-6 offset-md-2 col-lg-4">
             <form onSubmit={this.handleSubmit.bind(this)}>

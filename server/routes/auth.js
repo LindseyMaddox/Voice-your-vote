@@ -1,6 +1,7 @@
 "use strict";
 const express = require('express');
 const validator = require('validator');
+const passport = require('passport');
 
 const router = new express.Router();
 
@@ -13,14 +14,12 @@ const router = new express.Router();
  *                   errors tips, and a global message for the whole form.
  */
 function validateSignupForm(payload) {
-  console.log("payload is " + JSON.stringify(payload));
   const errors = {};
   let isFormValid = true;
   let message = '';
 
   if (!payload || typeof payload.email !== 'string' || !validator.isEmail(payload.email)) {
     isFormValid = false;
-    console.log("check to see it's hitting the validation error on server");
     errors.email = 'Please provide a correct email address.';
   }
 
@@ -34,7 +33,7 @@ if (!payload || typeof payload.passwordConfirmation !== 'string' || payload.pass
     errors.name = 'Please confirm your password.';
   }
 
- if (payload.passwordConfirmation.trim().length > 0 && payload.password != payload.passwordConfirmation) {
+ if (payload.password.trim().length > 0 && payload.passwordConfirmation.trim().length > 0 && payload.password != payload.passwordConfirmation) {
     isFormValid = false;
     errors.password = 'Passwords do not match.';
   }
@@ -82,7 +81,7 @@ function validateLoginForm(payload) {
   };
 }
 
-router.post('/signup', (req, res) => {
+router.post('/signup', (req, res,next) => {
    const validationResult = validateSignupForm(req.body);
    if (!validationResult.success) {
      return res.status(400).json({
@@ -92,8 +91,33 @@ router.post('/signup', (req, res) => {
      });
    }
 
-  return res.status(200).end();
+ return passport.authenticate('local-signup', (err) => {
+    if (err) {
+      if (err.name === 'MongoError' && err.code === 11000) {
+        // the 11000 Mongo code is for a duplication email error
+        // the 409 HTTP status code is for conflict error
+        return res.status(409).json({
+          success: false,
+          message: 'Check the form for errors.',
+          errors: {
+            email: 'This email is already taken.'
+          }
+        });
+      }
+
+      return res.status(400).json({
+        success: false,
+        message: 'Could not process the form.'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'You have successfully signed up! Now you should be able to log in.'
+    });
+  })(req, res, next);
 });
+
 
 router.post('/login', (req, res) => {
   const validationResult = validateLoginForm(req.body);
