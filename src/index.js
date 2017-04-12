@@ -9,7 +9,16 @@ import  Login  from './components/Login';
 import  Signup  from './components/Signup';
 import AddPoll from './components/AddPoll';
 import EditPoll from './components/EditPoll';
+import Auth from './modules/Auth';
 
+const checkAuth = (page) => {
+     if (Auth.isUserAuthenticated()){
+         console.log("user is authorized to access");
+         <AddPoll />;
+     } else {
+         alert("You are not authorized to add new polls");
+     }
+};
 render(
     // function requireAuth(nextState, replace) {
     //   if (!loggedIn()) {
@@ -37,7 +46,7 @@ render(
             </nav>
             <Switch>
                 <Route path="/" exact={true} component={IndexPage} />
-                <Route path="/polls/new" component={AddPoll} />
+                <Route path="/polls/new" component={checkAuth("add")} />
                 <Route path="/polls/:id/edit" component={EditPoll} />
                 <Route path="/polls/:id" component={PollPage} />
                 <Route path="/login" component={Login} />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Auth from '../modules/Auth';
 
 export default class Login extends React.Component {
       constructor(props) {
@@ -33,6 +34,7 @@ export default class Login extends React.Component {
             'email': email,
     "password": password})
    .then(function (response) {
+       Auth.authenticateUser(response.data.token);
        console.log("woohoo, you've got access! response is " + JSON.stringify(response.status));
   })
   .catch(function (error) {
