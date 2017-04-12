@@ -20,7 +20,7 @@ const checkAuth = ( ) => {
      }
 };
 
-const checkCorrectUser = (  ) => {
+const checkCorrectUser = ( {match} ) => {
     console.log("here we'd verify the correct user");
     //if(Auth.isCorrectUser()){
     //    return <EditPoll />;
@@ -28,7 +28,7 @@ const checkCorrectUser = (  ) => {
   //  alert("you are not authorized to edit this poll");
     //redirect to poll they were on
 //}
-     return <EditPoll />;
+     return <EditPoll id={match.params.id}/>;
 };
 render(
     <Router>

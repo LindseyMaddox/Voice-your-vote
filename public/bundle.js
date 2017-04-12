@@ -9622,7 +9622,6 @@ var EditPoll = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (EditPoll.__proto__ || Object.getPrototypeOf(EditPoll)).call(this, props));
 
         _this.state = {
-            id: _this.props.match.params.id,
             pollName: "",
             description: "",
             originalOptionsList: [{ "name": "" }],
@@ -9641,7 +9640,7 @@ var EditPoll = function (_React$Component) {
         value: function loadPollFromServer() {
             var _this2 = this;
 
-            var id = this.state.id;
+            var id = this.props.id;
             _axios2.default.get('/api/base/polls/' + id).then(function (res) {
                 _this2.setState({
                     pollName: res.data[0].name,
@@ -9691,15 +9690,15 @@ var EditPoll = function (_React$Component) {
                     filteredList.push(newOptions[i]);
                 }
             }
-            callback(filteredList, this.state.id);
+            callback(filteredList, this.props.id);
         }
     }, {
         key: 'postPollToServer',
         value: function postPollToServer(filteredOptionsList, id) {
             var token = _Auth2.default.getToken();
-            var headers = { 'Authorization': 'bearer:' + token };
-            _axios2.default.post('/api/restricted/polls' + id + '/edit', {
-                'options': filteredOptionsList }, headers).then(function (response) {
+            var headers = { 'Authorization': 'bearer: ' + token };
+            _axios2.default.post('/api/restricted/polls/' + id + '/edit', {
+                'options': filteredOptionsList }, { headers: headers }).then(function (response) {
                 console.log(response);
             }).catch(function (error) {
                 console.log(error);
@@ -13079,7 +13078,9 @@ var checkAuth = function checkAuth() {
     }
 };
 
-var checkCorrectUser = function checkCorrectUser() {
+var checkCorrectUser = function checkCorrectUser(_ref) {
+    var match = _ref.match;
+
     console.log("here we'd verify the correct user");
     //if(Auth.isCorrectUser()){
     //    return <EditPoll />;
@@ -13087,7 +13088,7 @@ var checkCorrectUser = function checkCorrectUser() {
     //  alert("you are not authorized to edit this poll");
     //redirect to poll they were on
     //}
-    return _react2.default.createElement(_EditPoll2.default, null);
+    return _react2.default.createElement(_EditPoll2.default, { id: match.params.id });
 };
 (0, _reactDom.render)(_react2.default.createElement(
     _reactRouterDom.BrowserRouter,
@@ -15356,6 +15357,7 @@ var PollPage = function (_React$Component) {
   }, {
     key: 'handleAddPollOptions',
     value: function handleAddPollOptions() {
+      console.log("made it to add poll options method");
       return _react2.default.createElement(_EditPoll2.default, null);
     }
   }, {
@@ -15364,17 +15366,17 @@ var PollPage = function (_React$Component) {
       var _this4 = this;
 
       console.log("button test");
-      if (confirm("Are you sure you want to delete this poll?")) {
-        var id = this.state.id;
-        var token = _Auth2.default.getToken();
-        _axios2.default.delete('/api/restricted/polls/' + id, {
-          headers: { "Authorization": "bearer: " + token }
-        }).then(function (res) {
-          _this4.setState({ message: res.data.message });
-        }).catch(function (err) {
-          console.log(err);
-        });
-      }
+      //  if(confirm("Are you sure you want to delete this poll?")){
+      var id = this.state.id;
+      var token = _Auth2.default.getToken();
+      _axios2.default.delete('/api/restricted/polls/' + id, {
+        headers: { "Authorization": "bearer: " + token }
+      }).then(function (res) {
+        _this4.setState({ message: res.data.message });
+      }).catch(function (err) {
+        console.log(err);
+      });
+      //  } take out confirm for now to test the routes are working
     }
   }, {
     key: 'render',

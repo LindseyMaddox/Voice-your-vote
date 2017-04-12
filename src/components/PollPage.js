@@ -76,11 +76,12 @@ class PollPage extends React.Component {
     this.postPollVoteToServer();
 }
   handleAddPollOptions(){
+    console.log("made it to add poll options method");
     return <EditPoll />;
   }
   handleDelete(){
     console.log("button test");
-  if(confirm("Are you sure you want to delete this poll?")){
+//  if(confirm("Are you sure you want to delete this poll?")){
      let id = this.state.id;
        let token = Auth.getToken();
       axios.delete('/api/restricted/polls/' + id, {
@@ -92,7 +93,7 @@ class PollPage extends React.Component {
         .catch(err => {
           console.log(err);
         });
-      }
+    //  } take out confirm for now to test the routes are working
   }
   render(){
     const poll = this.state.poll;

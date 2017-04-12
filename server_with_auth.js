@@ -40,9 +40,7 @@ MongoClient.connect(mongoUrl, (err, db) => {
   if (err) throw err;
   var db = db;
 app.get('/api/base/polls', function(req,res){
-   console.log("test for main poll request. url requested is " + req.url);
     getAllPolls(function(polls) {
-         console.log("in api call callback, polls are " + polls);
         res.set("Content-Type", 'application/json');
          res.json(polls);
     });
@@ -86,7 +84,6 @@ app.post('/api/base/polls/:id', function (req, res){
         
     }
     app.get('*', function (req,res){
-    console.log("got " + req.url);
     res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
 }); //close mongo connection
@@ -106,8 +103,10 @@ passport.use('local-signup', localSignupStrategy);
 passport.use('local-login', localLoginStrategy);
 
 // pass the authorization checker middleware
-const authCheckMiddleware = require('./server/middleware/auth-check');
-app.use('/api/restricted', authCheckMiddleware);
+const authenticationCheckMiddleware = require('./server/middleware/auth-check');
+const authorizationCheckMiddleware = require('./server/middleware/user-authorization');
+app.use('/api/restricted', authenticationCheckMiddleware);
+app.use('/api/restricted/polls/:id', authenticationCheckMiddleware);
 
 // routes
 const authRoutes = require('./server/routes/auth');

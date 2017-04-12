@@ -7,7 +7,6 @@ class EditPoll extends React.Component {
    constructor(props) {
     super(props);
     this.state = {
-     id: this.props.match.params.id,
      pollName: "",
      description: "",
      originalOptionsList: [{"name": ""}],
@@ -19,7 +18,7 @@ class EditPoll extends React.Component {
         this.loadPollFromServer();
     }
    loadPollFromServer(){
-     let id = this.state.id;
+     let id = this.props.id;
      axios.get('/api/base/polls/' + id)
       .then(res => { 
         this.setState({
@@ -65,14 +64,14 @@ class EditPoll extends React.Component {
                filteredList.push(newOptions[i]);
             }
         }
-        callback(filteredList, this.state.id);
+        callback(filteredList, this.props.id);
     }
     
     postPollToServer(filteredOptionsList, id){
               let token = Auth.getToken();
-        let headers = { 'Authorization': 'bearer:' + token };
-       axios.post('/api/restricted/polls' + id + '/edit', {
-   'options': filteredOptionsList },headers)
+        let headers = { 'Authorization': 'bearer: ' + token };
+       axios.post('/api/restricted/polls/' + id + '/edit', {
+   'options': filteredOptionsList },{ headers: headers })
    .then(function (response) {
       console.log(response);
    })
