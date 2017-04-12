@@ -49,12 +49,13 @@ const router = new express.Router();
         
     }
    router.delete('/polls/:id', function (req, res){
+     console.log("made it to delete");
     var id ="58ee55f5a4dd7718176bda7d";
     //req.params.id;
-    deletePoll(id, respondToDeletion);
-    function respondToDeletion(){
-       res.json( {"message": "successfully deleted poll"});
-    }
+    // deletePoll(id, respondToDeletion);
+    // function respondToDeletion(){
+    //   res.json( {"message": "successfully deleted poll"});
+    // }
   });
      function deletePoll(id, callback){
        db.collection('polls').remove( { "_id": ObjectId(id) }, function(err,result){ 

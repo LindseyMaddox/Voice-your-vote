@@ -14752,6 +14752,7 @@ var IndexPage = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      console.log("test for loading. polls are " + this.state.polls);
       return _react2.default.createElement(
         'div',
         { className: 'home' },
@@ -15362,6 +15363,7 @@ var PollPage = function (_React$Component) {
     value: function handleDelete() {
       var _this4 = this;
 
+      console.log("button test");
       if (confirm("Are you sure you want to delete this poll?")) {
         var id = this.state.id;
         var token = _Auth2.default.getToken();
@@ -15394,6 +15396,7 @@ var PollPage = function (_React$Component) {
         options.push(poll.options[i]["name"]);
       }
       var deleteAndEditButtons = void 0;
+      console.log("show buttons is " + this.state.showButtons);
       if (this.state.showButtons) {
         deleteAndEditButtons = _react2.default.createElement(
           'div',

@@ -79,6 +79,7 @@ class PollPage extends React.Component {
     return <EditPoll />;
   }
   handleDelete(){
+    console.log("button test");
   if(confirm("Are you sure you want to delete this poll?")){
      let id = this.state.id;
        let token = Auth.getToken();
@@ -107,6 +108,7 @@ class PollPage extends React.Component {
       options.push(poll.options[i]["name"]);
     }
     let deleteAndEditButtons;
+    console.log("show buttons is " + this.state.showButtons);
     if(this.state.showButtons){
       deleteAndEditButtons = 
       <div className="col-10 offset-1 col-md-4 offset-md-2">

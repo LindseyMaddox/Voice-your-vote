@@ -40,7 +40,9 @@ MongoClient.connect(mongoUrl, (err, db) => {
   if (err) throw err;
   var db = db;
 app.get('/api/base/polls', function(req,res){
+   console.log("test for main poll request. url requested is " + req.url);
     getAllPolls(function(polls) {
+         console.log("in api call callback, polls are " + polls);
         res.set("Content-Type", 'application/json');
          res.json(polls);
     });
@@ -62,7 +64,6 @@ function getAllPolls(callback){
 });
 }
 function getPoll(id,callback){
-     console.log("id is " + id.length + " characters and it's " + id);
      db.collection('polls').find(  { _id: ObjectId(id)  } ).toArray(function(err, poll) {
      if(err) throw err;
      callback(poll);
@@ -78,13 +79,16 @@ app.post('/api/base/polls/:id', function (req, res){
 });
 
   function updateVoteCount(id,selection,callback){
-      console.log("id is " + id.length + " characters and it's " + id);
-        db.collection('polls').update({ _id: ObjectId(id), "options.name": selection },{ $inc: { "options.$.votes": 1 } }, function(err,record){
+      db.collection('polls').update({ _id: ObjectId(id), "options.name": selection },{ $inc: { "options.$.votes": 1 } }, function(err,record){
             if (err) throw err;
             callback();
         });
         
     }
+    app.get('*', function (req,res){
+    console.log("got " + req.url);
+    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
 }); //close mongo connection
 
     //routes requiring authorization
@@ -110,11 +114,6 @@ const authRoutes = require('./server/routes/auth');
 app.use('/auth', authRoutes);
 const apiRoutes = require('./server/routes/api');
 app.use('/api/restricted', apiRoutes);
-
-app.get('*', function (req,res){
-    console.log("got " + req.url);
-    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-});
 
 // start the server
 app.listen(8080, () => {
