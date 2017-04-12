@@ -4,9 +4,6 @@ const passport = require('passport');
 const config = require('./config');
 const path = require('path');
 
-// connect to the database and load models
-require('./server/models').connect(config.database);
-
 const app = express();
 
 
@@ -32,18 +29,17 @@ const MongoClient = require('mongodb').MongoClient;
 if(app.settings.env == "development"){
    require('dotenv').config(); 
 }
+
+//first allow routes that don't require authorization
 var mongo_login = process.env.MONGO_LAB_LOGIN;
 var ObjectId = require('mongodb').ObjectId; 
+
 var mongoUrl = "mongodb://" + mongo_login + "@ds153400.mlab.com:53400/voice-your-vote";
 
 MongoClient.connect(mongoUrl, (err, db) => {
   if (err) throw err;
   var db = db;
-// serve static assets normally
-app.use(express.static(__dirname + '/public'));
-
-//first allow routes that don't require authorization
-app.get('/api/polls', function(req,res){
+app.get('/api/base/polls', function(req,res){
     getAllPolls(function(polls) {
         res.set("Content-Type", 'application/json');
          res.json(polls);
@@ -51,7 +47,7 @@ app.get('/api/polls', function(req,res){
    
 });
 
-app.get('/api/polls/:id', function (req, res){
+app.get('/api/base/polls/:id', function (req, res){
     var id = req.params.id;
    getPoll(id, returnPoll);
    function returnPoll(poll) {
@@ -66,12 +62,13 @@ function getAllPolls(callback){
 });
 }
 function getPoll(id,callback){
-    db.collection('polls').find(  { _id: ObjectId(id)  } ).toArray(function(err, poll) {
-    if(err) throw err;
-    callback(poll);
-});
+     console.log("id is " + id.length + " characters and it's " + id);
+     db.collection('polls').find(  { _id: ObjectId(id)  } ).toArray(function(err, poll) {
+     if(err) throw err;
+     callback(poll);
+ });
 }
-app.post('/api/polls/:id', function (req, res){
+app.post('/api/base/polls/:id', function (req, res){
      var id = req.params.id;
     var selection = req.body.name;
     updateVoteCount(id, selection, respondToUpdate);
@@ -81,15 +78,21 @@ app.post('/api/polls/:id', function (req, res){
 });
 
   function updateVoteCount(id,selection,callback){
+      console.log("id is " + id.length + " characters and it's " + id);
         db.collection('polls').update({ _id: ObjectId(id), "options.name": selection },{ $inc: { "options.$.votes": 1 } }, function(err,record){
             if (err) throw err;
             callback();
         });
         
     }
-    
+}); //close mongo connection
+
     //routes requiring authorization
+    // connect to the database and load models
+require('./server/models').connect(config.database);
+
     // pass the passport middleware
+    
 app.use(passport.initialize());
 
 // load passport strategies
@@ -100,58 +103,16 @@ passport.use('local-login', localLoginStrategy);
 
 // pass the authorization checker middleware
 const authCheckMiddleware = require('./server/middleware/auth-check');
-app.use('/api', authCheckMiddleware);
+app.use('/api/restricted', authCheckMiddleware);
 
 // routes
 const authRoutes = require('./server/routes/auth');
 app.use('/auth', authRoutes);
-
-app.post('/api/polls/create', function (req,res){
-    addNewPoll(req.body, function(poll){
-       // res.json({message:"Thanks for creating a poll. Will redirect later"});
-        res.redirect('/'); // or to new poll
-    });
-})
-app.post('/api/polls/:id/edit', function (req, res){
-     var id = req.params.id;
-    var options = req.body.options;
-    updatePollInfo(id, options, respondToUpdate);
-    function respondToUpdate(record){
-       console.log("Poll updated to " + record);
-       res.json({ message: 'Poll updated'});
-   };
-});
-
-app.delete('/api/polls/:id', function (req, res){
-    var id = req.params.id;
-    deletePoll(id, respondToDeletion);
-    function respondToDeletion(){
-       res.json( {"message": "successfully deleted poll"});
-    };
-});
- function addNewPoll(record, callback){
-        console.log("in database add method, name is " + record["name"]);
-        var item = { "name": record["name"], "description": record["description"], options: record["options"] };
-         db.collection('polls').insert( item , function(err,result){ 
-             if(err) throw err;
-             console.log("just added the following record to the database: " + JSON.stringify(result.ops));
-             callback(result);
-         });
-    }
-     function updatePollInfo(id,options,callback){
-        db.collection('polls').update({ _id: ObjectId(id) },{ $set: { "options": options } }, function(err,record){
-            if (err) throw err;
-            callback(record);
-        });
-    }
-function deletePoll(id, callback){
-    db.collection('polls').remove( { "_id": ObjectId(id) }, function(err,result){ 
-        if(err) throw err;
-        callback();
-    });
-}
+const apiRoutes = require('./server/routes/api');
+app.use('/api/restricted', apiRoutes);
 
 app.get('*', function (req,res){
+    console.log("got " + req.url);
     res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
 
@@ -159,5 +120,3 @@ app.get('*', function (req,res){
 app.listen(8080, () => {
   console.log('Server is running on http://localhost:8080');
 });
-
-}); //end of connection

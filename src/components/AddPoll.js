@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Auth from '../modules/Auth';
 
 class AddPoll extends React.Component {
    constructor(props) {
@@ -63,11 +64,13 @@ handleNameChange(event) {
     }
     
     postPollToServer(name,description,filteredOptionsList){
-        let headers = { 'Authorization': 'bearer ${Auth.getToken()}' };
-       axios.post('/api/polls/create', {
+        let token = Auth.getToken();
+        console.log("token is " + token);
+        let headers = { 'Authorization': 'bearer: ' + token };
+       axios.post('/api/restricted/polls/create', {
             'name': name,
     'description': description,
-   'options': filteredOptionsList },headers)
+   'options': filteredOptionsList },{ headers: headers })
   .then(function (response) {
     console.log(response);
   })

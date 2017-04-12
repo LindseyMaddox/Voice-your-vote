@@ -34,7 +34,7 @@ class PollPage extends React.Component {
     
    loadPollFromServer(callback){
      let id = this.state.id;
-     axios.get('/api/polls/' + id)
+     axios.get('/api/base/polls/' + id)
       .then(res => { 
         if(res.data.length != 0){
            this.setState({ poll: res.data[0] });
@@ -55,7 +55,7 @@ class PollPage extends React.Component {
     postPollVoteToServer(){
      let id = this.state.id;
      let selection = this.state.selection;
-     axios.post('/api/polls/' + id, {
+     axios.post('/api/base/polls/' + id, {
        "name": selection
      })
       .then(res => { 
@@ -82,7 +82,7 @@ class PollPage extends React.Component {
   if(confirm("Are you sure you want to delete this poll?")){
      let id = this.state.id;
        let token = Auth.getToken();
-      axios.delete('/api/polls/' + id, {
+      axios.delete('/api/restricted/polls/' + id, {
           headers: { "Authorization": "bearer: " + token }
         })
         .then(res => { 

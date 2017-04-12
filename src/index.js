@@ -11,30 +11,26 @@ import AddPoll from './components/AddPoll';
 import EditPoll from './components/EditPoll';
 import Auth from './modules/Auth';
 
-const checkAuth = ( page ) => {
-    console.log("page is " + page);
-     if (Auth.isUserAuthenticated() && page == "add"){
-         console.log("should be authorized to add");
-       //  return <AddPoll />;
-     } else if(Auth.isUserAuthenticated() && page == "edit"){
-            console.log("should be authorized to edit");
-          // return <EditPoll />;
-     } else if(!Auth.isUserAuthenticated() && page == "add"){
-         alert("You are not authorized to add new polls");
-        // return <IndexPage />;
+const checkAuth = ( ) => {
+    if (Auth.isUserAuthenticated() ){
+        return <AddPoll />;
      } else {
-         alert("You are not authorized to edit this poll");
-       //  return <PollPage />;
+         alert("You are not authorized to add polls. Please create an account to add them");
+         return <PollPage />;
      }
 };
+
+const checkCorrectUser = (  ) => {
+    console.log("here we'd verify the correct user");
+    //if(Auth.isCorrectUser()){
+    //    return <EditPoll />;
+//    } else { 
+  //  alert("you are not authorized to edit this poll");
+    //redirect to poll they were on
+//}
+     return <EditPoll />;
+};
 render(
-    // function requireAuth(nextState, replace) {
-    //   if (!loggedIn()) {
-    //     replace({
-    //       pathname: '/login'
-    //     })
-    //   }
-    // }
     <Router>
            <div>
              <nav className="navbar navbar-toggleable-sm navbar-light">
@@ -54,8 +50,8 @@ render(
             </nav>
             <Switch>
                 <Route path="/" exact={true} component={IndexPage} />
-                <Route path="/polls/new" exact={true} component={checkAuth("add")} />
-                <Route path="/polls/:id/edit" component={EditPoll} />
+                <Route path="/polls/new" exact={true} component={checkAuth} />
+                <Route path="/polls/:id/edit" component={checkCorrectUser} />
                 <Route path="/polls/:id" component={PollPage} />
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={Signup} />

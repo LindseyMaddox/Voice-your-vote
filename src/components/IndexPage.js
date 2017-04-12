@@ -16,7 +16,7 @@ class IndexPage extends React.Component {
    
     
    loadPollsFromServer(){
-     axios.get('/api/polls/')
+     axios.get('/api/base/polls/')
       .then(res => {
  this.setState({ polls: res.data });
  })
@@ -26,6 +26,7 @@ class IndexPage extends React.Component {
  }
  
   render() {
+      console.log("test for loading. polls are " + this.state.polls);
     return (
         <div className="home">
          <div className="col-10 offset-1 col-md-8 offset-md-2">

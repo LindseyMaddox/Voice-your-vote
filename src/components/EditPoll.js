@@ -20,7 +20,7 @@ class EditPoll extends React.Component {
     }
    loadPollFromServer(){
      let id = this.state.id;
-     axios.get('/api/polls/' + id)
+     axios.get('/api/base/polls/' + id)
       .then(res => { 
         this.setState({
               pollName: res.data[0].name,
@@ -71,7 +71,7 @@ class EditPoll extends React.Component {
     postPollToServer(filteredOptionsList, id){
               let token = Auth.getToken();
         let headers = { 'Authorization': 'bearer:' + token };
-       axios.post('/api/polls/' + id + '/edit', {
+       axios.post('/api/restricted/polls' + id + '/edit', {
    'options': filteredOptionsList },headers)
    .then(function (response) {
       console.log(response);

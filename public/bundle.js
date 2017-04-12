@@ -4598,6 +4598,82 @@ module.exports = React;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Auth = function () {
+  function Auth() {
+    _classCallCheck(this, Auth);
+  }
+
+  _createClass(Auth, null, [{
+    key: 'authenticateUser',
+
+
+    /**
+     * Authenticate a user. Save a token string in Local Storage
+     *
+     * @param {string} token
+     */
+    value: function authenticateUser(token) {
+      console.log("authenticating user after successful login");
+      localStorage.setItem('token', token);
+    }
+
+    /**
+     * Check if a user is authenticated - check if a token is saved in Local Storage
+     *
+     * @returns {boolean}
+     */
+
+  }, {
+    key: 'isUserAuthenticated',
+    value: function isUserAuthenticated() {
+      return localStorage.getItem('token') !== null;
+    }
+
+    /**
+     * Deauthenticate a user. Remove a token from Local Storage.
+     *
+     */
+
+  }, {
+    key: 'deauthenticateUser',
+    value: function deauthenticateUser() {
+      localStorage.removeItem('token');
+    }
+
+    /**
+     * Get a token value.
+     *
+     * @returns {string}
+     */
+
+  }, {
+    key: 'getToken',
+    value: function getToken() {
+      console.log("checking for token, it's " + localStorage.getItem('token'));
+      return localStorage.getItem('token');
+    }
+  }]);
+
+  return Auth;
+}();
+
+exports.default = Auth;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -4878,7 +4954,7 @@ module.exports = EventPluginHub;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4894,7 +4970,7 @@ module.exports = EventPluginHub;
 
 
 
-var EventPluginHub = __webpack_require__(28);
+var EventPluginHub = __webpack_require__(29);
 var EventPluginUtils = __webpack_require__(45);
 
 var accumulateInto = __webpack_require__(90);
@@ -5018,7 +5094,7 @@ module.exports = EventPropagators;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5071,7 +5147,7 @@ var ReactInstanceMap = {
 module.exports = ReactInstanceMap;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5135,7 +5211,7 @@ SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 module.exports = SyntheticUIEvent;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5198,82 +5274,6 @@ var createPath = exports.createPath = function createPath(location) {
 
   return path;
 };
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Auth = function () {
-  function Auth() {
-    _classCallCheck(this, Auth);
-  }
-
-  _createClass(Auth, null, [{
-    key: 'authenticateUser',
-
-
-    /**
-     * Authenticate a user. Save a token string in Local Storage
-     *
-     * @param {string} token
-     */
-    value: function authenticateUser(token) {
-      console.log("authenticating user after successful login");
-      localStorage.setItem('token', token);
-    }
-
-    /**
-     * Check if a user is authenticated - check if a token is saved in Local Storage
-     *
-     * @returns {boolean}
-     */
-
-  }, {
-    key: 'isUserAuthenticated',
-    value: function isUserAuthenticated() {
-      return localStorage.getItem('token') !== null;
-    }
-
-    /**
-     * Deauthenticate a user. Remove a token from Local Storage.
-     *
-     */
-
-  }, {
-    key: 'deauthenticateUser',
-    value: function deauthenticateUser() {
-      localStorage.removeItem('token');
-    }
-
-    /**
-     * Get a token value.
-     *
-     * @returns {string}
-     */
-
-  }, {
-    key: 'getToken',
-    value: function getToken() {
-      console.log("checking for token, it's " + localStorage.getItem('token'));
-      return localStorage.getItem('token');
-    }
-  }]);
-
-  return Auth;
-}();
-
-exports.default = Auth;
 
 /***/ }),
 /* 34 */
@@ -5886,7 +5886,7 @@ module.exports = ReactBrowserEventEmitter;
 
 
 
-var SyntheticUIEvent = __webpack_require__(31);
+var SyntheticUIEvent = __webpack_require__(32);
 var ViewportMetrics = __webpack_require__(89);
 
 var getEventModifierState = __webpack_require__(53);
@@ -7520,7 +7520,7 @@ module.exports = ReactErrorUtils;
 var _prodInvariant = __webpack_require__(2);
 
 var ReactCurrentOwner = __webpack_require__(13);
-var ReactInstanceMap = __webpack_require__(30);
+var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(10);
 var ReactUpdates = __webpack_require__(12);
 
@@ -8505,7 +8505,7 @@ var _valueEqual = __webpack_require__(242);
 
 var _valueEqual2 = _interopRequireDefault(_valueEqual);
 
-var _PathUtils = __webpack_require__(32);
+var _PathUtils = __webpack_require__(33);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9599,7 +9599,7 @@ var _axios = __webpack_require__(24);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _Auth = __webpack_require__(33);
+var _Auth = __webpack_require__(28);
 
 var _Auth2 = _interopRequireDefault(_Auth);
 
@@ -9642,7 +9642,7 @@ var EditPoll = function (_React$Component) {
             var _this2 = this;
 
             var id = this.state.id;
-            _axios2.default.get('/api/polls/' + id).then(function (res) {
+            _axios2.default.get('/api/base/polls/' + id).then(function (res) {
                 _this2.setState({
                     pollName: res.data[0].name,
                     description: res.data[0].description,
@@ -9698,7 +9698,7 @@ var EditPoll = function (_React$Component) {
         value: function postPollToServer(filteredOptionsList, id) {
             var token = _Auth2.default.getToken();
             var headers = { 'Authorization': 'bearer:' + token };
-            _axios2.default.post('/api/polls/' + id + '/edit', {
+            _axios2.default.post('/api/restricted/polls' + id + '/edit', {
                 'options': filteredOptionsList }, headers).then(function (response) {
                 console.log(response);
             }).catch(function (error) {
@@ -10877,7 +10877,7 @@ var ReactDOMComponentTree = __webpack_require__(5);
 var ReactDOMContainerInfo = __webpack_require__(156);
 var ReactDOMFeatureFlags = __webpack_require__(158);
 var ReactFeatureFlags = __webpack_require__(83);
-var ReactInstanceMap = __webpack_require__(30);
+var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(10);
 var ReactMarkupChecksum = __webpack_require__(178);
 var ReactReconciler = __webpack_require__(26);
@@ -13063,38 +13063,33 @@ var _EditPoll = __webpack_require__(76);
 
 var _EditPoll2 = _interopRequireDefault(_EditPoll);
 
-var _Auth = __webpack_require__(33);
+var _Auth = __webpack_require__(28);
 
 var _Auth2 = _interopRequireDefault(_Auth);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import routing components
-var checkAuth = function checkAuth(page) {
-    console.log("page is " + page);
-    if (_Auth2.default.isUserAuthenticated() && page == "add") {
-        console.log("should be authorized to add");
-        //  return <AddPoll />;
-    } else if (_Auth2.default.isUserAuthenticated() && page == "edit") {
-        console.log("should be authorized to edit");
-        // return <EditPoll />;
-    } else if (!_Auth2.default.isUserAuthenticated() && page == "add") {
-        alert("You are not authorized to add new polls");
-        // return <IndexPage />;
+var checkAuth = function checkAuth() {
+    if (_Auth2.default.isUserAuthenticated()) {
+        return _react2.default.createElement(_AddPoll2.default, null);
     } else {
-        alert("You are not authorized to edit this poll");
-        //  return <PollPage />;
+        alert("You are not authorized to add polls. Please create an account to add them");
+        return _react2.default.createElement(_PollPage2.default, null);
     }
 };
-(0, _reactDom.render)(
-// function requireAuth(nextState, replace) {
-//   if (!loggedIn()) {
-//     replace({
-//       pathname: '/login'
-//     })
-//   }
-// }
-_react2.default.createElement(
+
+var checkCorrectUser = function checkCorrectUser() {
+    console.log("here we'd verify the correct user");
+    //if(Auth.isCorrectUser()){
+    //    return <EditPoll />;
+    //    } else { 
+    //  alert("you are not authorized to edit this poll");
+    //redirect to poll they were on
+    //}
+    return _react2.default.createElement(_EditPoll2.default, null);
+};
+(0, _reactDom.render)(_react2.default.createElement(
     _reactRouterDom.BrowserRouter,
     null,
     _react2.default.createElement(
@@ -13148,8 +13143,8 @@ _react2.default.createElement(
             _reactRouterDom.Switch,
             null,
             _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: _IndexPage2.default }),
-            _react2.default.createElement(_reactRouterDom.Route, { path: '/polls/new', exact: true, component: checkAuth("add") }),
-            _react2.default.createElement(_reactRouterDom.Route, { path: '/polls/:id/edit', component: _EditPoll2.default }),
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/polls/new', exact: true, component: checkAuth }),
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/polls/:id/edit', component: checkCorrectUser }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/polls/:id', component: _PollPage2.default }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/login', component: _Login2.default }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/signup', component: _Signup2.default })
@@ -14489,6 +14484,10 @@ var _axios = __webpack_require__(24);
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _Auth = __webpack_require__(28);
+
+var _Auth2 = _interopRequireDefault(_Auth);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -14576,11 +14575,13 @@ var AddPoll = function (_React$Component) {
     }, {
         key: 'postPollToServer',
         value: function postPollToServer(name, description, filteredOptionsList) {
-            var headers = { 'Authorization': 'bearer ${Auth.getToken()}' };
-            _axios2.default.post('/api/polls/create', {
+            var token = _Auth2.default.getToken();
+            console.log("token is " + token);
+            var headers = { 'Authorization': 'bearer: ' + token };
+            _axios2.default.post('/api/restricted/polls/create', {
                 'name': name,
                 'description': description,
-                'options': filteredOptionsList }, headers).then(function (response) {
+                'options': filteredOptionsList }, { headers: headers }).then(function (response) {
                 console.log(response);
             }).catch(function (error) {
                 console.log(error);
@@ -14742,7 +14743,7 @@ var IndexPage = function (_React$Component) {
     value: function loadPollsFromServer() {
       var _this2 = this;
 
-      _axios2.default.get('/api/polls/').then(function (res) {
+      _axios2.default.get('/api/base/polls/').then(function (res) {
         _this2.setState({ polls: res.data });
       }).catch(function (err) {
         console.log(err);
@@ -14806,7 +14807,7 @@ var _axios = __webpack_require__(24);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _Auth = __webpack_require__(33);
+var _Auth = __webpack_require__(28);
 
 var _Auth2 = _interopRequireDefault(_Auth);
 
@@ -15254,7 +15255,7 @@ var _axios = __webpack_require__(24);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _Auth = __webpack_require__(33);
+var _Auth = __webpack_require__(28);
 
 var _Auth2 = _interopRequireDefault(_Auth);
 
@@ -15304,7 +15305,7 @@ var PollPage = function (_React$Component) {
       var _this2 = this;
 
       var id = this.state.id;
-      _axios2.default.get('/api/polls/' + id).then(function (res) {
+      _axios2.default.get('/api/base/polls/' + id).then(function (res) {
         if (res.data.length != 0) {
           _this2.setState({ poll: res.data[0] });
         }
@@ -15329,7 +15330,7 @@ var PollPage = function (_React$Component) {
 
       var id = this.state.id;
       var selection = this.state.selection;
-      _axios2.default.post('/api/polls/' + id, {
+      _axios2.default.post('/api/base/polls/' + id, {
         "name": selection
       }).then(function (res) {
         _this3.setState({ message: res.data.message });
@@ -15364,7 +15365,7 @@ var PollPage = function (_React$Component) {
       if (confirm("Are you sure you want to delete this poll?")) {
         var id = this.state.id;
         var token = _Auth2.default.getToken();
-        _axios2.default.delete('/api/polls/' + id, {
+        _axios2.default.delete('/api/restricted/polls/' + id, {
           headers: { "Authorization": "bearer: " + token }
         }).then(function (res) {
           _this4.setState({ message: res.data.message });
@@ -32483,7 +32484,7 @@ module.exports = AutoFocusUtils;
 
 
 
-var EventPropagators = __webpack_require__(29);
+var EventPropagators = __webpack_require__(30);
 var ExecutionEnvironment = __webpack_require__(7);
 var FallbackCompositionState = __webpack_require__(149);
 var SyntheticCompositionEvent = __webpack_require__(192);
@@ -33088,8 +33089,8 @@ module.exports = CSSPropertyOperations;
 
 
 
-var EventPluginHub = __webpack_require__(28);
-var EventPropagators = __webpack_require__(29);
+var EventPluginHub = __webpack_require__(29);
+var EventPropagators = __webpack_require__(30);
 var ExecutionEnvironment = __webpack_require__(7);
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactUpdates = __webpack_require__(12);
@@ -33499,7 +33500,7 @@ module.exports = DefaultEventPluginOrder;
 
 
 
-var EventPropagators = __webpack_require__(29);
+var EventPropagators = __webpack_require__(30);
 var ReactDOMComponentTree = __webpack_require__(5);
 var SyntheticMouseEvent = __webpack_require__(36);
 
@@ -34123,7 +34124,7 @@ var React = __webpack_require__(27);
 var ReactComponentEnvironment = __webpack_require__(48);
 var ReactCurrentOwner = __webpack_require__(13);
 var ReactErrorUtils = __webpack_require__(49);
-var ReactInstanceMap = __webpack_require__(30);
+var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(10);
 var ReactNodeTypes = __webpack_require__(87);
 var ReactReconciler = __webpack_require__(26);
@@ -35152,7 +35153,7 @@ var DOMLazyTree = __webpack_require__(25);
 var DOMNamespaces = __webpack_require__(44);
 var DOMProperty = __webpack_require__(17);
 var DOMPropertyOperations = __webpack_require__(79);
-var EventPluginHub = __webpack_require__(28);
+var EventPluginHub = __webpack_require__(29);
 var EventPluginRegistry = __webpack_require__(34);
 var ReactBrowserEventEmitter = __webpack_require__(35);
 var ReactDOMComponentFlags = __webpack_require__(80);
@@ -38245,7 +38246,7 @@ module.exports = REACT_ELEMENT_TYPE;
 
 
 
-var EventPluginHub = __webpack_require__(28);
+var EventPluginHub = __webpack_require__(29);
 
 function runEventQueueInBatch(events) {
   EventPluginHub.enqueueEvents(events);
@@ -38483,7 +38484,7 @@ module.exports = ReactHostOperationHistoryHook;
 
 
 var DOMProperty = __webpack_require__(17);
-var EventPluginHub = __webpack_require__(28);
+var EventPluginHub = __webpack_require__(29);
 var EventPluginUtils = __webpack_require__(45);
 var ReactComponentEnvironment = __webpack_require__(48);
 var ReactEmptyComponent = __webpack_require__(82);
@@ -38622,7 +38623,7 @@ module.exports = ReactMarkupChecksum;
 var _prodInvariant = __webpack_require__(2);
 
 var ReactComponentEnvironment = __webpack_require__(48);
-var ReactInstanceMap = __webpack_require__(30);
+var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(10);
 
 var ReactCurrentOwner = __webpack_require__(13);
@@ -40051,7 +40052,7 @@ module.exports = SVGDOMPropertyConfig;
 
 
 
-var EventPropagators = __webpack_require__(29);
+var EventPropagators = __webpack_require__(30);
 var ExecutionEnvironment = __webpack_require__(7);
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactInputSelection = __webpack_require__(85);
@@ -40251,7 +40252,7 @@ module.exports = SelectEventPlugin;
 var _prodInvariant = __webpack_require__(2);
 
 var EventListener = __webpack_require__(98);
-var EventPropagators = __webpack_require__(29);
+var EventPropagators = __webpack_require__(30);
 var ReactDOMComponentTree = __webpack_require__(5);
 var SyntheticAnimationEvent = __webpack_require__(190);
 var SyntheticClipboardEvent = __webpack_require__(191);
@@ -40262,7 +40263,7 @@ var SyntheticMouseEvent = __webpack_require__(36);
 var SyntheticDragEvent = __webpack_require__(193);
 var SyntheticTouchEvent = __webpack_require__(197);
 var SyntheticTransitionEvent = __webpack_require__(198);
-var SyntheticUIEvent = __webpack_require__(31);
+var SyntheticUIEvent = __webpack_require__(32);
 var SyntheticWheelEvent = __webpack_require__(199);
 
 var emptyFunction = __webpack_require__(16);
@@ -40650,7 +40651,7 @@ module.exports = SyntheticDragEvent;
 
 
 
-var SyntheticUIEvent = __webpack_require__(31);
+var SyntheticUIEvent = __webpack_require__(32);
 
 /**
  * @interface FocusEvent
@@ -40733,7 +40734,7 @@ module.exports = SyntheticInputEvent;
 
 
 
-var SyntheticUIEvent = __webpack_require__(31);
+var SyntheticUIEvent = __webpack_require__(32);
 
 var getEventCharCode = __webpack_require__(52);
 var getEventKey = __webpack_require__(205);
@@ -40822,7 +40823,7 @@ module.exports = SyntheticKeyboardEvent;
 
 
 
-var SyntheticUIEvent = __webpack_require__(31);
+var SyntheticUIEvent = __webpack_require__(32);
 
 var getEventModifierState = __webpack_require__(53);
 
@@ -41206,7 +41207,7 @@ var _prodInvariant = __webpack_require__(2);
 
 var ReactCurrentOwner = __webpack_require__(13);
 var ReactDOMComponentTree = __webpack_require__(5);
-var ReactInstanceMap = __webpack_require__(30);
+var ReactInstanceMap = __webpack_require__(31);
 
 var getHostComponentFromComposite = __webpack_require__(92);
 var invariant = __webpack_require__(1);
@@ -42774,7 +42775,7 @@ var _invariant2 = _interopRequireDefault(_invariant);
 
 var _LocationUtils = __webpack_require__(59);
 
-var _PathUtils = __webpack_require__(32);
+var _PathUtils = __webpack_require__(33);
 
 var _createTransitionManager = __webpack_require__(60);
 
@@ -43086,7 +43087,7 @@ var _invariant2 = _interopRequireDefault(_invariant);
 
 var _LocationUtils = __webpack_require__(59);
 
-var _PathUtils = __webpack_require__(32);
+var _PathUtils = __webpack_require__(33);
 
 var _createTransitionManager = __webpack_require__(60);
 
@@ -43410,7 +43411,7 @@ var _warning = __webpack_require__(40);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _PathUtils = __webpack_require__(32);
+var _PathUtils = __webpack_require__(33);
 
 var _LocationUtils = __webpack_require__(59);
 
@@ -43927,7 +43928,7 @@ Redirect.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_invariant__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_history_PathUtils__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_history_PathUtils__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_history_PathUtils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_history_PathUtils__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Router__ = __webpack_require__(61);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };

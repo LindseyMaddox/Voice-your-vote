@@ -2,11 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('mongoose').model('User');
 const config = require('../../config');
 
-
-/**
- *  The Auth Checker middleware function.
- */
-module.exports = (req, res, next) => {
+module.exports = (req, res) => {
   if (!req.headers.authorization) {
     return res.status(401).end();
   }
@@ -21,12 +17,14 @@ module.exports = (req, res, next) => {
     if (err) { return res.status(401).end(); }
 
     const userId = decoded.sub;
+
     // check if a user exists
     return User.findById(userId, (userErr, user) => {
       if (userErr || !user) {
         return res.status(401).end();
       }
-     return next();
+        console.log("user is " + user);
+      return user;
     });
   });
 };
