@@ -17,22 +17,26 @@ const router = new express.Router();
    var db = db;
 
    router.post('/polls/create', function (req,res){
-     addNewPoll(req.body, function(poll){
+     console.log('test to see if req.user is avl in create method ' + req.user);
+     addNewPoll(req.body,req.user.email, function(poll){
         res.json({message:"Thanks for creating a poll. Will redirect later"});
     });
    });
    
-     function addNewPoll(record, callback){
+     function addNewPoll(record, userEmail, callback){
         console.log("in database add method, name is " + record["name"]);
-        var item = { "name": record["name"], "description": record["description"], options: record["options"] };
+        var item = { "name": record["name"], "description": record["description"], options: record["options"],user: userEmail };
          db.collection('polls').insert( item , function(err,result){ 
              if(err) throw err;
              console.log("just added the following record to the database: " + JSON.stringify(result.ops));
              callback(result);
          });
     }
-    
+    const authorizationCheckMiddleware = require('../middleware/user-authorization');
+    router.use('/api/restricted/polls/:id', authorizationCheckMiddleware);
+
     router.post('/polls/:id/edit', function (req, res){
+      console.log("should be at the editing place");
      var id = req.params.id;
     var options = req.body.options;
     updatePollInfo(id, options, respondToUpdate);
@@ -62,6 +66,5 @@ const router = new express.Router();
          });
          
     }
-
  }); //end of connection
 module.exports = router;

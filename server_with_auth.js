@@ -83,9 +83,6 @@ app.post('/api/base/polls/:id', function (req, res){
         });
         
     }
-    app.get('*', function (req,res){
-    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-});
 }); //close mongo connection
 
     //routes requiring authorization
@@ -104,9 +101,7 @@ passport.use('local-login', localLoginStrategy);
 
 // pass the authorization checker middleware
 const authenticationCheckMiddleware = require('./server/middleware/auth-check');
-const authorizationCheckMiddleware = require('./server/middleware/user-authorization');
 app.use('/api/restricted', authenticationCheckMiddleware);
-app.use('/api/restricted/polls/:id', authorizationCheckMiddleware);
 
 // routes
 const authRoutes = require('./server/routes/auth');
@@ -114,6 +109,9 @@ app.use('/auth', authRoutes);
 const apiRoutes = require('./server/routes/api');
 app.use('/api/restricted', apiRoutes);
 
+// app.get('*', function (req,res){
+//     res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+// });
 // start the server
 app.listen(8080, () => {
   console.log('Server is running on http://localhost:8080');

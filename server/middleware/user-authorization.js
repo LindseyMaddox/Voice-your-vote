@@ -21,8 +21,8 @@ return MongoClient.connect(mongoUrl, (err, db) => {
     if (err) throw err;
     var db = db;
       var id = req.params.id;
-  var email = req.user.email;
-    db.collection('polls').find(  { _id: ObjectId(id), email: email  } ).toArray(function(err, poll) {
+  var userEmail = req.user.email;
+    db.collection('polls').find(  { _id: ObjectId(id), user: userEmail  } ).toArray(function(err, poll) {
      if(err) throw err;
      if(poll.length == 0){
         return res.status(401).end();
