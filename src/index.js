@@ -11,12 +11,20 @@ import AddPoll from './components/AddPoll';
 import EditPoll from './components/EditPoll';
 import Auth from './modules/Auth';
 
-const checkAuth = (page) => {
-     if (Auth.isUserAuthenticated()){
-         console.log("user is authorized to access");
-         <AddPoll />;
-     } else {
+const checkAuth = ( page ) => {
+    console.log("page is " + page);
+     if (Auth.isUserAuthenticated() && page == "add"){
+         console.log("should be authorized to add");
+       //  return <AddPoll />;
+     } else if(Auth.isUserAuthenticated() && page == "edit"){
+            console.log("should be authorized to edit");
+          // return <EditPoll />;
+     } else if(!Auth.isUserAuthenticated() && page == "add"){
          alert("You are not authorized to add new polls");
+        // return <IndexPage />;
+     } else {
+         alert("You are not authorized to edit this poll");
+       //  return <PollPage />;
      }
 };
 render(
@@ -46,7 +54,7 @@ render(
             </nav>
             <Switch>
                 <Route path="/" exact={true} component={IndexPage} />
-                <Route path="/polls/new" component={checkAuth("add")} />
+                <Route path="/polls/new" exact={true} component={checkAuth("add")} />
                 <Route path="/polls/:id/edit" component={EditPoll} />
                 <Route path="/polls/:id" component={PollPage} />
                 <Route path="/login" component={Login} />

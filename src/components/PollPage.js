@@ -2,9 +2,11 @@ import React from 'react';
 import {
   Link
 } from 'react-router-dom';
+import EditPoll from './EditPoll';
 import { NotFoundPage } from './NotFoundPage';
 import { Chart } from './PieChart';
 import axios from 'axios';
+import Auth from '../modules/Auth';
 
 class PollPage extends React.Component {
     constructor(props) {
@@ -14,16 +16,17 @@ class PollPage extends React.Component {
       selection: "",
       message: "",
       id: this.props.match.params.id,
-      loaded: false
+      loaded: false,
+      showButtons: false
     };
    }
    
    componentDidMount(){
       this.loadPollFromServer(this.setLoadedTrue.bind(this));
+      this.checkAuth();
    }
  
     setLoadedTrue(){
-      console.log("loaded is going to be true and poll name is " + this.state.poll.name);
        this.setState({
        loaded: true
       });
@@ -34,7 +37,6 @@ class PollPage extends React.Component {
      axios.get('/api/polls/' + id)
       .then(res => { 
         if(res.data.length != 0){
-          console.log("check for error, res.data is " + res.data);
            this.setState({ poll: res.data[0] });
         }
         callback();
@@ -43,7 +45,13 @@ class PollPage extends React.Component {
       console.log(err);
     });
  }
- 
+    checkAuth(){
+       if (Auth.isUserAuthenticated()){
+         this.setState({
+           showButtons: true
+         });
+       }
+    }
     postPollVoteToServer(){
      let id = this.state.id;
      let selection = this.state.selection;
@@ -67,16 +75,23 @@ class PollPage extends React.Component {
     var pollChoice = { name: this.state.selection };
     this.postPollVoteToServer();
 }
+  handleAddPollOptions(){
+    return <EditPoll />;
+  }
   handleDelete(){
-    //probably should confirm first
-       let id = this.state.id;
-     axios.delete('/api/polls/' + id)
-      .then(res => { 
-       this.setState({ message: res.data.message });
-    })
-      .catch(err => {
-      console.log(err);
-    });
+  if(confirm("Are you sure you want to delete this poll?")){
+     let id = this.state.id;
+       let token = Auth.getToken();
+      axios.delete('/api/polls/' + id, {
+          headers: { "Authorization": "bearer: " + token }
+        })
+        .then(res => { 
+          this.setState({ message: res.data.message });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      }
   }
   render(){
     const poll = this.state.poll;
@@ -90,6 +105,18 @@ class PollPage extends React.Component {
     var options = [];
     for(var i = 0; i < poll.options.length; i++){
       options.push(poll.options[i]["name"]);
+    }
+    let deleteAndEditButtons;
+    if(this.state.showButtons){
+      deleteAndEditButtons = 
+      <div className="col-10 offset-1 col-md-4 offset-md-2">
+            <button className="btn btn-default" onClick={this.handleAddPollOptions.bind(this)}>
+              Add Poll Options
+            </button>
+            <button className="btn btn-default" onClick={this.handleDelete.bind(this)}>
+              Delete Poll
+            </button>
+      </div>;
     }
       return (
       <div>
@@ -130,11 +157,7 @@ class PollPage extends React.Component {
           </div>
         </div>
         <div className="row">
-          <div className="col-10 offset-1 col-md-4 offset-md-2">
-            <button className="btn btn-default" onClick={this.handleDelete.bind(this)}>
-              Delete Poll
-            </button>
-          </div>
+          {deleteAndEditButtons}
         </div>
         <div className="row">
           <div className="col-10 offset-1 col-md-4 offset-md-2">

@@ -104,10 +104,53 @@ app.use('/api', authCheckMiddleware);
 
 // routes
 const authRoutes = require('./server/routes/auth');
-const apiRoutes = require('./server/routes/api');
 app.use('/auth', authRoutes);
 
-app.use('/api', apiRoutes);
+app.post('/api/polls/create', function (req,res){
+    addNewPoll(req.body, function(poll){
+       // res.json({message:"Thanks for creating a poll. Will redirect later"});
+        res.redirect('/'); // or to new poll
+    });
+})
+app.post('/api/polls/:id/edit', function (req, res){
+     var id = req.params.id;
+    var options = req.body.options;
+    updatePollInfo(id, options, respondToUpdate);
+    function respondToUpdate(record){
+       console.log("Poll updated to " + record);
+       res.json({ message: 'Poll updated'});
+   };
+});
+
+app.delete('/api/polls/:id', function (req, res){
+    var id = req.params.id;
+    deletePoll(id, respondToDeletion);
+    function respondToDeletion(){
+       res.json( {"message": "successfully deleted poll"});
+    };
+});
+ function addNewPoll(record, callback){
+        console.log("in database add method, name is " + record["name"]);
+        var item = { "name": record["name"], "description": record["description"], options: record["options"] };
+         db.collection('polls').insert( item , function(err,result){ 
+             if(err) throw err;
+             console.log("just added the following record to the database: " + JSON.stringify(result.ops));
+             callback(result);
+         });
+    }
+     function updatePollInfo(id,options,callback){
+        db.collection('polls').update({ _id: ObjectId(id) },{ $set: { "options": options } }, function(err,record){
+            if (err) throw err;
+            callback(record);
+        });
+    }
+function deletePoll(id, callback){
+    db.collection('polls').remove( { "_id": ObjectId(id) }, function(err,result){ 
+        if(err) throw err;
+        callback();
+    });
+}
+
 app.get('*', function (req,res){
     res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });

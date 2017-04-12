@@ -35,7 +35,6 @@ export default class Login extends React.Component {
     "password": password})
    .then(function (response) {
        Auth.authenticateUser(response.data.token);
-       console.log("woohoo, you've got access! response is " + JSON.stringify(response.status));
   })
   .catch(function (error) {
         if(error.response.status >= 400 && error.response.status < 500){

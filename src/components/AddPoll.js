@@ -63,10 +63,11 @@ handleNameChange(event) {
     }
     
     postPollToServer(name,description,filteredOptionsList){
+        let headers = { 'Authorization': 'bearer ${Auth.getToken()}' };
        axios.post('/api/polls/create', {
             'name': name,
     'description': description,
-   'options': filteredOptionsList })
+   'options': filteredOptionsList },headers)
   .then(function (response) {
     console.log(response);
   })

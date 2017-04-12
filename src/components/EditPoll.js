@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Auth from '../modules/Auth';
 
 class EditPoll extends React.Component {
    constructor(props) {
@@ -68,8 +69,10 @@ class EditPoll extends React.Component {
     }
     
     postPollToServer(filteredOptionsList, id){
+              let token = Auth.getToken();
+        let headers = { 'Authorization': 'bearer:' + token };
        axios.post('/api/polls/' + id + '/edit', {
-   'options': filteredOptionsList })
+   'options': filteredOptionsList },headers)
    .then(function (response) {
       console.log(response);
    })
