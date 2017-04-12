@@ -33,7 +33,6 @@ const router = new express.Router();
     }
     
     router.post('/polls/:id/edit', function (req, res){
-      console.log("test for edit with url " + req.url);
      var id = req.params.id;
     var options = req.body.options;
     updatePollInfo(id, options, respondToUpdate);

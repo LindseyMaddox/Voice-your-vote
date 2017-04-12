@@ -19,7 +19,9 @@ class EditPoll extends React.Component {
     }
    loadPollFromServer(){
      let id = this.props.id;
-     axios.get('/api/base/polls/' + id)
+       let token = Auth.getToken();
+        let headers = { 'Authorization': 'bearer: ' + token };
+     axios.get('/api/restricted/polls/' + id, { headers: headers })
       .then(res => { 
         this.setState({
               pollName: res.data[0].name,

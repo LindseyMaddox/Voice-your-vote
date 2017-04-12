@@ -26,8 +26,8 @@ module.exports = (req, res, next) => {
       if (userErr || !user) {
         return res.status(401).end();
       }
-      console.log("user is " + user);
-     return next();
+      req.user = user;
+     return  next();
     });
   });
 };

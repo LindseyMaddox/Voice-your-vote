@@ -106,7 +106,7 @@ passport.use('local-login', localLoginStrategy);
 const authenticationCheckMiddleware = require('./server/middleware/auth-check');
 const authorizationCheckMiddleware = require('./server/middleware/user-authorization');
 app.use('/api/restricted', authenticationCheckMiddleware);
-app.use('/api/restricted/polls/:id', authenticationCheckMiddleware);
+app.use('/api/restricted/polls/:id', authorizationCheckMiddleware);
 
 // routes
 const authRoutes = require('./server/routes/auth');

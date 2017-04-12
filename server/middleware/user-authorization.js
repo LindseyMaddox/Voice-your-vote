@@ -1,30 +1,34 @@
-const jwt = require('jsonwebtoken');
-const User = require('mongoose').model('User');
-const config = require('../../config');
+const express = require('express');
 
-module.exports = (req, res) => {
-  if (!req.headers.authorization) {
-    return res.status(401).end();
-  }
+const app = express();
 
-  // get the last part from a authorization header string like "bearer token-value"
-  const token = req.headers.authorization.split(' ')[1];
+module.exports = (req, res, next) => {
 
-  // decode the token using a secret key-phrase
+  const MongoClient = require('mongodb').MongoClient;
 
-  return jwt.verify(token, config.jwtSecret, (err, decoded) => {
-    // the 401 code is for unauthorized status
-    if (err) { return res.status(401).end(); }
+//for dev only
+if(app.settings.env == "development"){
+   require('dotenv').config(); 
+}
 
-    const userId = decoded.sub;
+//first allow routes that don't require authorization
+var mongo_login = process.env.MONGO_LAB_LOGIN;
+var ObjectId = require('mongodb').ObjectId; 
 
-    // check if a user exists
-    return User.findById(userId, (userErr, user) => {
-      if (userErr || !user) {
+var mongoUrl = "mongodb://" + mongo_login + "@ds153400.mlab.com:53400/voice-your-vote";
+
+return MongoClient.connect(mongoUrl, (err, db) => {
+    if (err) throw err;
+    var db = db;
+      var id = req.params.id;
+  var email = req.user.email;
+    db.collection('polls').find(  { _id: ObjectId(id), email: email  } ).toArray(function(err, poll) {
+     if(err) throw err;
+     if(poll.length == 0){
         return res.status(401).end();
-      }
-        console.log("user is " + user);
-      return user;
-    });
-  });
+     }
+    return next();
+ });
+
+}); // end of connection
 };

@@ -9641,7 +9641,9 @@ var EditPoll = function (_React$Component) {
             var _this2 = this;
 
             var id = this.props.id;
-            _axios2.default.get('/api/base/polls/' + id).then(function (res) {
+            var token = _Auth2.default.getToken();
+            var headers = { 'Authorization': 'bearer: ' + token };
+            _axios2.default.get('/api/restricted/polls/' + id, { headers: headers }).then(function (res) {
                 _this2.setState({
                     pollName: res.data[0].name,
                     description: res.data[0].description,
