@@ -83,7 +83,6 @@ app.post('/api/base/polls/:id', function (req, res){
         });
         
     }
-}); //close mongo connection
 
     //routes requiring authorization
     // connect to the database and load models
@@ -109,9 +108,12 @@ app.use('/auth', authRoutes);
 const apiRoutes = require('./server/routes/api');
 app.use('/api/restricted', apiRoutes);
 
-// app.get('*', function (req,res){
-//     res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-// });
+app.get('*', function (req,res){
+    console.log("test of the url " + req.url);
+    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
+}); //close mongo connection
+
 // start the server
 app.listen(8080, () => {
   console.log('Server is running on http://localhost:8080');

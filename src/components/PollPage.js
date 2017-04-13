@@ -23,7 +23,7 @@ class PollPage extends React.Component {
    
    componentDidMount(){
       this.loadPollFromServer(this.setLoadedTrue.bind(this));
-      this.checkAuth();
+      this.checkCorrectUser();
    }
  
     setLoadedTrue(){
@@ -45,12 +45,17 @@ class PollPage extends React.Component {
       console.log(err);
     });
  }
-    checkAuth(){
-       if (Auth.isUserAuthenticated()){
-         this.setState({
-           showButtons: true
-         });
-       }
+    checkCorrectUser(callback){
+      let id = this.state.id;
+       let token = Auth.getToken();
+        let headers = { 'Authorization': 'bearer: ' + token };
+        axios.get('/api/restricted/polls/' + id, { headers: headers })
+      .then(res => { 
+           this.setState({ showButtons: true });
+      })
+      .catch(err => {
+        if (err) throw err;
+    });
     }
     postPollVoteToServer(){
      let id = this.state.id;

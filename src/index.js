@@ -10,6 +10,7 @@ import  Signup  from './components/Signup';
 import AddPoll from './components/AddPoll';
 import EditPoll from './components/EditPoll';
 import Auth from './modules/Auth';
+import axios from 'axios';
 
 const checkAuth = ( ) => {
     if (Auth.isUserAuthenticated() ){
@@ -20,15 +21,43 @@ const checkAuth = ( ) => {
      }
 };
 
-const checkCorrectUser = ( {match} ) => {
-    console.log("here we'd verify the correct user");
-    //if(Auth.isCorrectUser()){
-    //    return <EditPoll />;
-//    } else { 
-  //  alert("you are not authorized to edit this poll");
-    //redirect to poll they were on
-//}
-     return <EditPoll id={match.params.id}/>;
+class checkCorrectUser extends React.Component {
+     constructor(props) {
+    super(props);
+    this.state = {
+     allow: false
+    };
+}
+componentDidMount(){
+    console.log("checkCorrectUser component mounted");
+      let token = Auth.getToken();
+     let id = this.props.match.params.id;
+       let headers = { 'Authorization': 'bearer: ' + token };
+     axios.get('/api/restricted/polls/' + id, { headers: headers })
+      .then(res => { 
+        this.setState({allow:true});
+          })
+      .catch(err => {
+          if(err) throw err;
+          console.log("test for error response, it's " + err.response);
+          if(err.response.status >= 400 && err.res.status < 500){
+            alert("You are not authorized to edit this poll");
+          }
+    });
+}
+    render(){
+        let comp;
+        if(this.state.allow){
+            comp = <EditPoll id={this.props.match.params.id} />;
+        } else {
+            //this.props for consistency in component's state
+            comp = <PollPage id ={this.props} />;
+        }
+        console.log("allow is " + this.state.allow + " and comp is " + comp);
+     return (
+        <div>{comp}</div>
+        );
+    }
 };
 render(
     <Router>

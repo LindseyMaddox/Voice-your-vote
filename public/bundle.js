@@ -798,11 +798,11 @@ module.exports = ExecutionEnvironment;
 
 
 
-var _prodInvariant = __webpack_require__(22);
+var _prodInvariant = __webpack_require__(23);
 
 var ReactCurrentOwner = __webpack_require__(13);
 
-var invariant = __webpack_require__(23);
+var invariant = __webpack_require__(24);
 var warning = __webpack_require__(14);
 
 function isNative(fn) {
@@ -1521,7 +1521,7 @@ var _prodInvariant = __webpack_require__(2),
     _assign = __webpack_require__(6);
 
 var CallbackQueue = __webpack_require__(78);
-var PooledClass = __webpack_require__(20);
+var PooledClass = __webpack_require__(21);
 var ReactFeatureFlags = __webpack_require__(83);
 var ReactReconciler = __webpack_require__(26);
 var Transaction = __webpack_require__(37);
@@ -1885,7 +1885,7 @@ module.exports = warning;
 
 var _assign = __webpack_require__(6);
 
-var PooledClass = __webpack_require__(20);
+var PooledClass = __webpack_require__(21);
 
 var emptyFunction = __webpack_require__(16);
 var warning = __webpack_require__(3);
@@ -2461,6 +2461,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 /* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(113);
+
+/***/ }),
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, Promise, global) {var require;/*!
@@ -3622,10 +3628,10 @@ return Promise;
 })));
 //# sourceMappingURL=es6-promise.map
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(19), __webpack_require__(110)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(20), __webpack_require__(110)))
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3743,7 +3749,7 @@ module.exports = PooledClass;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4090,7 +4096,7 @@ module.exports = ReactElement;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4134,7 +4140,7 @@ function reactProdInvariant(code) {
 module.exports = reactProdInvariant;
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4194,12 +4200,6 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(113);
 
 /***/ }),
 /* 25 */
@@ -4522,7 +4522,7 @@ var ReactComponent = __webpack_require__(64);
 var ReactPureComponent = __webpack_require__(257);
 var ReactClass = __webpack_require__(254);
 var ReactDOMFactories = __webpack_require__(255);
-var ReactElement = __webpack_require__(21);
+var ReactElement = __webpack_require__(22);
 var ReactPropTypes = __webpack_require__(256);
 var ReactVersion = __webpack_require__(258);
 
@@ -4659,7 +4659,6 @@ var Auth = function () {
   }, {
     key: 'getToken',
     value: function getToken() {
-      console.log("checking for token, it's " + localStorage.getItem('token'));
       return localStorage.getItem('token');
     }
   }]);
@@ -8921,13 +8920,13 @@ module.exports = warning;
 
 
 
-var _prodInvariant = __webpack_require__(22);
+var _prodInvariant = __webpack_require__(23);
 
 var ReactNoopUpdateQueue = __webpack_require__(65);
 
 var canDefineProperty = __webpack_require__(67);
 var emptyObject = __webpack_require__(70);
-var invariant = __webpack_require__(23);
+var invariant = __webpack_require__(24);
 var warning = __webpack_require__(14);
 
 /**
@@ -9494,7 +9493,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19), __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20), __webpack_require__(0)))
 
 /***/ }),
 /* 72 */
@@ -9595,7 +9594,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(18);
 
-var _axios = __webpack_require__(24);
+var _axios = __webpack_require__(19);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -9643,7 +9642,7 @@ var EditPoll = function (_React$Component) {
             var id = this.props.id;
             var token = _Auth2.default.getToken();
             var headers = { 'Authorization': 'bearer: ' + token };
-            _axios2.default.get('/api/restricted/polls/' + id, { headers: headers }).then(function (res) {
+            _axios2.default.get('/api/base/polls/' + id, { headers: headers }).then(function (res) {
                 _this2.setState({
                     pollName: res.data[0].name,
                     description: res.data[0].description,
@@ -10010,7 +10009,7 @@ var _prodInvariant = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var PooledClass = __webpack_require__(20);
+var PooledClass = __webpack_require__(21);
 
 var invariant = __webpack_require__(1);
 
@@ -12762,7 +12761,7 @@ module.exports = REACT_ELEMENT_TYPE;
 
 var ReactCurrentOwner = __webpack_require__(13);
 var ReactComponentTreeHook = __webpack_require__(8);
-var ReactElement = __webpack_require__(21);
+var ReactElement = __webpack_require__(22);
 
 var checkReactTypeSpec = __webpack_require__(259);
 
@@ -13032,6 +13031,8 @@ module.exports = g;
 "use strict";
 
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
@@ -13068,9 +13069,20 @@ var _Auth = __webpack_require__(28);
 
 var _Auth2 = _interopRequireDefault(_Auth);
 
+var _axios = __webpack_require__(19);
+
+var _axios2 = _interopRequireDefault(_axios);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 // Import routing components
+
+
 var checkAuth = function checkAuth() {
     if (_Auth2.default.isUserAuthenticated()) {
         return _react2.default.createElement(_AddPoll2.default, null);
@@ -13080,18 +13092,62 @@ var checkAuth = function checkAuth() {
     }
 };
 
-var checkCorrectUser = function checkCorrectUser(_ref) {
-    var match = _ref.match;
+var checkCorrectUser = function (_React$Component) {
+    _inherits(checkCorrectUser, _React$Component);
 
-    console.log("here we'd verify the correct user");
-    //if(Auth.isCorrectUser()){
-    //    return <EditPoll />;
-    //    } else { 
-    //  alert("you are not authorized to edit this poll");
-    //redirect to poll they were on
-    //}
-    return _react2.default.createElement(_EditPoll2.default, { id: match.params.id });
-};
+    function checkCorrectUser(props) {
+        _classCallCheck(this, checkCorrectUser);
+
+        var _this = _possibleConstructorReturn(this, (checkCorrectUser.__proto__ || Object.getPrototypeOf(checkCorrectUser)).call(this, props));
+
+        _this.state = {
+            allow: false
+        };
+        return _this;
+    }
+
+    _createClass(checkCorrectUser, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            console.log("checkCorrectUser component mounted");
+            var token = _Auth2.default.getToken();
+            var id = this.props.match.params.id;
+            var headers = { 'Authorization': 'bearer: ' + token };
+            _axios2.default.get('/api/restricted/polls/' + id, { headers: headers }).then(function (res) {
+                _this2.setState({ allow: true });
+            }).catch(function (err) {
+                if (err) throw err;
+                console.log("test for error response, it's " + err.response);
+                if (err.response.status >= 400 && err.res.status < 500) {
+                    alert("You are not authorized to edit this poll");
+                }
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var comp = void 0;
+            if (this.state.allow) {
+                comp = _react2.default.createElement(_EditPoll2.default, { id: this.props.match.params.id });
+            } else {
+                //this.props for consistency in component's state
+                comp = _react2.default.createElement(_PollPage2.default, { id: this.props });
+            }
+            console.log("allow is " + this.state.allow + " and comp is " + comp);
+            return _react2.default.createElement(
+                'div',
+                null,
+                comp
+            );
+        }
+    }]);
+
+    return checkCorrectUser;
+}(_react2.default.Component);
+
+;
 (0, _reactDom.render)(_react2.default.createElement(
     _reactRouterDom.BrowserRouter,
     null,
@@ -13621,7 +13677,7 @@ var checkCorrectUser = function checkCorrectUser(_ref) {
   self.fetch.polyfill = true
 })(typeof self !== 'undefined' ? self : this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ }),
 /* 113 */
@@ -13681,7 +13737,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ }),
 /* 114 */
@@ -13746,7 +13802,7 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ }),
 /* 115 */
@@ -13839,7 +13895,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ }),
 /* 116 */
@@ -13985,7 +14041,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ }),
 /* 118 */
@@ -14483,7 +14539,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(18);
 
-var _axios = __webpack_require__(24);
+var _axios = __webpack_require__(19);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -14709,7 +14765,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _PollPreview = __webpack_require__(137);
 
-var _axios = __webpack_require__(24);
+var _axios = __webpack_require__(19);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -14755,7 +14811,6 @@ var IndexPage = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      console.log("test for loading. polls are " + this.state.polls);
       return _react2.default.createElement(
         'div',
         { className: 'home' },
@@ -14807,7 +14862,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(18);
 
-var _axios = __webpack_require__(24);
+var _axios = __webpack_require__(19);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -15255,7 +15310,7 @@ var _NotFoundPage = __webpack_require__(133);
 
 var _PieChart = __webpack_require__(135);
 
-var _axios = __webpack_require__(24);
+var _axios = __webpack_require__(19);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -15294,7 +15349,7 @@ var PollPage = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.loadPollFromServer(this.setLoadedTrue.bind(this));
-      this.checkAuth();
+      this.checkCorrectUser();
     }
   }, {
     key: 'setLoadedTrue',
@@ -15319,26 +15374,31 @@ var PollPage = function (_React$Component) {
       });
     }
   }, {
-    key: 'checkAuth',
-    value: function checkAuth() {
-      if (_Auth2.default.isUserAuthenticated()) {
-        this.setState({
-          showButtons: true
-        });
-      }
+    key: 'checkCorrectUser',
+    value: function checkCorrectUser(callback) {
+      var _this3 = this;
+
+      var id = this.state.id;
+      var token = _Auth2.default.getToken();
+      var headers = { 'Authorization': 'bearer: ' + token };
+      _axios2.default.get('/api/restricted/polls/' + id, { headers: headers }).then(function (res) {
+        _this3.setState({ showButtons: true });
+      }).catch(function (err) {
+        if (err) throw err;
+      });
     }
   }, {
     key: 'postPollVoteToServer',
     value: function postPollVoteToServer() {
-      var _this3 = this;
+      var _this4 = this;
 
       var id = this.state.id;
       var selection = this.state.selection;
       _axios2.default.post('/api/base/polls/' + id, {
         "name": selection
       }).then(function (res) {
-        _this3.setState({ message: res.data.message });
-        _this3.loadPollFromServer();
+        _this4.setState({ message: res.data.message });
+        _this4.loadPollFromServer();
       }).catch(function (err) {
         console.log(err);
       });
@@ -15365,7 +15425,7 @@ var PollPage = function (_React$Component) {
   }, {
     key: 'handleDelete',
     value: function handleDelete() {
-      var _this4 = this;
+      var _this5 = this;
 
       console.log("button test");
       //  if(confirm("Are you sure you want to delete this poll?")){
@@ -15374,7 +15434,7 @@ var PollPage = function (_React$Component) {
       _axios2.default.delete('/api/restricted/polls/' + id, {
         headers: { "Authorization": "bearer: " + token }
       }).then(function (res) {
-        _this4.setState({ message: res.data.message });
+        _this5.setState({ message: res.data.message });
       }).catch(function (err) {
         console.log(err);
       });
@@ -15599,7 +15659,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(18);
 
-var _axios = __webpack_require__(24);
+var _axios = __webpack_require__(19);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -33614,7 +33674,7 @@ module.exports = EnterLeaveEventPlugin;
 
 var _assign = __webpack_require__(6);
 
-var PooledClass = __webpack_require__(20);
+var PooledClass = __webpack_require__(21);
 
 var getTextContentAccessor = __webpack_require__(93);
 
@@ -38295,7 +38355,7 @@ var _assign = __webpack_require__(6);
 
 var EventListener = __webpack_require__(98);
 var ExecutionEnvironment = __webpack_require__(7);
-var PooledClass = __webpack_require__(20);
+var PooledClass = __webpack_require__(21);
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactUpdates = __webpack_require__(12);
 
@@ -39217,7 +39277,7 @@ module.exports = ReactPropTypeLocationNames;
 var _assign = __webpack_require__(6);
 
 var CallbackQueue = __webpack_require__(78);
-var PooledClass = __webpack_require__(20);
+var PooledClass = __webpack_require__(21);
 var ReactBrowserEventEmitter = __webpack_require__(35);
 var ReactInputSelection = __webpack_require__(85);
 var ReactInstrumentation = __webpack_require__(10);
@@ -39494,7 +39554,7 @@ module.exports = ReactRef;
 
 var _assign = __webpack_require__(6);
 
-var PooledClass = __webpack_require__(20);
+var PooledClass = __webpack_require__(21);
 var Transaction = __webpack_require__(37);
 var ReactInstrumentation = __webpack_require__(10);
 var ReactServerUpdateQueue = __webpack_require__(185);
@@ -44733,9 +44793,9 @@ module.exports = KeyEscapeUtils;
 
 
 
-var _prodInvariant = __webpack_require__(22);
+var _prodInvariant = __webpack_require__(23);
 
-var invariant = __webpack_require__(23);
+var invariant = __webpack_require__(24);
 
 /**
  * Static poolers. Several custom versions for each potential number of
@@ -44851,7 +44911,7 @@ module.exports = PooledClass;
 
 
 var PooledClass = __webpack_require__(252);
-var ReactElement = __webpack_require__(21);
+var ReactElement = __webpack_require__(22);
 
 var emptyFunction = __webpack_require__(69);
 var traverseAllChildren = __webpack_require__(261);
@@ -45046,16 +45106,16 @@ module.exports = ReactChildren;
 
 
 
-var _prodInvariant = __webpack_require__(22),
+var _prodInvariant = __webpack_require__(23),
     _assign = __webpack_require__(41);
 
 var ReactComponent = __webpack_require__(64);
-var ReactElement = __webpack_require__(21);
+var ReactElement = __webpack_require__(22);
 var ReactPropTypeLocationNames = __webpack_require__(66);
 var ReactNoopUpdateQueue = __webpack_require__(65);
 
 var emptyObject = __webpack_require__(70);
-var invariant = __webpack_require__(23);
+var invariant = __webpack_require__(24);
 var warning = __webpack_require__(14);
 
 var MIXINS_KEY = 'mixins';
@@ -45769,7 +45829,7 @@ module.exports = ReactClass;
 
 
 
-var ReactElement = __webpack_require__(21);
+var ReactElement = __webpack_require__(22);
 
 /**
  * Create a factory that creates HTML tag elements.
@@ -45945,7 +46005,7 @@ module.exports = ReactDOMFactories;
 
 
 
-var ReactElement = __webpack_require__(21);
+var ReactElement = __webpack_require__(22);
 var ReactPropTypeLocationNames = __webpack_require__(66);
 var ReactPropTypesSecret = __webpack_require__(109);
 
@@ -46451,12 +46511,12 @@ module.exports = '15.4.2';
 
 
 
-var _prodInvariant = __webpack_require__(22);
+var _prodInvariant = __webpack_require__(23);
 
 var ReactPropTypeLocationNames = __webpack_require__(66);
 var ReactPropTypesSecret = __webpack_require__(109);
 
-var invariant = __webpack_require__(23);
+var invariant = __webpack_require__(24);
 var warning = __webpack_require__(14);
 
 var ReactComponentTreeHook;
@@ -46543,11 +46603,11 @@ module.exports = checkReactTypeSpec;
  */
 
 
-var _prodInvariant = __webpack_require__(22);
+var _prodInvariant = __webpack_require__(23);
 
-var ReactElement = __webpack_require__(21);
+var ReactElement = __webpack_require__(22);
 
-var invariant = __webpack_require__(23);
+var invariant = __webpack_require__(24);
 
 /**
  * Returns the first child in a collection of children and verifies that there
@@ -46588,13 +46648,13 @@ module.exports = onlyChild;
 
 
 
-var _prodInvariant = __webpack_require__(22);
+var _prodInvariant = __webpack_require__(23);
 
 var ReactCurrentOwner = __webpack_require__(13);
 var REACT_ELEMENT_TYPE = __webpack_require__(107);
 
 var getIteratorFn = __webpack_require__(68);
-var invariant = __webpack_require__(23);
+var invariant = __webpack_require__(24);
 var KeyEscapeUtils = __webpack_require__(251);
 var warning = __webpack_require__(14);
 

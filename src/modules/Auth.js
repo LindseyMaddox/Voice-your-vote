@@ -34,7 +34,6 @@ class Auth {
    */
 
   static getToken() {
-    console.log("checking for token, it's " + localStorage.getItem('token'));
     return localStorage.getItem('token');
   }
 

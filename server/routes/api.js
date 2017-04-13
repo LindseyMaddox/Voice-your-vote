@@ -33,8 +33,12 @@ const router = new express.Router();
          });
     }
     const authorizationCheckMiddleware = require('../middleware/user-authorization');
-    router.use('/api/restricted/polls/:id', authorizationCheckMiddleware);
+    router.use('/polls/:id', authorizationCheckMiddleware);
 
+    //this is to assess whether to include edit/delete buttons
+    router.get('/polls/:id', function(req,res){
+      res.status(200).end();
+    });
     router.post('/polls/:id/edit', function (req, res){
       console.log("should be at the editing place");
      var id = req.params.id;
