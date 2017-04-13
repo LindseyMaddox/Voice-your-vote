@@ -11,6 +11,7 @@ class IndexPage extends React.Component {
     };
    }
    componentDidMount(){
+       console.log("test that we received the delete message, it's " + this.props.message);
      this.loadPollsFromServer();
    }
    

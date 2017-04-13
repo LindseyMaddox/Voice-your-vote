@@ -2,10 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Auth from '../modules/Auth';
+import { browserHistory } from 'react-router';
+import PropTypes from 'prop-types'; 
+import IndexPage from './IndexPage';
 
 class EditPoll extends React.Component {
-   constructor(props) {
-    super(props);
+   constructor(props, context) {
+    super(props, context);
     this.state = {
      pollName: "",
      description: "",
@@ -54,7 +57,9 @@ class EditPoll extends React.Component {
     
     handleSubmit(event){
         event.preventDefault();
-       this.removeEmptyOptions(this.postPollToServer);
+        this.context.router.history.push('/polls');
+         return <IndexPage />;
+      // this.removeEmptyOptions(this.postPollToServer.bind(this));
        
     }
     removeEmptyOptions(callback){
@@ -70,12 +75,18 @@ class EditPoll extends React.Component {
     }
     
     postPollToServer(filteredOptionsList, id){
-              let token = Auth.getToken();
+       let token = Auth.getToken();
         let headers = { 'Authorization': 'bearer: ' + token };
+        var that = this;
+
+        console.log("test for that context outside, it's " + JSON.stringify(that.context));
        axios.post('/api/restricted/polls/' + id + '/edit', {
    'options': filteredOptionsList },{ headers: headers })
    .then(function (response) {
-      console.log(response);
+       let pollPath = 'polls/' + id;
+      console.log("check for context inside the function response, it's " + JSON.stringify(that.context));
+
+        that.context.router.history.push(pollPath);
    })
    .catch(function (error) {
       console.log(error);
@@ -87,9 +98,9 @@ class EditPoll extends React.Component {
       let newOptions = [];
       let optionBlock;
     for(var i = 0; i < this.state.additionalOptionsList.length; i++){
-          optionBlock =   
+          optionBlock = 
           <div className="form-group">
-              <label htmlFor={"poll-options-" + i}>New Option</label>
+              <label htmlFor={"poll-options-" + i}> New Option</label>
               <input type="text" className="form-control" placeholder="Option" 
                    className="new-poll-options" id={"poll-options-" + i} onChange={this.handleChange.bind(this)} value={this.state.additionalOptionsList[i].name}></input>
           </div>;
@@ -106,6 +117,7 @@ class EditPoll extends React.Component {
              }
          }
     }
+
     return (
        <div className="home">
     <div className="row">
@@ -124,6 +136,7 @@ class EditPoll extends React.Component {
                     {originalOptions.map(option => ( <li>{option}</li>))}
              </ul>
              <form onSubmit={this.handleSubmit.bind(this)}>
+                    <h3>Add New Options</h3>
                   <div className="new-options-list">
                        {newOptions.map(option => ( <div>{option}</div>))}
                   </div>
@@ -131,7 +144,7 @@ class EditPoll extends React.Component {
                     <button id="create-new-option-button" className="btn btn-default btn-sm" onClick={this.handleAddOptions.bind(this)}>Add Option</button>
                   </div>
                   <div className="row submit-button-row">
-                    <button type="submit" id="new-poll-button" className="btn btn-primary">Add Options</button>
+                    <button type="submit" id="add-options-submit-button" className="btn btn-primary">Add Options</button>
                   </div>
             </form>
         </div>
@@ -141,4 +154,7 @@ class EditPoll extends React.Component {
   }
 }
 
+    EditPoll.contextTypes = {
+        router: React.PropTypes.object
+    };
 export default EditPoll;

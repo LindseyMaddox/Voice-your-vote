@@ -40,10 +40,10 @@ const router = new express.Router();
       res.status(200).end();
     });
     router.post('/polls/:id/edit', function (req, res){
-      console.log("should be at the editing place");
      var id = req.params.id;
     var options = req.body.options;
-    updatePollInfo(id, options, respondToUpdate);
+    respondToUpdate("fire");
+  //  updatePollInfo(id, options, respondToUpdate);
     function respondToUpdate(record){
        console.log("Poll updated to " + record);
        res.json({ message: 'Poll updated'});

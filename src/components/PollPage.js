@@ -15,7 +15,7 @@ class PollPage extends React.Component {
       poll: { "name": "Placeholder Poll", "options": []},
       selection: "",
       message: "",
-      id: "58ee710c2a2994210978fac9",
+      id: this.props.id,
       loaded: false,
       showButtons: false
     };
@@ -89,7 +89,7 @@ class PollPage extends React.Component {
           headers: { "Authorization": "bearer: " + token }
         })
         .then(res => { 
-          this.setState({ message: res.data.message });
+        <Redirect push to='/' message={res.data.message} />;
         })
         .catch(err => {
           console.log(err);
@@ -112,7 +112,6 @@ class PollPage extends React.Component {
     }
     let deleteAndEditButtons;
     let editPath =  id + '/edit';
-    console.log("edit path is " + editPath);
     if(this.state.showButtons){
       deleteAndEditButtons = 
       <div className="col-10 offset-1 col-md-4 offset-md-2">

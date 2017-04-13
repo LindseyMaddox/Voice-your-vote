@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
+import ReactDOM  from 'react-dom';
 // Import routing components
-import {BrowserRouter as Router, Route, IndexRoute, Switch, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
+import { browserHistory } from 'react-router'; 
 
 import  IndexPage from './components/IndexPage';
 import  PollPage  from './components/PollPage';
@@ -12,13 +13,13 @@ import EditPoll from './components/EditPoll';
 import Auth from './modules/Auth';
 import axios from 'axios';
 
-const checkAuth = ( ) => {
-    if (Auth.isUserAuthenticated() ){
-        return <AddPoll />;
-     } else {
-         alert("You are not authorized to add polls. Please create an account to add them");
-         return <PollPage />;
-     }
+const PollPageWrapper = ( {match} ) => {
+    return <PollPage id={match.params.id} />;
+};
+
+const handleAddLinkFollow = () => {
+    console.log("here we'll check for auth");
+    return <AddPoll />;
 };
 
 class checkCorrectUser extends React.Component {
@@ -29,11 +30,8 @@ class checkCorrectUser extends React.Component {
     };
 }
 componentDidMount(){
-    console.log("checkCorrectUser component mounted");
       let token = Auth.getToken();
-      console.log("check for props on specific call, they're " + JSON.stringify(this.props));
-    let id = "58ee710c2a2994210978fac9";
-    // let id = this.props.match.params.id || this.props.id;
+        let id = this.props.match.params.id;
        let headers = { 'Authorization': 'bearer: ' + token };
      axios.get('/api/restricted/polls/' + id, { headers: headers })
       .then(res => { 
@@ -41,7 +39,6 @@ componentDidMount(){
           })
       .catch(err => {
           if(err) throw err;
-          console.log("test for error response, it's " + err.response);
           if(err.response.status >= 400 && err.res.status < 500){
             alert("You are not authorized to edit this poll");
           }
@@ -49,22 +46,51 @@ componentDidMount(){
 }
     render(){
         let comp;
+        let id = this.props.match.params.id;
         if(this.state.allow){
-          //  comp = <EditPoll id={this.props.match.params.id} />;
-            comp = <EditPoll id="58ee710c2a2994210978fac9" />;
+           comp = <EditPoll id={id} />;
         } else {
-            //this.props for consistency in component's state
-            comp = <PollPage id="58ee710c2a2994210978fac9" / >;
-            //comp = <PollPage id ={this.props} />;
+           comp = <PollPage id={id} />;
         }
-        console.log("allow is " + this.state.allow);
      return (
         <div>{comp}</div>
         );
     }
 };
-render(
-    <Router>
+
+class Index extends React.Component {
+     constructor() {
+    super();
+    this.state = {
+        loggedIN: false
+    };
+   }
+   
+   componentDidMount(){
+        if (Auth.isUserAuthenticated() ){
+            this.setState({
+                loggedIN: true
+            });
+        } 
+   }
+    
+render() {
+    let additionalNavLinks;
+    if(this.state.loggedIN){
+        additionalNavLinks =
+            <div>
+                <li className="nav-item"><Link to="/polls/new">Add Poll</Link></li>
+                <li className="nav-item"><Link to="/logout">Logout</Link></li>
+            </div>;
+    } else {
+         additionalNavLinks =
+            <div>
+                <li className="nav-item"><Link to="/polls/signup">Signup</Link></li>
+                <li className="nav-item"><Link to="/login">Login</Link></li>
+            </div>;
+    }
+    return (
+    <Router history={browserHistory}>
            <div>
              <nav className="navbar navbar-toggleable-sm navbar-light">
 			    <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,22 +101,24 @@ render(
                 </div>
 				<div className="collapse navbar-collapse justify-content-end" id="navbarContent">
                             <ul className="nav navbar-nav">
-                                {/* Change from a to Link */}
                                 <li className="nav-item"><Link to="/">Home</Link></li>
-                                <li className="nav-item"><Link to="/login">Login</Link></li>
-                                <li className="nav-item"><Link to="/polls/58ee710c2a2994210978fac9/edit">Edit Poll</Link></li>
+                                {additionalNavLinks}
                             </ul>
                 </div>
             </nav>
             <Switch>
                 <Route path="/" exact={true} component={IndexPage} />
-                <Route path="/polls/new" exact={true} component={checkAuth} />
+                <Route path="/polls/new" exact={true} component={handleAddLinkFollow} />
                 <Route path="/polls/:id/edit" component={checkCorrectUser} />
-                <Route path="/polls/:id" component={PollPage} />
+                <Route path="/polls/:id" component={PollPageWrapper} />
                 <Route path="/login" component={Login} />
+                <Route path="/logout" onEnter={() => {
+        Auth.deauthenticate; this.props.history.push('/') }} />
                 <Route path="/signup" component={Signup} />
             </Switch>
         </div>
-    </Router>,
-    document.getElementById('container')
-);
+    </Router>
+            );
+    }
+}
+ReactDOM.render(<Index />, document.getElementById("container"));
