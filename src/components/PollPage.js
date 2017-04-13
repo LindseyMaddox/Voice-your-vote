@@ -15,7 +15,7 @@ class PollPage extends React.Component {
       poll: { "name": "Placeholder Poll", "options": []},
       selection: "",
       message: "",
-      id: this.props.match.params.id,
+      id: "58ee710c2a2994210978fac9",
       loaded: false,
       showButtons: false
     };
@@ -80,13 +80,9 @@ class PollPage extends React.Component {
     var pollChoice = { name: this.state.selection };
     this.postPollVoteToServer();
 }
-  handleAddPollOptions(){
-    console.log("made it to add poll options method");
-    return <EditPoll />;
-  }
+
   handleDelete(){
-    console.log("button test");
-//  if(confirm("Are you sure you want to delete this poll?")){
+  if(confirm("Are you sure you want to delete this poll?")){
      let id = this.state.id;
        let token = Auth.getToken();
       axios.delete('/api/restricted/polls/' + id, {
@@ -98,10 +94,11 @@ class PollPage extends React.Component {
         .catch(err => {
           console.log(err);
         });
-    //  } take out confirm for now to test the routes are working
+      } //added confirm back and hopefully it will work. earlier taken out to test the routes are working
   }
   render(){
     const poll = this.state.poll;
+    let id = this.state.id;
     let message = this.state.message;
     let loaded = this.state.loaded;
     if(!loaded) {
@@ -114,12 +111,13 @@ class PollPage extends React.Component {
       options.push(poll.options[i]["name"]);
     }
     let deleteAndEditButtons;
-    console.log("show buttons is " + this.state.showButtons);
+    let editPath =  id + '/edit';
+    console.log("edit path is " + editPath);
     if(this.state.showButtons){
       deleteAndEditButtons = 
       <div className="col-10 offset-1 col-md-4 offset-md-2">
-            <button className="btn btn-default" onClick={this.handleAddPollOptions.bind(this)}>
-              Add Poll Options
+            <button className="btn btn-default">
+              <Link to={editPath}> Add Poll Options</Link>
             </button>
             <button className="btn btn-default" onClick={this.handleDelete.bind(this)}>
               Delete Poll

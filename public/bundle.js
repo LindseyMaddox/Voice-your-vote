@@ -13113,7 +13113,9 @@ var checkCorrectUser = function (_React$Component) {
 
             console.log("checkCorrectUser component mounted");
             var token = _Auth2.default.getToken();
-            var id = this.props.match.params.id;
+            console.log("check for props on specific call, they're " + JSON.stringify(this.props));
+            var id = "58ee710c2a2994210978fac9";
+            // let id = this.props.match.params.id || this.props.id;
             var headers = { 'Authorization': 'bearer: ' + token };
             _axios2.default.get('/api/restricted/polls/' + id, { headers: headers }).then(function (res) {
                 _this2.setState({ allow: true });
@@ -13130,12 +13132,14 @@ var checkCorrectUser = function (_React$Component) {
         value: function render() {
             var comp = void 0;
             if (this.state.allow) {
-                comp = _react2.default.createElement(_EditPoll2.default, { id: this.props.match.params.id });
+                //  comp = <EditPoll id={this.props.match.params.id} />;
+                comp = _react2.default.createElement(_EditPoll2.default, { id: '58ee710c2a2994210978fac9' });
             } else {
                 //this.props for consistency in component's state
-                comp = _react2.default.createElement(_PollPage2.default, { id: this.props });
+                comp = _react2.default.createElement(_PollPage2.default, { id: '58ee710c2a2994210978fac9' });
+                //comp = <PollPage id ={this.props} />;
             }
-            console.log("allow is " + this.state.allow + " and comp is " + comp);
+            console.log("allow is " + this.state.allow);
             return _react2.default.createElement(
                 'div',
                 null,
@@ -13193,6 +13197,15 @@ var checkCorrectUser = function (_React$Component) {
                             _reactRouterDom.Link,
                             { to: '/login' },
                             'Login'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        { className: 'nav-item' },
+                        _react2.default.createElement(
+                            _reactRouterDom.Link,
+                            { to: '/polls/58ee710c2a2994210978fac9/edit' },
+                            'Edit Poll'
                         )
                     )
                 )
@@ -15338,7 +15351,7 @@ var PollPage = function (_React$Component) {
       poll: { "name": "Placeholder Poll", "options": [] },
       selection: "",
       message: "",
-      id: _this.props.match.params.id,
+      id: "58ee710c2a2994210978fac9",
       loaded: false,
       showButtons: false
     };
@@ -15417,33 +15430,27 @@ var PollPage = function (_React$Component) {
       this.postPollVoteToServer();
     }
   }, {
-    key: 'handleAddPollOptions',
-    value: function handleAddPollOptions() {
-      console.log("made it to add poll options method");
-      return _react2.default.createElement(_EditPoll2.default, null);
-    }
-  }, {
     key: 'handleDelete',
     value: function handleDelete() {
       var _this5 = this;
 
-      console.log("button test");
-      //  if(confirm("Are you sure you want to delete this poll?")){
-      var id = this.state.id;
-      var token = _Auth2.default.getToken();
-      _axios2.default.delete('/api/restricted/polls/' + id, {
-        headers: { "Authorization": "bearer: " + token }
-      }).then(function (res) {
-        _this5.setState({ message: res.data.message });
-      }).catch(function (err) {
-        console.log(err);
-      });
-      //  } take out confirm for now to test the routes are working
+      if (confirm("Are you sure you want to delete this poll?")) {
+        var id = this.state.id;
+        var token = _Auth2.default.getToken();
+        _axios2.default.delete('/api/restricted/polls/' + id, {
+          headers: { "Authorization": "bearer: " + token }
+        }).then(function (res) {
+          _this5.setState({ message: res.data.message });
+        }).catch(function (err) {
+          console.log(err);
+        });
+      } //added confirm back and hopefully it will work. earlier taken out to test the routes are working
     }
   }, {
     key: 'render',
     value: function render() {
       var poll = this.state.poll;
+      var id = this.state.id;
       var message = this.state.message;
       var loaded = this.state.loaded;
       if (!loaded) {
@@ -15460,15 +15467,20 @@ var PollPage = function (_React$Component) {
         options.push(poll.options[i]["name"]);
       }
       var deleteAndEditButtons = void 0;
-      console.log("show buttons is " + this.state.showButtons);
+      var editPath = id + '/edit';
+      console.log("edit path is " + editPath);
       if (this.state.showButtons) {
         deleteAndEditButtons = _react2.default.createElement(
           'div',
           { className: 'col-10 offset-1 col-md-4 offset-md-2' },
           _react2.default.createElement(
             'button',
-            { className: 'btn btn-default', onClick: this.handleAddPollOptions.bind(this) },
-            'Add Poll Options'
+            { className: 'btn btn-default' },
+            _react2.default.createElement(
+              _reactRouterDom.Link,
+              { to: editPath },
+              ' Add Poll Options'
+            )
           ),
           _react2.default.createElement(
             'button',

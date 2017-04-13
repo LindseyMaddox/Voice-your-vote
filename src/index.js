@@ -31,7 +31,9 @@ class checkCorrectUser extends React.Component {
 componentDidMount(){
     console.log("checkCorrectUser component mounted");
       let token = Auth.getToken();
-     let id = this.props.match.params.id;
+      console.log("check for props on specific call, they're " + JSON.stringify(this.props));
+    let id = "58ee710c2a2994210978fac9";
+    // let id = this.props.match.params.id || this.props.id;
        let headers = { 'Authorization': 'bearer: ' + token };
      axios.get('/api/restricted/polls/' + id, { headers: headers })
       .then(res => { 
@@ -48,12 +50,14 @@ componentDidMount(){
     render(){
         let comp;
         if(this.state.allow){
-            comp = <EditPoll id={this.props.match.params.id} />;
+          //  comp = <EditPoll id={this.props.match.params.id} />;
+            comp = <EditPoll id="58ee710c2a2994210978fac9" />;
         } else {
             //this.props for consistency in component's state
-            comp = <PollPage id ={this.props} />;
+            comp = <PollPage id="58ee710c2a2994210978fac9" / >;
+            //comp = <PollPage id ={this.props} />;
         }
-        console.log("allow is " + this.state.allow + " and comp is " + comp);
+        console.log("allow is " + this.state.allow);
      return (
         <div>{comp}</div>
         );
@@ -74,6 +78,7 @@ render(
                                 {/* Change from a to Link */}
                                 <li className="nav-item"><Link to="/">Home</Link></li>
                                 <li className="nav-item"><Link to="/login">Login</Link></li>
+                                <li className="nav-item"><Link to="/polls/58ee710c2a2994210978fac9/edit">Edit Poll</Link></li>
                             </ul>
                 </div>
             </nav>
