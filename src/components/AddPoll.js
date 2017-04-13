@@ -83,8 +83,8 @@ handleNameChange(event) {
       for(var i = 0; i < this.state.numOfPollOptions; i++){
             var optionBlock =   <div className="form-group">
       <label htmlFor="newPollOptions">Options</label>
-                <input type="text" name="Options" className="form-control" placeholder="Option" 
-                 className="new-poll-options" id={"new-poll-options" + i} onChange={this.handleOptionsChange.bind(this)} value={this.state.optionsList[i].name}></input>
+                <input type="text" name="Options" className="form-control poll-options" placeholder="Option" 
+                  id={"new-poll-options" + i} onChange={this.handleOptionsChange.bind(this)} value={this.state.optionsList[i].name}></input>
               </div>;
           options.push(optionBlock);
       }
@@ -109,8 +109,12 @@ handleNameChange(event) {
               <div className="options-list">
                    {options.map(option => ( <div>{option}</div>))}
               </div>
-              <button id="create-new-option-button" className="btn btn-default" onClick={this.handleAddOptions.bind(this)}>Add Option</button>
-              <button type="submit" id="new-poll-button" className="btn btn-primary">Add Poll</button>
+              <div className="row">
+                <button className="btn btn-default btn-sm add-option-button" onClick={this.handleAddOptions.bind(this)}>Add Option</button>
+              </div>
+              <div className="row">
+                 <button type="submit" id="new-poll-button" className="btn btn-primary">Add Poll</button>
+              </div>
             </form>
         </div>
     </div>

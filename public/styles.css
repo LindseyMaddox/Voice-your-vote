@@ -45,6 +45,22 @@ h1 {
     padding-top: 35px;
 }
 
-#add-options-submit-button {
+#add-options-submit-button, #new-poll-button {
     margin-top: 30px;
+}
+.add-option-button {
+    margin: 15px 0 25px 0;
+}
+
+.form-group {
+    margin: 25px 0 0 0;
+}
+.poll-description {
+    font-style: italic;
+}
+form .row {
+    margin-left: 0px; 
+}
+#edit-form-header {
+    margin: 25px 0 15px 0;
 }

@@ -10044,8 +10044,6 @@ var _IndexPage2 = _interopRequireDefault(_IndexPage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -10118,9 +10116,7 @@ var EditPoll = function (_React$Component) {
         key: 'handleSubmit',
         value: function handleSubmit(event) {
             event.preventDefault();
-            this.context.router.push('/polls');
-            return _react2.default.createElement(_IndexPage2.default, null);
-            // this.removeEmptyOptions(this.postPollToServer.bind(this));
+            this.removeEmptyOptions(this.postPollToServer.bind(this));
         }
     }, {
         key: 'removeEmptyOptions',
@@ -10141,14 +10137,10 @@ var EditPoll = function (_React$Component) {
             var token = _Auth2.default.getToken();
             var headers = { 'Authorization': 'bearer: ' + token };
             var that = this;
-
-            console.log("test for that context outside, it's " + JSON.stringify(that.context));
             _axios2.default.post('/api/restricted/polls/' + id + '/edit', {
                 'options': filteredOptionsList }, { headers: headers }).then(function (response) {
                 var pollPath = 'polls/' + id;
-                console.log("check for context inside the function response, it's " + JSON.stringify(that.context));
-
-                that.context.router.push(pollPath);
+                that.context.router.history.push(pollPath);
             }).catch(function (error) {
                 console.log(error);
             });
@@ -10159,8 +10151,6 @@ var EditPoll = function (_React$Component) {
             var newOptions = [];
             var optionBlock = void 0;
             for (var i = 0; i < this.state.additionalOptionsList.length; i++) {
-                var _React$createElement;
-
                 optionBlock = _react2.default.createElement(
                     'div',
                     { className: 'form-group' },
@@ -10169,8 +10159,7 @@ var EditPoll = function (_React$Component) {
                         { htmlFor: "poll-options-" + i },
                         ' New Option'
                     ),
-                    _react2.default.createElement('input', (_React$createElement = { type: 'text', className: 'form-control', placeholder: 'Option'
-                    }, _defineProperty(_React$createElement, 'className', 'new-poll-options'), _defineProperty(_React$createElement, 'id', "poll-options-" + i), _defineProperty(_React$createElement, 'onChange', this.handleChange.bind(this)), _defineProperty(_React$createElement, 'value', this.state.additionalOptionsList[i].name), _React$createElement))
+                    _react2.default.createElement('input', { type: 'text', className: 'form-control new-poll-options', placeholder: 'Option', id: "poll-options-" + i, onChange: this.handleChange.bind(this), value: this.state.additionalOptionsList[i].name })
                 );
                 newOptions.push(optionBlock);
             }
@@ -10196,9 +10185,22 @@ var EditPoll = function (_React$Component) {
                         'div',
                         { className: 'col-10 offset-1 col-md-8 offset-md-2' },
                         _react2.default.createElement(
-                            'h1',
+                            'h2',
                             null,
-                            'Edit Poll'
+                            pollName
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-10 offset-1 col-md-8 offset-md-2' },
+                        _react2.default.createElement(
+                            'h4',
+                            { className: 'poll-description' },
+                            description
                         )
                     )
                 ),
@@ -10209,42 +10211,11 @@ var EditPoll = function (_React$Component) {
                         'div',
                         { className: 'col-10 offset-1 col-md-6 offset-md-2 col-lg-4' },
                         _react2.default.createElement(
-                            'div',
-                            { className: 'row' },
-                            _react2.default.createElement(
-                                'h2',
-                                { className: 'poll-name' },
-                                'Poll: ',
-                                pollName
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'row' },
-                            description
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'row' },
-                            'Existing Options'
-                        ),
-                        _react2.default.createElement(
-                            'ul',
-                            { className: 'original-options-list' },
-                            originalOptions.map(function (option) {
-                                return _react2.default.createElement(
-                                    'li',
-                                    null,
-                                    option
-                                );
-                            })
-                        ),
-                        _react2.default.createElement(
                             'form',
                             { onSubmit: this.handleSubmit.bind(this) },
                             _react2.default.createElement(
                                 'h3',
-                                null,
+                                { className: 'edit-form-header' },
                                 'Add New Options'
                             ),
                             _react2.default.createElement(
@@ -10263,9 +10234,25 @@ var EditPoll = function (_React$Component) {
                                 { className: 'row' },
                                 _react2.default.createElement(
                                     'button',
-                                    { id: 'create-new-option-button', className: 'btn btn-default btn-sm', onClick: this.handleAddOptions.bind(this) },
-                                    'Add Option'
+                                    { className: 'btn btn-default btn-sm add-option-button', onClick: this.handleAddOptions.bind(this) },
+                                    'Add Another Option'
                                 )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'row' },
+                                'Existing Options'
+                            ),
+                            _react2.default.createElement(
+                                'ul',
+                                { className: 'original-options-list' },
+                                originalOptions.map(function (option) {
+                                    return _react2.default.createElement(
+                                        'li',
+                                        null,
+                                        option
+                                    );
+                                })
                             ),
                             _react2.default.createElement(
                                 'div',
@@ -10273,7 +10260,7 @@ var EditPoll = function (_React$Component) {
                                 _react2.default.createElement(
                                     'button',
                                     { type: 'submit', id: 'add-options-submit-button', className: 'btn btn-primary' },
-                                    'Add Options'
+                                    'Add Options to Poll'
                                 )
                             )
                         )
@@ -14065,6 +14052,8 @@ var Index = function (_React$Component2) {
     _createClass(Index, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
+            console.log("check for history it's " + this.props.history);
+
             if (_Auth2.default.isUserAuthenticated()) {
                 this.setState({
                     loggedIN: true
@@ -15059,8 +15048,6 @@ var _Auth2 = _interopRequireDefault(_Auth);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -15161,8 +15148,6 @@ var AddPoll = function (_React$Component) {
         value: function render() {
             var options = [];
             for (var i = 0; i < this.state.numOfPollOptions; i++) {
-                var _React$createElement;
-
                 var optionBlock = _react2.default.createElement(
                     'div',
                     { className: 'form-group' },
@@ -15171,8 +15156,8 @@ var AddPoll = function (_React$Component) {
                         { htmlFor: 'newPollOptions' },
                         'Options'
                     ),
-                    _react2.default.createElement('input', (_React$createElement = { type: 'text', name: 'Options', className: 'form-control', placeholder: 'Option'
-                    }, _defineProperty(_React$createElement, 'className', 'new-poll-options'), _defineProperty(_React$createElement, 'id', "new-poll-options" + i), _defineProperty(_React$createElement, 'onChange', this.handleOptionsChange.bind(this)), _defineProperty(_React$createElement, 'value', this.state.optionsList[i].name), _React$createElement))
+                    _react2.default.createElement('input', { type: 'text', name: 'Options', className: 'form-control poll-options', placeholder: 'Option',
+                        id: "new-poll-options" + i, onChange: this.handleOptionsChange.bind(this), value: this.state.optionsList[i].name })
                 );
                 options.push(optionBlock);
             }
@@ -15233,14 +15218,22 @@ var AddPoll = function (_React$Component) {
                                 })
                             ),
                             _react2.default.createElement(
-                                'button',
-                                { id: 'create-new-option-button', className: 'btn btn-default', onClick: this.handleAddOptions.bind(this) },
-                                'Add Option'
+                                'div',
+                                { className: 'row' },
+                                _react2.default.createElement(
+                                    'button',
+                                    { className: 'btn btn-default btn-sm add-option-button', onClick: this.handleAddOptions.bind(this) },
+                                    'Add Option'
+                                )
                             ),
                             _react2.default.createElement(
-                                'button',
-                                { type: 'submit', id: 'new-poll-button', className: 'btn btn-primary' },
-                                'Add Poll'
+                                'div',
+                                { className: 'row' },
+                                _react2.default.createElement(
+                                    'button',
+                                    { type: 'submit', id: 'new-poll-button', className: 'btn btn-primary' },
+                                    'Add Poll'
+                                )
                             )
                         )
                     )

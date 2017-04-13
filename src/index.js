@@ -67,6 +67,8 @@ class Index extends React.Component {
    }
    
    componentDidMount(){
+        console.log("check for history it's " + this.props.history);
+        
         if (Auth.isUserAuthenticated() ){
             this.setState({
                 loggedIN: true

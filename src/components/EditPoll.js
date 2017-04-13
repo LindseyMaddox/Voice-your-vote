@@ -57,9 +57,7 @@ class EditPoll extends React.Component {
     
     handleSubmit(event){
         event.preventDefault();
-        this.context.router.history.push('/polls');
-         return <IndexPage />;
-      // this.removeEmptyOptions(this.postPollToServer.bind(this));
+        this.removeEmptyOptions(this.postPollToServer.bind(this));
        
     }
     removeEmptyOptions(callback){
@@ -78,14 +76,10 @@ class EditPoll extends React.Component {
        let token = Auth.getToken();
         let headers = { 'Authorization': 'bearer: ' + token };
         var that = this;
-
-        console.log("test for that context outside, it's " + JSON.stringify(that.context));
-       axios.post('/api/restricted/polls/' + id + '/edit', {
+ axios.post('/api/restricted/polls/' + id + '/edit', {
    'options': filteredOptionsList },{ headers: headers })
    .then(function (response) {
        let pollPath = 'polls/' + id;
-      console.log("check for context inside the function response, it's " + JSON.stringify(that.context));
-
         that.context.router.history.push(pollPath);
    })
    .catch(function (error) {
@@ -101,8 +95,7 @@ class EditPoll extends React.Component {
           optionBlock = 
           <div className="form-group">
               <label htmlFor={"poll-options-" + i}> New Option</label>
-              <input type="text" className="form-control" placeholder="Option" 
-                   className="new-poll-options" id={"poll-options-" + i} onChange={this.handleChange.bind(this)} value={this.state.additionalOptionsList[i].name}></input>
+              <input type="text" className="form-control new-poll-options" placeholder="Option" id={"poll-options-" + i} onChange={this.handleChange.bind(this)} value={this.state.additionalOptionsList[i].name}></input>
           </div>;
          newOptions.push(optionBlock);
      }
@@ -122,29 +115,30 @@ class EditPoll extends React.Component {
        <div className="home">
     <div className="row">
         <div className="col-10 offset-1 col-md-8 offset-md-2">
-            <h1>Edit Poll</h1>
+            <h2>{pollName}</h2>
+        </div>
+    </div>
+    <div className="row">
+        <div className="col-10 offset-1 col-md-8 offset-md-2">
+            <h4 className="poll-description">{description}</h4>
         </div>
     </div>
     <div className="row">
         <div className="col-10 offset-1 col-md-6 offset-md-2 col-lg-4">
-             <div className="row">
-                <h2 className="poll-name">Poll: {pollName}</h2>
-             </div>
-             <div className="row">{description}</div>
-             <div className="row">Existing Options</div>
-             <ul className="original-options-list">
-                    {originalOptions.map(option => ( <li>{option}</li>))}
-             </ul>
              <form onSubmit={this.handleSubmit.bind(this)}>
-                    <h3>Add New Options</h3>
+                    <h3 className="edit-form-header">Add New Options</h3>
                   <div className="new-options-list">
                        {newOptions.map(option => ( <div>{option}</div>))}
                   </div>
                   <div className="row">
-                    <button id="create-new-option-button" className="btn btn-default btn-sm" onClick={this.handleAddOptions.bind(this)}>Add Option</button>
+                    <button className="btn btn-default btn-sm add-option-button" onClick={this.handleAddOptions.bind(this)}>Add Another Option</button>
                   </div>
+                 <div className="row">Existing Options</div>
+                 <ul className="original-options-list">
+                        {originalOptions.map(option => ( <li>{option}</li>))}
+                 </ul>
                   <div className="row submit-button-row">
-                    <button type="submit" id="add-options-submit-button" className="btn btn-primary">Add Options</button>
+                    <button type="submit" id="add-options-submit-button" className="btn btn-primary">Add Options to Poll</button>
                   </div>
             </form>
         </div>
