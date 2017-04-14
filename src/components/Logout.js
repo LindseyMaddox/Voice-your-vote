@@ -8,7 +8,7 @@ class Logout extends React.Component {
   componentWillMount() {
     // Auth.deauthenticateUser();
     // this.context.router.history.replace('/');
-    console.log("this.props is " + this.props);
+    console.log("this.props is " + JSON.stringify(this.props));
 //    this.props.handleLogout();
   }
 

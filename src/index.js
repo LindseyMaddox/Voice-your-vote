@@ -8,6 +8,7 @@ import  IndexPage from './components/IndexPage';
 import  PollPage  from './components/PollPage';
 import  Login  from './components/Login';
 import  Logout  from './components/Logout';
+import Account from './components/Account';
 import  Signup  from './components/Signup';
 import AddPoll from './components/AddPoll';
 import EditPoll from './components/EditPoll';
@@ -18,6 +19,14 @@ const PollPageWrapper = ( {match} ) => {
     return <PollPage id={match.params.id} />;
 };
 
+    const LogoutWrapper = (props) => {
+      return (
+        <Logout 
+          handleLogout={this.handleLogout.bind(this)}
+          {...props}
+        />
+      );
+    }
 const handleAddLinkFollow = ( ) => {
     if(Auth.isUserAuthenticated()){
     return <AddPoll />;
@@ -95,6 +104,7 @@ render() {
     if(this.state.loggedIN){
         additionalNavLinks =
             <div>
+                <li className="nav-item"><Link to="/account">Account</Link></li>
                 <li className="nav-item"><Link to="/polls/new">Add Poll</Link></li>
                 <li className="nav-item"><Link to="/logout">Logout</Link></li>
             </div>;
@@ -127,9 +137,10 @@ render() {
                 <Route path="/polls/new" exact={true} component={handleAddLinkFollow} />
                 <Route path="/polls/:id/edit" component={checkCorrectUser} />
                 <Route path="/polls/:id" component={PollPageWrapper} />
-                <Route path="/login" component={Login} handleCorrectLogin={this.handleCorrectLogin.bind(this)} />
-                <Route path='/logout' component={Logout} handleLogout={this.handleLogout.bind(this)} />
+                <Route path="/login" component={Login} />
+                <Route path='/logout'  component={Logout} />
                 <Route path="/signup" component={Signup} />
+                <Route path="/account" component={Account} />
             </Switch>
         </div>
     </Router>

@@ -69,5 +69,49 @@ const router = new express.Router();
          });
          
     }
+    
+    //user info
+    
+    router.get('/account', function (req, res){
+     
+     //this should be returned by auth check
+    var user = req.user;
+      test(user);
+     //  getAllPolls(user, function(polls) {
+     //     res.set("Content-Type", 'application/json');
+     //      res.json(polls);
+     // });
+
+   //  getVoteInfo(user);
+  });
+  
+  function test(user){
+   db.collection('polls').find({ user: user.email }, {"options.votes": 1 }).toArray(function(err, record) {
+      if(err) throw err;
+    console.log("record is " + JSON.stringify(record));
+   });
+  }
+  function getAllPolls(user,callback){
+    db.collection('polls').find( { user: user.email }).toArray(function(err, polls) {
+     if(err) throw err;
+     console.log("optionsa  " + JSON.stringify(polls[0].options));
+     callback(polls);
+    });
+  }
+  function getVoteInfo(user){
+    db.collection('polls').aggregate( 
+      {
+        "$match":{ "user": user.email }
+   },
+   {
+        "$project": {
+            "options": { "$max": "$options.votes" }
+         }
+    }).toArray(function(err, record) {
+     if(err) throw err;
+     console.log("record is " + record)
+    });
+  }
+  
  }); //end of connection
 module.exports = router;
