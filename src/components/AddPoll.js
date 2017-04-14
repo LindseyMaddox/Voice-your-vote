@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Auth from '../modules/Auth';
+import PropTypes from 'prop-types'; 
 
 class AddPoll extends React.Component {
    constructor(props) {
@@ -49,7 +50,7 @@ handleNameChange(event) {
     
     handleSubmit(event){
         event.preventDefault();
-        this.removeEmptyOptions(this.postPollToServer);
+        this.removeEmptyOptions(this.postPollToServer.bind(this));
        
     }
     removeEmptyOptions(callback){
@@ -60,19 +61,19 @@ handleNameChange(event) {
                filteredList.push(options[i]);
             }
         }
-        callback(this.state.pollName, this.state.description,filteredList);
+        callback(filteredList);
     }
     
-    postPollToServer(name,description,filteredOptionsList){
+    postPollToServer(filteredOptionsList){
+        var that = this;
         let token = Auth.getToken();
-        console.log("token is " + token);
         let headers = { 'Authorization': 'bearer: ' + token };
        axios.post('/api/restricted/polls/create', {
-            'name': name,
-    'description': description,
+            'name': this.state.pollName,
+    'description': this.state.description,
    'options': filteredOptionsList },{ headers: headers })
   .then(function (response) {
-    console.log(response);
+     that.context.router.history.push(response.data.location);
   })
   .catch(function (error) {
     console.log(error);
@@ -122,5 +123,8 @@ handleNameChange(event) {
     );
   }
 }
-
+ AddPoll.contextTypes = {
+        router: React.PropTypes.object
+    };
+    
 export default AddPoll;

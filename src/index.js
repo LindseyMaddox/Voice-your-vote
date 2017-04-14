@@ -7,6 +7,7 @@ import { browserHistory } from 'react-router';
 import  IndexPage from './components/IndexPage';
 import  PollPage  from './components/PollPage';
 import  Login  from './components/Login';
+import  Logout  from './components/Logout';
 import  Signup  from './components/Signup';
 import AddPoll from './components/AddPoll';
 import EditPoll from './components/EditPoll';
@@ -17,9 +18,13 @@ const PollPageWrapper = ( {match} ) => {
     return <PollPage id={match.params.id} />;
 };
 
-const handleAddLinkFollow = () => {
-    console.log("here we'll check for auth");
+const handleAddLinkFollow = ( ) => {
+    if(Auth.isUserAuthenticated()){
     return <AddPoll />;
+    } else {
+        alert("You are not authorized to add new polls");
+        return null;
+    }
 };
 
 class checkCorrectUser extends React.Component {
@@ -67,13 +72,22 @@ class Index extends React.Component {
    }
    
    componentDidMount(){
-        console.log("check for history it's " + this.props.history);
-        
         if (Auth.isUserAuthenticated() ){
+            console.log("user is authenticated");
             this.setState({
                 loggedIN: true
             });
         } 
+   }
+      handleCorrectLogin(){
+        this.setState({
+            loggedIN: true
+        });
+   }
+   handleLogout(){
+        this.setState({
+            loggedIN: false
+        });
    }
     
 render() {
@@ -113,9 +127,8 @@ render() {
                 <Route path="/polls/new" exact={true} component={handleAddLinkFollow} />
                 <Route path="/polls/:id/edit" component={checkCorrectUser} />
                 <Route path="/polls/:id" component={PollPageWrapper} />
-                <Route path="/login" component={Login} />
-                <Route path="/logout" onEnter={() => {
-        Auth.deauthenticate; this.props.history.push('/') }} />
+                <Route path="/login" component={Login} handleCorrectLogin={this.handleCorrectLogin.bind(this)} />
+                <Route path='/logout' component={Logout} handleLogout={this.handleLogout.bind(this)} />
                 <Route path="/signup" component={Signup} />
             </Switch>
         </div>

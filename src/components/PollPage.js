@@ -7,6 +7,7 @@ import { NotFoundPage } from './NotFoundPage';
 import { Chart } from './PieChart';
 import axios from 'axios';
 import Auth from '../modules/Auth';
+import PropTypes from 'prop-types'; 
 
 class PollPage extends React.Component {
     constructor(props) {
@@ -45,7 +46,7 @@ class PollPage extends React.Component {
       console.log(err);
     });
  }
-    checkCorrectUser(callback){
+    checkCorrectUser(){
       let id = this.state.id;
        let token = Auth.getToken();
         let headers = { 'Authorization': 'bearer: ' + token };
@@ -84,12 +85,12 @@ class PollPage extends React.Component {
   handleDelete(){
   if(confirm("Are you sure you want to delete this poll?")){
      let id = this.state.id;
-       let token = Auth.getToken();
+      let token = Auth.getToken();
       axios.delete('/api/restricted/polls/' + id, {
           headers: { "Authorization": "bearer: " + token }
         })
         .then(res => { 
-        <Redirect push to='/' message={res.data.message} />;
+          this.context.router.history.push('/');
         })
         .catch(err => {
           console.log(err);
@@ -175,5 +176,7 @@ class PollPage extends React.Component {
     );
   }
 }
-
+ PollPage.contextTypes = {
+        router: React.PropTypes.object
+    };
 export default PollPage;

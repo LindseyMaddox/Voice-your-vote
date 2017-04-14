@@ -79,8 +79,8 @@ class EditPoll extends React.Component {
  axios.post('/api/restricted/polls/' + id + '/edit', {
    'options': filteredOptionsList },{ headers: headers })
    .then(function (response) {
-       let pollPath = 'polls/' + id;
-        that.context.router.history.push(pollPath);
+       let pollPath = '/polls/' + id;
+       that.context.router.history.push(pollPath);
    })
    .catch(function (error) {
       console.log(error);

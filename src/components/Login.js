@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Auth from '../modules/Auth';
+import PropTypes from 'prop-types';
 
 export default class Login extends React.Component {
       constructor(props) {
@@ -35,6 +36,8 @@ export default class Login extends React.Component {
     "password": password})
    .then(function (response) {
        Auth.authenticateUser(response.data.token);
+       this.props.handleCorrectLogin();
+        this.context.router.history.push('/');
   })
   .catch(function (error) {
         if(error.response.status >= 400 && error.response.status < 500){
@@ -43,7 +46,6 @@ export default class Login extends React.Component {
                     errors: error.response.data.errors
                 });
             } else {
-                console.log("no error hash; setting generic to true");
                 that.setState({
                     genericErrorMessage: true,
                     errors: ""
@@ -104,3 +106,7 @@ export default class Login extends React.Component {
     );
   }
 }
+
+ Login.contextTypes = {
+        router: React.PropTypes.object
+    };

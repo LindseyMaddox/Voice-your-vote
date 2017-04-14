@@ -19,7 +19,8 @@ const router = new express.Router();
    router.post('/polls/create', function (req,res){
      console.log('test to see if req.user is avl in create method ' + req.user);
      addNewPoll(req.body,req.user.email, function(poll){
-        res.json({message:"Thanks for creating a poll. Will redirect later"});
+      var path = "/polls/" + poll.ops[0]["_id"];
+      res.status(201).json({ location: path, message: 'Poll added'});;
     });
    });
    
@@ -42,10 +43,8 @@ const router = new express.Router();
     router.post('/polls/:id/edit', function (req, res){
      var id = req.params.id;
     var options = req.body.options;
-    respondToUpdate("fire");
-  //  updatePollInfo(id, options, respondToUpdate);
+    updatePollInfo(id, options, respondToUpdate);
     function respondToUpdate(record){
-       console.log("Poll updated to " + record);
        res.json({ message: 'Poll updated'});
    };
 });
