@@ -19,14 +19,6 @@ const PollPageWrapper = ( {match} ) => {
     return <PollPage id={match.params.id} />;
 };
 
-    const LogoutWrapper = (props) => {
-      return (
-        <Logout 
-          handleLogout={this.handleLogout.bind(this)}
-          {...props}
-        />
-      );
-    }
 const handleAddLinkFollow = ( ) => {
     if(Auth.isUserAuthenticated()){
     return <AddPoll />;
@@ -76,7 +68,8 @@ class Index extends React.Component {
      constructor() {
     super();
     this.state = {
-        loggedIN: false
+        loggedIN: false,
+        actionMessage: ""
     };
    }
    
@@ -88,6 +81,22 @@ class Index extends React.Component {
             });
         } 
    }
+      updateActionStatusMessage(status){
+          
+          let message;
+          if(status == "poll deleted"){
+              message = "Successfully deleted poll";
+          } else if(status == "poll added"){
+              message = "Successfully created poll";
+          } else if (status == "poll options added"){
+              message = "Added new options to poll";
+          } else {
+              //do nothing
+          }
+            this.setState({
+               actionMessage: message
+           });
+      }
       handleCorrectLogin(){
         this.setState({
             loggedIN: true
@@ -133,12 +142,12 @@ render() {
                 </div>
             </nav>
             <Switch>
-                <Route path="/" exact={true} component={IndexPage} />
+                <Route path="/" exact={true} render={()=><IndexPage message={this.state.message} />} />
                 <Route path="/polls/new" exact={true} component={handleAddLinkFollow} />
                 <Route path="/polls/:id/edit" component={checkCorrectUser} />
-                <Route path="/polls/:id" component={PollPageWrapper} />
-                <Route path="/login" component={Login} />
-                <Route path='/logout'  component={Logout} />
+                <Route path="/polls/:id" render={({ match })=><PollPage message={this.state.message} updateActionStatusMessage={this.updateActionStatusMessage.bind(this)} id={match.params.id} />} />
+                <Route path="/login" render={()=><Login handleCorrectLogin={this.handleCorrectLogin.bind(this)} />} />
+                <Route path='/logout'  render={()=><Logout handleLogout={this.handleLogout.bind(this)} />} />
                 <Route path="/signup" component={Signup} />
                 <Route path="/account" component={Account} />
             </Switch>

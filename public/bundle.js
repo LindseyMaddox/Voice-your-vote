@@ -321,7 +321,7 @@ module.exports = invariant;
 "use strict";
 
 
-module.exports = __webpack_require__(28);
+module.exports = __webpack_require__(29);
 
 
 /***/ }),
@@ -1523,7 +1523,7 @@ var _prodInvariant = __webpack_require__(3),
 var CallbackQueue = __webpack_require__(89);
 var PooledClass = __webpack_require__(21);
 var ReactFeatureFlags = __webpack_require__(94);
-var ReactReconciler = __webpack_require__(27);
+var ReactReconciler = __webpack_require__(28);
 var Transaction = __webpack_require__(39);
 
 var invariant = __webpack_require__(1);
@@ -4281,6 +4281,43 @@ return Promise;
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
+
+if (process.env.NODE_ENV !== 'production') {
+  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
+    Symbol.for &&
+    Symbol.for('react.element')) ||
+    0xeac7;
+
+  var isValidElement = function(object) {
+    return typeof object === 'object' &&
+      object !== null &&
+      object.$$typeof === REACT_ELEMENT_TYPE;
+  };
+
+  // By explicitly using `prop-types` you are opting into new development behavior.
+  // http://fb.me/prop-types-in-prod
+  var throwOnDirectAccess = true;
+  module.exports = __webpack_require__(155)(isValidElement, throwOnDirectAccess);
+} else {
+  // By explicitly using `prop-types` you are opting into new production behavior.
+  // http://fb.me/prop-types-in-prod
+  module.exports = __webpack_require__(154)();
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /**
  * Copyright 2015-present, Facebook, Inc.
@@ -4401,7 +4438,7 @@ DOMLazyTree.queueText = queueText;
 module.exports = DOMLazyTree;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4575,7 +4612,7 @@ module.exports = ReactReconciler;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4667,43 +4704,6 @@ var React = {
 };
 
 module.exports = React;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
-if (process.env.NODE_ENV !== 'production') {
-  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
-    Symbol.for &&
-    Symbol.for('react.element')) ||
-    0xeac7;
-
-  var isValidElement = function(object) {
-    return typeof object === 'object' &&
-      object !== null &&
-      object.$$typeof === REACT_ELEMENT_TYPE;
-  };
-
-  // By explicitly using `prop-types` you are opting into new development behavior.
-  // http://fb.me/prop-types-in-prod
-  var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(155)(isValidElement, throwOnDirectAccess);
-} else {
-  // By explicitly using `prop-types` you are opting into new production behavior.
-  // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(154)();
-}
-
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
@@ -6900,7 +6900,7 @@ module.exports = invariant;
 
 
 
-var DOMLazyTree = __webpack_require__(26);
+var DOMLazyTree = __webpack_require__(27);
 var Danger = __webpack_require__(162);
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactInstrumentation = __webpack_require__(10);
@@ -7454,7 +7454,7 @@ module.exports = KeyEscapeUtils;
 
 var _prodInvariant = __webpack_require__(3);
 
-var React = __webpack_require__(28);
+var React = __webpack_require__(29);
 var ReactPropTypesSecret = __webpack_require__(99);
 
 var invariant = __webpack_require__(1);
@@ -10072,7 +10072,7 @@ var _Auth2 = _interopRequireDefault(_Auth);
 
 var _reactRouter = __webpack_require__(119);
 
-var _propTypes = __webpack_require__(29);
+var _propTypes = __webpack_require__(26);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -10384,9 +10384,27 @@ var IndexPage = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var message = this.props.message;
       return _react2.default.createElement(
         'div',
         { className: 'home' },
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-10 offset-1 col-md-4 offset-md-2' },
+            _react2.default.createElement(
+              'div',
+              { className: 'row' },
+              _react2.default.createElement(
+                'h4',
+                { className: 'success-message' },
+                message
+              )
+            )
+          )
+        ),
         _react2.default.createElement(
           'div',
           { className: 'col-10 offset-1 col-md-8 offset-md-2' },
@@ -11582,9 +11600,9 @@ module.exports = ReactInputSelection;
 
 var _prodInvariant = __webpack_require__(3);
 
-var DOMLazyTree = __webpack_require__(26);
+var DOMLazyTree = __webpack_require__(27);
 var DOMProperty = __webpack_require__(19);
-var React = __webpack_require__(28);
+var React = __webpack_require__(29);
 var ReactBrowserEventEmitter = __webpack_require__(37);
 var ReactCurrentOwner = __webpack_require__(13);
 var ReactDOMComponentTree = __webpack_require__(5);
@@ -11594,7 +11612,7 @@ var ReactFeatureFlags = __webpack_require__(94);
 var ReactInstanceMap = __webpack_require__(32);
 var ReactInstrumentation = __webpack_require__(10);
 var ReactMarkupChecksum = __webpack_require__(194);
-var ReactReconciler = __webpack_require__(27);
+var ReactReconciler = __webpack_require__(28);
 var ReactUpdateQueue = __webpack_require__(54);
 var ReactUpdates = __webpack_require__(12);
 
@@ -12127,7 +12145,7 @@ module.exports = ReactMount;
 
 var _prodInvariant = __webpack_require__(3);
 
-var React = __webpack_require__(28);
+var React = __webpack_require__(29);
 
 var invariant = __webpack_require__(1);
 
@@ -13992,10 +14010,6 @@ module.exports = g;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-// Import routing components
-
-
 var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
@@ -14055,6 +14069,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+// Import routing components
+
 
 var PollPageWrapper = function PollPageWrapper(_ref) {
     var match = _ref.match;
@@ -14062,11 +14078,6 @@ var PollPageWrapper = function PollPageWrapper(_ref) {
     return _react2.default.createElement(_PollPage2.default, { id: match.params.id });
 };
 
-var LogoutWrapper = function LogoutWrapper(props) {
-    return _react2.default.createElement(_Logout2.default, _extends({
-        handleLogout: undefined.handleLogout.bind(undefined)
-    }, props));
-};
 var handleAddLinkFollow = function handleAddLinkFollow() {
     if (_Auth2.default.isUserAuthenticated()) {
         return _react2.default.createElement(_AddPoll2.default, null);
@@ -14139,7 +14150,8 @@ var Index = function (_React$Component2) {
         var _this3 = _possibleConstructorReturn(this, (Index.__proto__ || Object.getPrototypeOf(Index)).call(this));
 
         _this3.state = {
-            loggedIN: false
+            loggedIN: false,
+            actionMessage: ""
         };
         return _this3;
     }
@@ -14153,6 +14165,24 @@ var Index = function (_React$Component2) {
                     loggedIN: true
                 });
             }
+        }
+    }, {
+        key: 'updateActionStatusMessage',
+        value: function updateActionStatusMessage(status) {
+
+            var message = void 0;
+            if (status == "poll deleted") {
+                message = "Successfully deleted poll";
+            } else if (status == "poll added") {
+                message = "Successfully created poll";
+            } else if (status == "poll options added") {
+                message = "Added new options to poll";
+            } else {
+                //do nothing
+            }
+            this.setState({
+                actionMessage: message
+            });
         }
     }, {
         key: 'handleCorrectLogin',
@@ -14171,6 +14201,8 @@ var Index = function (_React$Component2) {
     }, {
         key: 'render',
         value: function render() {
+            var _this4 = this;
+
             var additionalNavLinks = void 0;
             if (this.state.loggedIN) {
                 additionalNavLinks = _react2.default.createElement(
@@ -14273,12 +14305,21 @@ var Index = function (_React$Component2) {
                     _react2.default.createElement(
                         _reactRouterDom.Switch,
                         null,
-                        _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: _IndexPage2.default }),
+                        _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, render: function render() {
+                                return _react2.default.createElement(_IndexPage2.default, { message: _this4.state.message });
+                            } }),
                         _react2.default.createElement(_reactRouterDom.Route, { path: '/polls/new', exact: true, component: handleAddLinkFollow }),
                         _react2.default.createElement(_reactRouterDom.Route, { path: '/polls/:id/edit', component: checkCorrectUser }),
-                        _react2.default.createElement(_reactRouterDom.Route, { path: '/polls/:id', component: PollPageWrapper }),
-                        _react2.default.createElement(_reactRouterDom.Route, { path: '/login', component: _Login2.default }),
-                        _react2.default.createElement(_reactRouterDom.Route, { path: '/logout', component: _Logout2.default }),
+                        _react2.default.createElement(_reactRouterDom.Route, { path: '/polls/:id', render: function render(_ref2) {
+                                var match = _ref2.match;
+                                return _react2.default.createElement(_PollPage2.default, { message: _this4.state.message, updateActionStatusMessage: _this4.updateActionStatusMessage.bind(_this4), id: match.params.id });
+                            } }),
+                        _react2.default.createElement(_reactRouterDom.Route, { path: '/login', render: function render() {
+                                return _react2.default.createElement(_Login2.default, { handleCorrectLogin: _this4.handleCorrectLogin.bind(_this4) });
+                            } }),
+                        _react2.default.createElement(_reactRouterDom.Route, { path: '/logout', render: function render() {
+                                return _react2.default.createElement(_Logout2.default, { handleLogout: _this4.handleLogout.bind(_this4) });
+                            } }),
                         _react2.default.createElement(_reactRouterDom.Route, { path: '/signup', component: _Signup2.default }),
                         _react2.default.createElement(_reactRouterDom.Route, { path: '/account', component: _Account2.default })
                     )
@@ -15222,6 +15263,12 @@ var Account = function (_React$Component) {
           ),
           _react2.default.createElement(
             'div',
+            { className: 'summary row' },
+            'Number of polls: ',
+            this.state.polls.length
+          ),
+          _react2.default.createElement(
+            'div',
             { className: 'polls-list' },
             this.state.polls.map(function (poll) {
               return _react2.default.createElement(_PollPreview.PollPreview, _extends({ key: poll["_id"] }, poll));
@@ -15264,7 +15311,7 @@ var _Auth = __webpack_require__(20);
 
 var _Auth2 = _interopRequireDefault(_Auth);
 
-var _propTypes = __webpack_require__(29);
+var _propTypes = __webpack_require__(26);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -15500,7 +15547,7 @@ var _Auth = __webpack_require__(20);
 
 var _Auth2 = _interopRequireDefault(_Auth);
 
-var _propTypes = __webpack_require__(29);
+var _propTypes = __webpack_require__(26);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -15553,7 +15600,7 @@ var Login = function (_React$Component) {
                 'email': email,
                 "password": password }).then(function (response) {
                 _Auth2.default.authenticateUser(response.data.token);
-                // this.props.handleCorrectLogin();
+                this.props.handleCorrectLogin();
                 this.context.router.history.push('/');
             }).catch(function (error) {
                 if (error.response.status >= 400 && error.response.status < 500) {
@@ -15714,7 +15761,7 @@ var _Auth = __webpack_require__(20);
 
 var _Auth2 = _interopRequireDefault(_Auth);
 
-var _propTypes = __webpack_require__(29);
+var _propTypes = __webpack_require__(26);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -15738,10 +15785,9 @@ var Logout = function (_React$Component) {
   _createClass(Logout, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
-      // Auth.deauthenticateUser();
-      // this.context.router.history.replace('/');
-      console.log("this.props is " + JSON.stringify(this.props));
-      //    this.props.handleLogout();
+      _Auth2.default.deauthenticateUser();
+      this.context.router.history.replace('/');
+      this.props.handleLogout();
     }
   }, {
     key: 'render',
@@ -16026,7 +16072,7 @@ var _Auth = __webpack_require__(20);
 
 var _Auth2 = _interopRequireDefault(_Auth);
 
-var _propTypes = __webpack_require__(29);
+var _propTypes = __webpack_require__(26);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -16062,6 +16108,15 @@ var PollPage = function (_React$Component) {
     value: function componentDidMount() {
       this.loadPollFromServer(this.setLoadedTrue.bind(this));
       this.checkCorrectUser();
+      this.clearMessage();
+    }
+    //set message to "" after 10 seconds
+
+  }, {
+    key: 'clearMessage',
+    value: function clearMessage() {
+      console.log("test to see if this is what was wrong");
+      // setTimeout(function() { this.setState({message: ""}); }.bind(this), 10000); 
     }
   }, {
     key: 'setLoadedTrue',
@@ -16140,10 +16195,11 @@ var PollPage = function (_React$Component) {
           headers: { "Authorization": "bearer: " + token }
         }).then(function (res) {
           _this5.context.router.history.push('/');
+          _this5.props.updateActionStatusMessage('poll deleted');
         }).catch(function (err) {
           console.log(err);
         });
-      } //added confirm back and hopefully it will work. earlier taken out to test the routes are working
+      }
     }
   }, {
     key: 'render',
@@ -16338,6 +16394,10 @@ var _axios = __webpack_require__(18);
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _propTypes = __webpack_require__(26);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -16389,7 +16449,7 @@ var Signup = function (_React$Component) {
                 'email': email,
                 "password": password,
                 "passwordConfirmation": passwordConfirmation }).then(function (response) {
-                console.log("woohoo! response is " + JSON.stringify(response.status));
+                this.context.router.history.push('/login');
             }).catch(function (error) {
                 if (error.response.status >= 400 && error.response.status < 500) {
                     that.setState({
@@ -16523,6 +16583,11 @@ var Signup = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Signup;
+
+
+Signup.contextTypes = {
+    router: _react2.default.PropTypes.object
+};
 
 /***/ }),
 /* 152 */
@@ -34775,7 +34840,7 @@ module.exports = ChangeEventPlugin;
 
 var _prodInvariant = __webpack_require__(3);
 
-var DOMLazyTree = __webpack_require__(26);
+var DOMLazyTree = __webpack_require__(27);
 var ExecutionEnvironment = __webpack_require__(7);
 
 var createNodesFromMarkup = __webpack_require__(232);
@@ -35280,7 +35345,7 @@ module.exports = HTMLDOMPropertyConfig;
 
 
 
-var ReactReconciler = __webpack_require__(27);
+var ReactReconciler = __webpack_require__(28);
 
 var instantiateReactComponent = __webpack_require__(105);
 var KeyEscapeUtils = __webpack_require__(50);
@@ -35478,14 +35543,14 @@ module.exports = ReactComponentBrowserEnvironment;
 var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(6);
 
-var React = __webpack_require__(28);
+var React = __webpack_require__(29);
 var ReactComponentEnvironment = __webpack_require__(52);
 var ReactCurrentOwner = __webpack_require__(13);
 var ReactErrorUtils = __webpack_require__(53);
 var ReactInstanceMap = __webpack_require__(32);
 var ReactInstrumentation = __webpack_require__(10);
 var ReactNodeTypes = __webpack_require__(98);
-var ReactReconciler = __webpack_require__(27);
+var ReactReconciler = __webpack_require__(28);
 
 if (process.env.NODE_ENV !== 'production') {
   var checkReactTypeSpec = __webpack_require__(217);
@@ -36388,7 +36453,7 @@ module.exports = ReactCompositeComponent;
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactDefaultInjection = __webpack_require__(187);
 var ReactMount = __webpack_require__(97);
-var ReactReconciler = __webpack_require__(27);
+var ReactReconciler = __webpack_require__(28);
 var ReactUpdates = __webpack_require__(12);
 var ReactVersion = __webpack_require__(202);
 
@@ -36507,7 +36572,7 @@ var _prodInvariant = __webpack_require__(3),
 
 var AutoFocusUtils = __webpack_require__(158);
 var CSSPropertyOperations = __webpack_require__(160);
-var DOMLazyTree = __webpack_require__(26);
+var DOMLazyTree = __webpack_require__(27);
 var DOMNamespaces = __webpack_require__(48);
 var DOMProperty = __webpack_require__(19);
 var DOMPropertyOperations = __webpack_require__(90);
@@ -37548,7 +37613,7 @@ module.exports = ReactDOMContainerInfo;
 
 var _assign = __webpack_require__(6);
 
-var DOMLazyTree = __webpack_require__(26);
+var DOMLazyTree = __webpack_require__(27);
 var ReactDOMComponentTree = __webpack_require__(5);
 
 var ReactDOMEmptyComponent = function (instantiate) {
@@ -38108,7 +38173,7 @@ module.exports = ReactDOMNullInputValuePropHook;
 
 var _assign = __webpack_require__(6);
 
-var React = __webpack_require__(28);
+var React = __webpack_require__(29);
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactDOMSelect = __webpack_require__(92);
 
@@ -38456,7 +38521,7 @@ var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(6);
 
 var DOMChildrenOperations = __webpack_require__(47);
-var DOMLazyTree = __webpack_require__(26);
+var DOMLazyTree = __webpack_require__(27);
 var ReactDOMComponentTree = __webpack_require__(5);
 
 var escapeTextContentForBrowser = __webpack_require__(40);
@@ -39985,7 +40050,7 @@ var ReactInstanceMap = __webpack_require__(32);
 var ReactInstrumentation = __webpack_require__(10);
 
 var ReactCurrentOwner = __webpack_require__(13);
-var ReactReconciler = __webpack_require__(27);
+var ReactReconciler = __webpack_require__(28);
 var ReactChildReconciler = __webpack_require__(167);
 
 var emptyFunction = __webpack_require__(16);

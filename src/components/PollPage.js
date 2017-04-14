@@ -25,8 +25,13 @@ class PollPage extends React.Component {
    componentDidMount(){
       this.loadPollFromServer(this.setLoadedTrue.bind(this));
       this.checkCorrectUser();
+      this.clearMessage();
    }
- 
+       //set message to "" after 10 seconds
+    clearMessage(){
+      console.log("test to see if this is what was wrong")
+      // setTimeout(function() { this.setState({message: ""}); }.bind(this), 10000); 
+    }
     setLoadedTrue(){
        this.setState({
        loaded: true
@@ -91,11 +96,12 @@ class PollPage extends React.Component {
         })
         .then(res => { 
           this.context.router.history.push('/');
+          this.props.updateActionStatusMessage('poll deleted');
         })
         .catch(err => {
           console.log(err);
         });
-      } //added confirm back and hopefully it will work. earlier taken out to test the routes are working
+      } 
   }
   render(){
     const poll = this.state.poll;

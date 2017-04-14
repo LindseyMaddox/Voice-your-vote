@@ -27,8 +27,16 @@ class IndexPage extends React.Component {
  }
  
   render() {
+      let message = this.props.message;
     return (
         <div className="home">
+         <div className="row">
+          <div className="col-10 offset-1 col-md-4 offset-md-2">
+            <div className="row">
+              <h4 className="success-message">{message}</h4>
+            </div>
+          </div>
+        </div>
          <div className="col-10 offset-1 col-md-8 offset-md-2">
             <div className="row polls-header"><h3>Polls</h3></div>
              <div className="polls-list">      

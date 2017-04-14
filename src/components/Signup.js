@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 export default class Signup extends React.Component {
     constructor(props) {
@@ -36,7 +37,7 @@ export default class Signup extends React.Component {
     "password": password,
     "passwordConfirmation": passwordConfirmation})
    .then(function (response) {
-       console.log("woohoo! response is " + JSON.stringify(response.status));
+        this.context.router.history.push('/login');
   })
   .catch(function (error) {
         if(error.response.status >= 400 && error.response.status < 500){
@@ -99,3 +100,7 @@ export default class Signup extends React.Component {
     );
   }
 }
+
+ Signup.contextTypes = {
+        router: React.PropTypes.object
+    };

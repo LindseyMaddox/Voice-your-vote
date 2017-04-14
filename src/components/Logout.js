@@ -6,10 +6,9 @@ import PropTypes from 'prop-types';
 class Logout extends React.Component {
 
   componentWillMount() {
-    // Auth.deauthenticateUser();
-    // this.context.router.history.replace('/');
-    console.log("this.props is " + JSON.stringify(this.props));
-//    this.props.handleLogout();
+     Auth.deauthenticateUser();
+     this.context.router.history.replace('/');
+     this.props.handleLogout();
   }
 
   render() {

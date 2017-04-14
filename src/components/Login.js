@@ -36,7 +36,7 @@ export default class Login extends React.Component {
     "password": password})
    .then(function (response) {
        Auth.authenticateUser(response.data.token);
-      // this.props.handleCorrectLogin();
+        this.props.handleCorrectLogin();
         this.context.router.history.push('/');
   })
   .catch(function (error) {
