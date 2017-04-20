@@ -3,10 +3,7 @@ const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 
 const router = new express.Router();
- //for dev only
- //if(app.settings.env == "development"){
-   require('dotenv').config(); 
- //}
+
  //probably could pass this stuff in
  var mongo_login = process.env.MONGO_LAB_LOGIN;
  var ObjectId = require('mongodb').ObjectId; 
