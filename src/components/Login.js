@@ -33,11 +33,11 @@ export default class Login extends React.Component {
        let password = this.state.user.password;
            axios.post('/auth/login', {
             'email': email,
-    "password": password})
+    "password": password })
    .then(function (response) {
        Auth.authenticateUser(response.data.token);
-        this.props.handleCorrectLogin();
-        this.context.router.history.push('/');
+        that.props.handleCorrectLogin();
+        that.context.router.history.push('/');
   })
   .catch(function (error) {
         if(error.response.status >= 400 && error.response.status < 500){
@@ -64,8 +64,11 @@ export default class Login extends React.Component {
             errorMessage = "We couldn't log you in! Please check that your username and password are correct.";
         }
         if(Object.keys(errors).length > 0) {
-            errorMessage = <p>We couldn't log you in. Why? </p>
-                        {Object.values(errors).map(error => ( <li>{error}</li>))};
+            errorMessage = 
+                    <div>
+                        <p>We couldn't log you in. Why? </p>
+                        <ul>{Object.values(errors).map(error => ( <li>{error}</li>))}</ul>
+                    </div>;
         }
        errorDiv = <div className="errors">
                     {errorMessage}

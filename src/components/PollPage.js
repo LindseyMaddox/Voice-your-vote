@@ -25,13 +25,15 @@ class PollPage extends React.Component {
    componentDidMount(){
       this.loadPollFromServer(this.setLoadedTrue.bind(this));
       this.checkCorrectUser();
-      this.clearMessage();
    }
-       //set message to "" after 10 seconds
-    clearMessage(){
-      console.log("test to see if this is what was wrong")
-      // setTimeout(function() { this.setState({message: ""}); }.bind(this), 10000); 
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.message != this.state.message){
+       this.setState({
+        message: nextProps.message
+      });
     }
+  }
     setLoadedTrue(){
        this.setState({
        loaded: true
@@ -62,6 +64,10 @@ class PollPage extends React.Component {
       .catch(err => {
         if (err) throw err;
     });
+    }
+    
+    checkVotesExist(){
+      
     }
     postPollVoteToServer(){
      let id = this.state.id;
@@ -110,9 +116,22 @@ class PollPage extends React.Component {
     let loaded = this.state.loaded;
     if(!loaded) {
       return <h2> Loading data </h2>;
-    } else if (loaded && poll.name == "Placeholder Poll"){
+    } 
+    
+    if (loaded && poll.name == "Placeholder Poll"){
         return <NotFoundPage />;
     }
+    let chart = ""; //only show chart if votes exist
+    if(loaded){
+       for(i = 0; i < poll.options.length; i++){
+         for(var prop in poll.options[i]){
+             if(prop == "votes" &&  poll.options[i][prop] > 0){
+                chart = <Chart data={poll} />;
+             }
+         }
+       }
+    }
+
     var options = [];
     for(var i = 0; i < poll.options.length; i++){
       options.push(poll.options[i]["name"]);
@@ -122,7 +141,7 @@ class PollPage extends React.Component {
     if(this.state.showButtons){
       deleteAndEditButtons = 
       <div className="col-10 offset-1 col-md-4 offset-md-2">
-            <button className="btn btn-default">
+            <button id="add-poll-options-button" className="btn btn-default">
               <Link to={editPath}> Add Poll Options</Link>
             </button>
             <button className="btn btn-default" onClick={this.handleDelete.bind(this)}>
@@ -130,14 +149,20 @@ class PollPage extends React.Component {
             </button>
       </div>;
     }
-      return (
-      <div>
-       <div className="poll row">
-          <div className="col-10 offset-1 col-md-4 offset-md-2">
+    let messageDiv;
+    if(message != ""){
+      messageDiv= <div className="row">
+          <div className="col-10 offset-1 col-md-8 offset-md-1 success-message-wrapper">
             <div className="row">
               <h4 className="success-message">{message}</h4>
             </div>
           </div>
+        </div>;
+    }
+      return (
+      <div>
+       <div>
+          {messageDiv}
         </div>
         <div className="poll row">
           <div className="col-10 offset-1 col-md-4 offset-md-2">
@@ -164,7 +189,7 @@ class PollPage extends React.Component {
           </div>
           <div className="col-10 offset-1 col-md-3 offset-md-1">
             <div className="row">
-               <Chart data={poll} />
+              {chart}  
             </div>
           </div>
         </div>

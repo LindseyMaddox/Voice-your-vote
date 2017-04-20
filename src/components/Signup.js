@@ -31,11 +31,10 @@ export default class Signup extends React.Component {
        let email = this.state.user.email;
        let password = this.state.user.password;
        let passwordConfirmation = this.state.user.passwordConfirmation;
-       let passwordToken = "to be encrypted";
            axios.post('/auth/signup', {
             'email': email,
     "password": password,
-    "passwordConfirmation": passwordConfirmation})
+    "passwordConfirmation": passwordConfirmation })
    .then(function (response) {
         this.context.router.history.push('/login');
   })
@@ -55,9 +54,9 @@ export default class Signup extends React.Component {
     if(Object.keys(errors).length > 0) {
         errorDiv = <div className="errors">
                     <p>There were errors processing your signup: </p>
-                    {Object.values(this.state.errors).map(error => ( <li>{error}</li>))}
+                    <ul>{Object.values(this.state.errors).map(error => ( <li>{error}</li>))}</ul>
                  </div>;
-    };
+    }
     return (
        <div className="home">
     <div className="row">

@@ -6,7 +6,6 @@ class Auth {
    * @param {string} token
    */
   static authenticateUser(token) {
-    console.log("authenticating user after successful login");
     localStorage.setItem('token', token);
   }
 
@@ -24,7 +23,6 @@ class Auth {
    *
    */
   static deauthenticateUser() {
-    console.log("arrived at deauthenticateUser");
     localStorage.removeItem('token');
   }
 

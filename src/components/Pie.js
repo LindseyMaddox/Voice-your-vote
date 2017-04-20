@@ -9,7 +9,9 @@ var pie = d3.pie()
 
  const label = d3.arc().innerRadius(50).outerRadius(outerRadius + 120);
  
-    function getText(d) { return d.data.name; }
+    function getText(d) { var name  = d.data.name; if(name.length > 25) {
+        name = d.data.name.substring(0,25) + "...";
+    } return name; }
     function transformAmount(i,x,offset) {
         return "translate(" + x + "," + (i * 40 - offset) + ")";
     }
@@ -32,7 +34,7 @@ var pie = d3.pie()
         key={'arc' + i}
         fill={getColor(d)}
         stroke={'white'}
-        d={arcGen(d)}/><rect fill={getColor(d)} transform={transformAmount(i,113,35)} height="10" width="10"></rect><text
+        d={arcGen(d)}/><rect fill={getColor(d)} transform={transformAmount(i,113,47)} height="10" width="10"></rect><text
         key={'text' + i} 
         stroke={'black'}
         d={label(d)} transform={transformAmount(i,130,40)} fontSize="14px">{getText(d)}</text></g>);

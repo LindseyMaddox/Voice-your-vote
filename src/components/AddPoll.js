@@ -8,6 +8,8 @@ class AddPoll extends React.Component {
    constructor(props) {
     super(props);
     this.state = {
+     errors: {},
+     genericErrorMessage: false,
      pollName: "",
      description: "",
      optionsList: [{"name": ""}, {"name": ""}],
@@ -67,16 +69,26 @@ handleNameChange(event) {
     postPollToServer(filteredOptionsList){
         var that = this;
         let token = Auth.getToken();
-        let headers = { 'Authorization': 'bearer: ' + token };
        axios.post('/api/restricted/polls/create', {
             'name': this.state.pollName,
     'description': this.state.description,
-   'options': filteredOptionsList },{ headers: headers })
+   'options': filteredOptionsList },{ headers: {  'Authorization': 'bearer: ' + token } })
   .then(function (response) {
      that.context.router.history.push(response.data.location);
   })
   .catch(function (error) {
-    console.log(error);
+      if(error.response.status >= 400 && error.response.status < 500){
+            if(error.response.data.errors){
+                that.setState({
+                    errors: error.response.data.errors
+                });
+            } else {
+                that.setState({
+                    genericErrorMessage: true,
+                    errors: ""
+                });
+            }
+        }
   });
     }
   render() {
@@ -89,6 +101,23 @@ handleNameChange(event) {
               </div>;
           options.push(optionBlock);
       }
+       let errors = this.state.errors;
+     let errorDiv = "";
+     let errorMessage;
+        if(this.state.genericErrorMessage){
+            errorMessage = "There was a problem saving your poll! Please try again.";
+        }
+        if(Object.keys(errors).length > 0) {
+            errorMessage = <div>
+            <p>There was a problem saving your poll. It had these errors: </p>
+                            <ul>
+                        {Object.values(errors).map(error => ( <li>{error}</li>))}
+                        </ul>
+                        </div>;
+        }
+       errorDiv = <div className="errors">
+                    {errorMessage}
+                 </div>;
     return (
        <div className="home">
     <div className="row">
@@ -96,6 +125,11 @@ handleNameChange(event) {
             <h1>Create New Poll</h1>
         </div>
     </div>
+    <div className="row">
+        <div className="col-10 offset-1 col-md-6 offset-md-2 col-lg-4">
+            {errorDiv}
+        </div>
+      </div>
     <div className="row">
         <div className="col-10 offset-1 col-md-6 offset-md-2 col-lg-4">
             <form onSubmit={this.handleSubmit.bind(this)}>

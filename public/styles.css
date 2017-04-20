@@ -38,7 +38,7 @@ h1 {
 }
 
 #signup-submit-button, #vote-button {
-    margin: 10px 0 0 -12px;
+    margin: 10px 0 0 0;
 }
 
 .navigateBack {
@@ -64,3 +64,19 @@ form .row {
 #edit-form-header {
     margin: 25px 0 15px 0;
 }
+#add-poll-options-button a {
+    color: black;
+}
+
+.success-message-wrapper {
+    background-color: lightgreen;
+    border: 2px lightgreen;
+    border-radius: 75px;
+    margin-bottom: 40px;
+    color: darkgreen;
+}
+.success-message {
+    padding: 20px;
+    margin-top: 25px;
+}
+

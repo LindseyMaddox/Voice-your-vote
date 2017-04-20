@@ -54,7 +54,15 @@ class EditPoll extends React.Component {
             additionalOptionsList: options,
         });
     }
-    
+    handleRemoveOption(event){
+       const options = this.state.additionalOptionsList;
+      var index = event.target.id.match(/\d+/)[0];
+      console.log("test for index, it's " + index);
+       options.slice(index,1);
+       this.setState({
+           additionalOptionsList:options
+       });
+    }
     handleSubmit(event){
         event.preventDefault();
         this.removeEmptyOptions(this.postPollToServer.bind(this));
@@ -81,6 +89,7 @@ class EditPoll extends React.Component {
    .then(function (response) {
        let pollPath = '/polls/' + id;
        that.context.router.history.push(pollPath);
+       that.props.handleSuccessfulEdit();
    })
    .catch(function (error) {
       console.log(error);
@@ -96,6 +105,7 @@ class EditPoll extends React.Component {
           <div className="form-group">
               <label htmlFor={"poll-options-" + i}> New Option</label>
               <input type="text" className="form-control new-poll-options" placeholder="Option" id={"poll-options-" + i} onChange={this.handleChange.bind(this)} value={this.state.additionalOptionsList[i].name}></input>
+
           </div>;
          newOptions.push(optionBlock);
      }

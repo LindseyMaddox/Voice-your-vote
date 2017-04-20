@@ -21,7 +21,7 @@ export class Chart extends React.Component {
   
   render() {
       let data = this.state.data.options;
-      var width = "375";
+      var width = "450";
       var height = "300";
     var radius = Math.min(width, height) / 2;
     let svg = "Chart loading";

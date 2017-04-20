@@ -11,8 +11,8 @@ class IndexPage extends React.Component {
     };
    }
    componentDidMount(){
-       console.log("test that we received the delete message, it's " + this.props.message);
      this.loadPollsFromServer();
+     this.props.clearMessage();
    }
    
     
@@ -28,15 +28,21 @@ class IndexPage extends React.Component {
  
   render() {
       let message = this.props.message;
-    return (
-        <div className="home">
-         <div className="row">
-          <div className="col-10 offset-1 col-md-4 offset-md-2">
+      let messageDiv;
+      if(message != "" ){
+        messageDiv= <div className="row">
+          <div className="col-10 offset-1 col-md-8 offset-md-1 success-message-wrapper">
             <div className="row">
               <h4 className="success-message">{message}</h4>
             </div>
           </div>
-        </div>
+        </div>;
+      }
+    return (
+        <div className="home">
+         <div>
+          {messageDiv}
+         </div>
          <div className="col-10 offset-1 col-md-8 offset-md-2">
             <div className="row polls-header"><h3>Polls</h3></div>
              <div className="polls-list">      

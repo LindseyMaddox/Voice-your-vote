@@ -17,11 +17,23 @@ const router = new express.Router();
    var db = db;
 
    router.post('/polls/create', function (req,res){
-     console.log('test to see if req.user is avl in create method ' + req.user);
-     addNewPoll(req.body,req.user.email, function(poll){
-      var path = "/polls/" + poll.ops[0]["_id"];
-      res.status(201).json({ location: path, message: 'Poll added'});;
-    });
+       //validate form before adding
+      console.log("req is " + JSON.stringify(req.body));
+       if(req.body.name == "" || req.body.options.length == 0){
+          return  res.status(400).json( { errors: 
+           { name: "Poll must contain a name.", options: "Poll must contain at least one option."}});
+       } else if(req.body.name == ""){
+           
+          return  res.status(400).json( { errors: 
+           { name: "Poll must contain a name." }});
+         } else if(req.body.options.length == 0){
+             return  res.status(400).json( { errors:  { options: "Poll must contain at least one option."} });
+         } else {
+              addNewPoll(req.body,req.user.email, function(poll){
+               var path = "/polls/" + poll.ops[0]["_id"];
+               res.status(201).json({ location: path, message: 'Poll added'});
+             });
+         }
    });
    
      function addNewPoll(record, userEmail, callback){
@@ -73,45 +85,34 @@ const router = new express.Router();
     //user info
     
     router.get('/account', function (req, res){
-     
      //this should be returned by auth check
     var user = req.user;
-      test(user);
-     //  getAllPolls(user, function(polls) {
-     //     res.set("Content-Type", 'application/json');
-     //      res.json(polls);
-     // });
+      getPollInfoForUser(user, sumVotesForEachRecord);
+      var account_summary = [];
+      function sumVotesForEachRecord(records){
 
-   //  getVoteInfo(user);
+          records.forEach(function(el){
+              var votes = 0;
+            var temp_hash = {};
+              el.options.forEach(function(option){
+                  votes += option["votes"];
+              });
+              temp_hash["id"] = el["id"];
+              temp_hash["name"] = el["name"];
+              temp_hash["votes"] = votes;
+              account_summary.push(temp_hash);
+          });
+          console.log("account summary is " + JSON.stringify(account_summary));
+          res.json( { "vote summary": account_summary });
+      }
   });
   
-  function test(user){
-   db.collection('polls').find({ user: user.email }, {"options.votes": 1 }).toArray(function(err, record) {
+  function getPollInfoForUser(user, callback){
+    //  db.collection('polls').aggregate.match({ user: user.email}).unwind('options').group({'_id':'$_id','': {'$push': '$players'}})
+   db.collection('polls').find({ user: user.email }, {"name": 1, "options.votes": 1 }).toArray(function(err, record) {
       if(err) throw err;
-    console.log("record is " + JSON.stringify(record));
+      callback(record);
    });
   }
-  function getAllPolls(user,callback){
-    db.collection('polls').find( { user: user.email }).toArray(function(err, polls) {
-     if(err) throw err;
-     console.log("optionsa  " + JSON.stringify(polls[0].options));
-     callback(polls);
-    });
-  }
-  function getVoteInfo(user){
-    db.collection('polls').aggregate( 
-      {
-        "$match":{ "user": user.email }
-   },
-   {
-        "$project": {
-            "options": { "$max": "$options.votes" }
-         }
-    }).toArray(function(err, record) {
-     if(err) throw err;
-     console.log("record is " + record)
-    });
-  }
-  
  }); //end of connection
 module.exports = router;
