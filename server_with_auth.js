@@ -116,6 +116,6 @@ app.get('*', function (req,res){
 }); //close mongo connection
 
 // start the server
-app.listen(8080, () => {
-  console.log('Server is running on http://localhost:8080');
-});
+  app.listen(process.env.PORT || 8080, function () {
+     console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+  });
