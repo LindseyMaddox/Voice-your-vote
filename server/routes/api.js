@@ -1,8 +1,9 @@
 "use strict";
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
-const config = require('.../config');
+const config = require('../../config');
 const router = new express.Router();
+
 
  var ObjectId = require('mongodb').ObjectId; 
  var mongoUrl = config.database;
