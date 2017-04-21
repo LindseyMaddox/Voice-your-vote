@@ -1,14 +1,11 @@
 "use strict";
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
-
+const config = require('.../config');
 const router = new express.Router();
 
- //probably could pass this stuff in
- var mongo_login = process.env.MONGO_LAB_LOGIN;
  var ObjectId = require('mongodb').ObjectId; 
- var mongoUrl = "mongodb://" + mongo_login + "@ds153400.mlab.com:53400/voice-your-vote";
-
+ var mongoUrl = config.database;
  MongoClient.connect(mongoUrl, (err, db) => {
    if (err) throw err;
    var db = db;
