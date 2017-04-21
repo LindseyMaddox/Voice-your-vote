@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const config = require('./config');
 const path = require('path');
-
 const app = express();
 
 
@@ -33,11 +32,10 @@ if(app.settings.env == "development"){
 }
 
 //first allow routes that don't require authorization
-var mongo_login = process.env.MONGO_LAB_LOGIN;
+
 var ObjectId = require('mongodb').ObjectId; 
 
-var mongoUrl = "mongodb://" + mongo_login + "@ds153400.mlab.com:53400/voice-your-vote";
-
+var mongoUrl = config.database;
 MongoClient.connect(mongoUrl, (err, db) => {
   if (err) throw err;
   var db = db;
