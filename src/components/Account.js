@@ -43,7 +43,7 @@ class Account extends React.Component {
             <div className="summary">      
                     {this.state.polls.map(poll => ( 
                         <div className="polls-list row">
-                                    <div className="account-poll-name col-6 col-md-4"> <Link to={`/polls/poll["_id"]}`}>{poll.name}</Link></div>
+                                    <div className="account-poll-name col-6 col-md-4"> <Link to={'/polls/' + poll["id"]}>{poll.name}</Link></div>
                                     <div className="account-poll-votes col-4 offset-1 col-md-4 offset-md-2"> {poll.votes}</div>
                         </div>))}
              </div>

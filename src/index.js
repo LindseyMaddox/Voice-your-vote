@@ -13,7 +13,7 @@ import  Signup  from './components/Signup';
 import AddPoll from './components/AddPoll';
 import CheckCorrectUser from './components/CheckCorrectUser';
 import Auth from './modules/Auth';
-import axios from 'axios';
+import AccountWithFeatures from './components/AccountWithFeatures';
 
 const handleAddLinkFollow = ( ) => {
     if(Auth.isUserAuthenticated()){
@@ -126,6 +126,7 @@ render() {
                 <Route path='/logout'  render={()=><Logout handleLogout={this.handleLogout.bind(this)} />} />
                 <Route path="/signup" component={Signup} />
                 <Route path="/account" component={Account} />
+                <Route path="/account_with_features" component={AccountWithFeatures} />
             </Switch>
         </div>
     </Router>

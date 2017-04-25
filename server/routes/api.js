@@ -92,7 +92,7 @@ const router = new express.Router();
               el.options.forEach(function(option){
                   votes += option["votes"];
               });
-              temp_hash["id"] = el["id"];
+              temp_hash["id"] = el["_id"];
               temp_hash["name"] = el["name"];
               temp_hash["votes"] = votes;
               account_summary.push(temp_hash);

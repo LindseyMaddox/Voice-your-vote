@@ -26,11 +26,6 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 const MongoClient = require('mongodb').MongoClient;
 
-//for dev only
-if(app.settings.env == "development"){
-   require('dotenv').config(); 
-}
-
 //first allow routes that don't require authorization
 
 var ObjectId = require('mongodb').ObjectId; 
