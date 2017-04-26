@@ -79,9 +79,15 @@ form .row {
     padding: 20px;
     margin-top: 25px;
 }
-
+.graph-header {
+    padding: 40px 0 30px 0 ;
+}
+.chart-title {
+    font-size: 18px;
+}
 rect {
  fill: #00802b;
+ stroke: #00802b;
 }
 
 rect:hover {

@@ -104,7 +104,7 @@ const router = new express.Router();
   
   function getPollInfoForUser(user, callback){
     //  db.collection('polls').aggregate.match({ user: user.email}).unwind('options').group({'_id':'$_id','': {'$push': '$players'}})
-   db.collection('polls').find({ user: user.email }, {"name": 1, "options.votes": 1 }).toArray(function(err, record) {
+   db.collection('polls').find({ user: user.email }, {"name": 1, "options.votes": 1 }).sort( { "name": 1 } ).toArray(function(err, record) {
       if(err) throw err;
       callback(record);
    });

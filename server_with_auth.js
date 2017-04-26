@@ -51,7 +51,7 @@ app.get('/api/base/polls/:id', function (req, res){
 });
 
 function getAllPolls(callback){
-    db.collection('polls').find( ).toArray(function(err, polls) {
+    db.collection('polls').find( ).sort( { "name": 1 } ).toArray(function(err, polls) {
     if(err) throw err;
      callback(polls);
 });

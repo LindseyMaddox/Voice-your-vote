@@ -2,6 +2,7 @@ import React from 'react';
 import { PollPreview } from './PollPreview';
 import axios from 'axios';
 import Auth from '../modules/Auth';
+import AcctChart from './AcctChart';
 import { Link } from 'react-router-dom';
 
 class Account extends React.Component {
@@ -17,12 +18,13 @@ class Account extends React.Component {
    }
    
     
-   loadPollsFromServer(){
+   loadPollsFromServer(callback){
        let token = Auth.getToken();
        let headers = { 'Authorization': 'bearer: ' + token };
      axios.get('api/restricted/account', { headers: headers})
       .then(res => {
  this.setState({ polls: res.data["vote summary"] });
+ callback();
  })
       .catch(err => {
       console.log(err);
@@ -34,18 +36,22 @@ class Account extends React.Component {
         });
     }
   render() {
-      console.log("polls are " + JSON.stringify(this.state.polls));
+      let acctChart;
+      if(this.state.loaded){
+          acctChart = <AcctChart polls={this.state.polls} />;
+      }
     return (
         <div className="home">
+          <div className="col-10 offset-1 col-md-8 offset-md-2">
+            <div className="row graph-header"><h3>Poll Performance</h3></div>
+            <div className="row">      
+                {acctChart}
+             </div>
+         </div>
          <div className="col-10 offset-1 col-md-8 offset-md-2">
-            <div className="row polls-header"><h3>Your Polls</h3></div>
-            <div className="row polls-header"><div id="account-page-poll-subheader" className="col-6 col-md-4"><h4>Poll Name</h4></div> <div id="account-page-votes-subheader" className="col-4 offset-1 col-md-4 offset-md-2"><h4>Total Votes</h4></div></div>
-            <div className="summary">      
-                    {this.state.polls.map(poll => ( 
-                        <div className="polls-list row">
-                                    <div className="account-poll-name col-6 col-md-4"> <Link to={'/polls/' + poll["id"]}>{poll.name}</Link></div>
-                                    <div className="account-poll-votes col-4 offset-1 col-md-4 offset-md-2"> {poll.votes}</div>
-                        </div>))}
+            <div className="row polls-header"><h3>Review Your Polls</h3></div>
+            <div className="summary row">      
+              <div className="polls-list">{this.state.polls.map(poll => ( <Link to={'/polls/' + poll["id"]}><div>{poll.name}</div></Link>))}</div>  
              </div>
         </div>
       </div>

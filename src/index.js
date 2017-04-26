@@ -13,7 +13,6 @@ import  Signup  from './components/Signup';
 import AddPoll from './components/AddPoll';
 import CheckCorrectUser from './components/CheckCorrectUser';
 import Auth from './modules/Auth';
-import AccountWithFeatures from './components/AccountWithFeatures';
 
 const handleAddLinkFollow = ( ) => {
     if(Auth.isUserAuthenticated()){
@@ -52,7 +51,6 @@ class Index extends React.Component {
           } else {
               //do nothing
           }
-          console.log("made it ot update status message fx and message is " + message);
             this.setState({
                actionStatus: message
            });
@@ -61,26 +59,21 @@ class Index extends React.Component {
    
       }
       clearMessage(){
-          console.log("made it to clear message");
           this.setState({actionStatus: ""});
       }
       
       handleCorrectLogin(){
-          console.log("made it to handle correct login");
         this.setState({
             loggedIN: true
         });
      }
    handleLogout(){
-         console.log("made it to handle logout");
-       
         this.setState({
             loggedIN: false
         });
    }
     
 render() {
-    console.log("logged in is " + this.state.loggedIN);
     let navLinks;
     if(this.state.loggedIN){
        navLinks =
@@ -126,7 +119,6 @@ render() {
                 <Route path='/logout'  render={()=><Logout handleLogout={this.handleLogout.bind(this)} />} />
                 <Route path="/signup" component={Signup} />
                 <Route path="/account" component={Account} />
-                <Route path="/account_with_features" component={AccountWithFeatures} />
             </Switch>
         </div>
     </Router>
