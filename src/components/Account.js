@@ -58,7 +58,7 @@ class Account extends React.Component {
       }
     return (
         <div className="row">
-          <div className="col-10 offset-1 col-md-6 offset-md-2"><h3>Your Polls</h3></div>
+          <div className="col-10 offset-1 col-md-6 offset-md-2 graph-header"><h3>Your Polls</h3></div>
           <div className="col-10 offset-1 col-md-6 offset-md-2">
             <div className="row">      
                 {acctChart}

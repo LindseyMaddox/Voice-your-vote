@@ -32165,7 +32165,6 @@ var Account = function (_React$Component) {
         _axios2.default.delete('/api/restricted/polls/' + id, {
           headers: { "Authorization": "bearer: " + token }
         }).then(function (res) {
-          console.log("and test for 'this',polls are  " + JSON.stringify(_this3.state.polls));
           _this3.loadPollsFromServer(_this3.setLoadedTrue.bind(_this3));
         }).catch(function (err) {
           console.log(err);
@@ -32186,7 +32185,7 @@ var Account = function (_React$Component) {
         { className: 'row' },
         _react2.default.createElement(
           'div',
-          { className: 'col-10 offset-1 col-md-6 offset-md-2' },
+          { className: 'col-10 offset-1 col-md-6 offset-md-2 graph-header' },
           _react2.default.createElement(
             'h3',
             null,
@@ -32348,19 +32347,20 @@ var AccountDataSeries = function (_React$Component) {
       var chartWidth = this.props.width - this.props.margins.marginLeft - this.props.margins.marginRight;
       //since we have padding, it won't be aligned with just xScale.bandwith()
       var barWidth = chartWidth / data.length;
+      var xScale = this.props.xScale;
       var yScale = this.props.yScale;
       bars = data.map(function (d, i) {
         var y = yScale(d.votes);
         var height = chartHeight - yScale(d.votes);
-        var getTransform = function getTransform(i) {
-          return "translate(" + i * barWidth + ",0)";
+        var getXLocation = function getXLocation() {
+          var location = xScale(d.name) + xScale.bandwidth();console.log("xScale(d.name) is " + xScale(d.name) + " location is " + location);return location;
         };
         return _react2.default.createElement(
           'g',
-          { transform: getTransform(i), key: 'g-rect' + i },
-          _react2.default.createElement('rect', { className: 'bar-chart-rectangle', key: 'rect' + i, height: height,
+          { key: 'g-rect' + i },
+          _react2.default.createElement('rect', { className: 'bar-chart-rectangle', key: 'rect' + i, x: xScale(d.name), height: height,
             y: y,
-            width: barWidth })
+            width: xScale.bandwidth() })
         );
       });
 
@@ -32458,7 +32458,7 @@ var AcctChart = function (_React$Component) {
       var xScaleWidth = width - margins.marginLeft - margins.marginRight;
       var yScaleHeight = height - margins.marginTop - margins.marginBottom;
       var data = this.props.polls;
-      var xScale = d3.scaleBand().range([0, xScaleWidth]).padding(.2).domain(data.map(function (d) {
+      var xScale = d3.scaleBand().range([0, xScaleWidth]).padding([.2]).domain(data.map(function (d) {
         return d.name;
       }));
       var yScale = d3.scaleLinear().range([yScaleHeight, 0]).domain([0, d3.max(data, function (d) {

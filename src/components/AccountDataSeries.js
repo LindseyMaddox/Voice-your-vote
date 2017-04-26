@@ -53,18 +53,16 @@ wrap(text, width) {
     let chartWidth = this.props.width  - this.props.margins.marginLeft - this.props.margins.marginRight;
     //since we have padding, it won't be aligned with just xScale.bandwith()
     var barWidth = chartWidth / data.length;
+    let xScale = this.props.xScale;
    let yScale = this.props.yScale;
     bars = data.map((d, i) => {
       let y = yScale(d.votes);
       let height = chartHeight - yScale(d.votes); 
-   let getTransform = function(i){
-   return "translate(" + i * barWidth + ",0)"; 
-};
-      return (
-        <g transform={getTransform(i)} key={'g-rect' + i}>
-          <rect className="bar-chart-rectangle" key = {'rect' + i} height={height}
+   return (
+        <g key={'g-rect' + i}>
+          <rect className="bar-chart-rectangle" key = {'rect' + i} x={xScale(d.name)} height={height}
             y={y}
-            width={barWidth}/>
+            width={xScale.bandwidth()}/>
         </g>
         
       );

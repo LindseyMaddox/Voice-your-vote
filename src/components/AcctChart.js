@@ -19,7 +19,7 @@
     let data = this.props.polls;
     let xScale= d3.scaleBand()
   .range([0,xScaleWidth])
-  .padding(.2)
+  .padding([.2])
   .domain(data.map(function(d){ return d.name;}));
     let yScale = d3.scaleLinear()
                    .range([yScaleHeight,0])
