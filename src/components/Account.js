@@ -44,7 +44,7 @@ class Account extends React.Component {
           headers: { "Authorization": "bearer: " + token }
         })
         .then(res => { 
-          this.loadPollsFromServer;
+          this.loadPollsFromServer(this.setLoadedTrue.bind(this));
         })
         .catch(err => {
           console.log(err);

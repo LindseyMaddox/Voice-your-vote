@@ -32165,7 +32165,8 @@ var Account = function (_React$Component) {
         _axios2.default.delete('/api/restricted/polls/' + id, {
           headers: { "Authorization": "bearer: " + token }
         }).then(function (res) {
-          _this3.loadPollsFromServer;
+          console.log("and test for 'this',polls are  " + JSON.stringify(_this3.state.polls));
+          _this3.loadPollsFromServer(_this3.setLoadedTrue.bind(_this3));
         }).catch(function (err) {
           console.log(err);
         });
@@ -32385,7 +32386,7 @@ var AccountDataSeries = function (_React$Component) {
         ),
         _react2.default.createElement(
           'text',
-          { className: 'x-label', textAnchor: 'end', y: '320', x: chartWidth / 2 },
+          { className: 'x-label', textAnchor: 'end', y: '330', x: chartWidth / 2 },
           'Poll Name'
         )
       );
