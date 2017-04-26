@@ -66,9 +66,7 @@ class PollPage extends React.Component {
     });
     }
     
-    checkVotesExist(){
-      
-    }
+
     postPollVoteToServer(){
      let id = this.state.id;
      let selection = this.state.selection;
@@ -193,7 +191,7 @@ class PollPage extends React.Component {
             </div>
           </div>
         </div>
-        <div className="row">
+        <div className="poll row">
           {deleteAndEditButtons}
         </div>
         <div className="row">

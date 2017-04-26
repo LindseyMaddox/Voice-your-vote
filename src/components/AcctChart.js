@@ -12,7 +12,7 @@
   }
       render() {
                        let width = 600;
-                       let height = 350;
+                       let height = 375;
                        let margins = this.state.margins;
                        let xScaleWidth = width - margins.marginLeft - margins.marginRight;
                        let yScaleHeight = height - margins.marginTop - margins.marginBottom;
@@ -27,7 +27,7 @@
                    
 
     return (
-      <svg width={width} height={height}>
+      <svg width={width} height={height} className="account-chart">
           <AccountDataSeries
             xScale={xScale}
             yScale={yScale}

@@ -45,6 +45,7 @@ wrap(text, width) {
     }
   });
 }
+
   render() {
     let bars;
     let data = this.props.data;
@@ -61,7 +62,7 @@ wrap(text, width) {
 };
       return (
         <g transform={getTransform(i)} key={'g-rect' + i}>
-          <rect key = {'rect' + i} height={height}
+          <rect className="bar-chart-rectangle" key = {'rect' + i} height={height}
             y={y}
             width={barWidth}/>
         </g>
@@ -70,13 +71,13 @@ wrap(text, width) {
     });
     
   return (
-      <g transform="translate(50,60)">
+      <g transform="translate(50,40)">
         <g>{bars}</g>
         <g className="x-axis" ref="xAxis" transform={"translate(0," + chartHeight + ")"}></g>
         <g className="y-axis" ref="yAxis"></g>
         <text className="chart-title" textAnchor="middle" x="220" y="-20">Number of Votes per Poll</text>
         <text className="y-label" textAnchor="end" y="-20" x ="-50" transform="rotate(-90)">Number of Votes</text>
-        <text className="x-label" textAnchor="end" y="280" x ="220">Poll</text>
+        <text className="x-label" textAnchor="end" y="330" x ={chartWidth/2}>Poll Name</text>
       </g>
     );
   }

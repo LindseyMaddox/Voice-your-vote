@@ -27137,9 +27137,6 @@ var PollPage = function (_React$Component) {
       });
     }
   }, {
-    key: 'checkVotesExist',
-    value: function checkVotesExist() {}
-  }, {
     key: 'postPollVoteToServer',
     value: function postPollVoteToServer() {
       var _this4 = this;
@@ -27345,7 +27342,7 @@ var PollPage = function (_React$Component) {
         ),
         _react2.default.createElement(
           'div',
-          { className: 'row' },
+          { className: 'poll row' },
           deleteAndEditButtons
         ),
         _react2.default.createElement(
@@ -32159,27 +32156,45 @@ var Account = function (_React$Component) {
       });
     }
   }, {
+    key: 'handleDelete',
+    value: function handleDelete(id, event) {
+      var _this3 = this;
+
+      if (confirm("Are you sure you want to delete this poll?")) {
+        var token = _Auth2.default.getToken();
+        _axios2.default.delete('/api/restricted/polls/' + id, {
+          headers: { "Authorization": "bearer: " + token }
+        }).then(function (res) {
+          _this3.loadPollsFromServer;
+        }).catch(function (err) {
+          console.log(err);
+        });
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this4 = this;
+
       var acctChart = void 0;
       if (this.state.loaded) {
         acctChart = _react2.default.createElement(_AcctChart2.default, { polls: this.state.polls });
       }
       return _react2.default.createElement(
         'div',
-        { className: 'home' },
+        { className: 'row' },
         _react2.default.createElement(
           'div',
-          { className: 'col-10 offset-1 col-md-8 offset-md-2' },
+          { className: 'col-10 offset-1 col-md-6 offset-md-2' },
           _react2.default.createElement(
-            'div',
-            { className: 'row graph-header' },
-            _react2.default.createElement(
-              'h3',
-              null,
-              'Poll Performance'
-            )
-          ),
+            'h3',
+            null,
+            'Your Polls'
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'col-10 offset-1 col-md-6 offset-md-2' },
           _react2.default.createElement(
             'div',
             { className: 'row' },
@@ -32188,16 +32203,7 @@ var Account = function (_React$Component) {
         ),
         _react2.default.createElement(
           'div',
-          { className: 'col-10 offset-1 col-md-8 offset-md-2' },
-          _react2.default.createElement(
-            'div',
-            { className: 'row polls-header' },
-            _react2.default.createElement(
-              'h3',
-              null,
-              'Your Polls'
-            )
-          ),
+          { className: 'col-10 offset-1 col-md-3 offset-md-1' },
           _react2.default.createElement(
             'div',
             { className: 'summary row' },
@@ -32206,12 +32212,29 @@ var Account = function (_React$Component) {
               { className: 'polls-list' },
               this.state.polls.map(function (poll) {
                 return _react2.default.createElement(
-                  _reactRouterDom.Link,
-                  { to: '/polls/' + poll["id"] },
+                  'div',
+                  null,
+                  ' ',
                   _react2.default.createElement(
-                    'div',
-                    null,
-                    poll.name
+                    _reactRouterDom.Link,
+                    { to: '/polls/' + poll["id"] },
+                    _react2.default.createElement(
+                      'span',
+                      null,
+                      poll.name
+                    )
+                  ),
+                  _react2.default.createElement(
+                    _reactRouterDom.Link,
+                    { to: '/polls/' + poll["id"] + '/edit' },
+                    ' ',
+                    _react2.default.createElement('i', { className: 'fa fa-pencil fa-fw' })
+                  ),
+                  _react2.default.createElement(
+                    _reactRouterDom.Link,
+                    { to: '/account/#' },
+                    ' ',
+                    _react2.default.createElement('i', { className: 'fa fa-trash-o fa-lg', onClick: _this4.handleDelete.bind(_this4, poll["id"]) })
                   )
                 );
               })
@@ -32278,12 +32301,7 @@ var AccountDataSeries = function (_React$Component) {
       var xNode = this.refs.xAxis;
       var xAxis = d3.axisBottom(this.props.xScale).tickSizeOuter(0);
       d3.select(xNode).call(xAxis);
-      var tickText = d3.selectAll(".tick text").style("cursor", "pointer").on("click", function (d) {
-        console.log("test for d at all, it's " + JSON.stringify(d));
-        console.log("test for d at all, it's " + d);
-        console.log("test for id, it's " + d.id);
-        //  document.location.href = "https://voice-your-vote-llmaddox.c9users.io/polls/" + d.id;
-      });
+      var tickText = d3.selectAll(".tick text");
       tickText.call(this.wrap, this.props.xScale.bandwidth());
       var yNode = this.refs.yAxis;
       var yAxis = d3.axisRight(this.props.yScale).ticks(6).tickSizeOuter(0);
@@ -32339,7 +32357,7 @@ var AccountDataSeries = function (_React$Component) {
         return _react2.default.createElement(
           'g',
           { transform: getTransform(i), key: 'g-rect' + i },
-          _react2.default.createElement('rect', { key: 'rect' + i, height: height,
+          _react2.default.createElement('rect', { className: 'bar-chart-rectangle', key: 'rect' + i, height: height,
             y: y,
             width: barWidth })
         );
@@ -32347,7 +32365,7 @@ var AccountDataSeries = function (_React$Component) {
 
       return _react2.default.createElement(
         'g',
-        { transform: 'translate(50,60)' },
+        { transform: 'translate(50,40)' },
         _react2.default.createElement(
           'g',
           null,
@@ -32367,8 +32385,8 @@ var AccountDataSeries = function (_React$Component) {
         ),
         _react2.default.createElement(
           'text',
-          { className: 'x-label', textAnchor: 'end', y: '280', x: '220' },
-          'Poll'
+          { className: 'x-label', textAnchor: 'end', y: '320', x: chartWidth / 2 },
+          'Poll Name'
         )
       );
     }
@@ -32434,7 +32452,7 @@ var AcctChart = function (_React$Component) {
     key: 'render',
     value: function render() {
       var width = 600;
-      var height = 350;
+      var height = 375;
       var margins = this.state.margins;
       var xScaleWidth = width - margins.marginLeft - margins.marginRight;
       var yScaleHeight = height - margins.marginTop - margins.marginBottom;
@@ -32448,7 +32466,7 @@ var AcctChart = function (_React$Component) {
 
       return _react2.default.createElement(
         'svg',
-        { width: width, height: height },
+        { width: width, height: height, className: 'account-chart' },
         _react2.default.createElement(_AccountDataSeries2.default, _defineProperty({
           xScale: xScale,
           yScale: yScale,

@@ -85,11 +85,18 @@ form .row {
 .chart-title {
     font-size: 18px;
 }
-rect {
+.bar-chart-rectangle {
  fill: #00802b;
  stroke: #00802b;
 }
 
-rect:hover {
+.bar-chart-rectangle:hover {
   fill: #cccccc;
+}
+#add-poll-options-button {
+    margin-right: 15px;
+}
+
+.account-chart {
+    background-color: aliceblue;
 }
