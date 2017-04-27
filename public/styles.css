@@ -103,3 +103,16 @@ form .row {
 .account-chart {
     background-color: aliceblue;
 }
+
+.fa-trash-o {
+    position: relative;
+}
+.delete-tooltip {
+  display:block;
+  position:absolute;
+  bottom: 2em;       
+  left: 0;
+  color:#373535;
+  border:2px solid #D3D3D3;
+  background:#fffFff;
+}

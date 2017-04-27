@@ -30896,7 +30896,7 @@ module.exports = function spread(callback) {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -30930,137 +30930,174 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Account = function (_React$Component) {
-  _inherits(Account, _React$Component);
+    _inherits(Account, _React$Component);
 
-  function Account(props) {
-    _classCallCheck(this, Account);
+    function Account(props) {
+        _classCallCheck(this, Account);
 
-    var _this = _possibleConstructorReturn(this, (Account.__proto__ || Object.getPrototypeOf(Account)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Account.__proto__ || Object.getPrototypeOf(Account)).call(this, props));
 
-    _this.state = {
-      polls: [{ "name": "", "votes": 0 }],
-      loaded: false
-    };
-    return _this;
-  }
-
-  _createClass(Account, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.loadPollsFromServer(this.setLoadedTrue.bind(this));
+        _this.state = {
+            polls: [{ "name": "", "votes": 0, "showActiveTooltip": false, "showDeleteTooltip": false }],
+            loaded: false,
+            showDeleteTooltip: false,
+            showEditTooltip: false
+        };
+        return _this;
     }
-  }, {
-    key: 'loadPollsFromServer',
-    value: function loadPollsFromServer(callback) {
-      var _this2 = this;
 
-      var token = _Auth2.default.getToken();
-      var headers = { 'Authorization': 'bearer: ' + token };
-      _axios2.default.get('api/restricted/account', { headers: headers }).then(function (res) {
-        _this2.setState({ polls: res.data["vote summary"] });
-        callback();
-      }).catch(function (err) {
-        console.log(err);
-      });
-    }
-  }, {
-    key: 'setLoadedTrue',
-    value: function setLoadedTrue() {
-      this.setState({
-        loaded: true
-      });
-    }
-  }, {
-    key: 'handleDelete',
-    value: function handleDelete(id, event) {
-      var _this3 = this;
+    _createClass(Account, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.loadPollsFromServer(this.setLoadedTrue.bind(this));
+        }
+    }, {
+        key: 'loadPollsFromServer',
+        value: function loadPollsFromServer(callback) {
+            var _this2 = this;
 
-      if (confirm("Are you sure you want to delete this poll?")) {
-        var token = _Auth2.default.getToken();
-        _axios2.default.delete('/api/restricted/polls/' + id, {
-          headers: { "Authorization": "bearer: " + token }
-        }).then(function (res) {
-          _this3.loadPollsFromServer(_this3.setLoadedTrue.bind(_this3));
-        }).catch(function (err) {
-          console.log(err);
-        });
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this4 = this;
+            var token = _Auth2.default.getToken();
+            var headers = { 'Authorization': 'bearer: ' + token };
+            _axios2.default.get('api/restricted/account', { headers: headers }).then(function (res) {
+                var polls = res.data["vote summary"];
 
-      var acctChart = void 0;
-      if (this.state.loaded) {
-        acctChart = _react2.default.createElement(_AcctChart2.default, { polls: this.state.polls });
-      }
-      return _react2.default.createElement(
-        'div',
-        { className: 'row' },
-        _react2.default.createElement(
-          'div',
-          { className: 'col-10 offset-1 col-md-6 offset-md-2 graph-header' },
-          _react2.default.createElement(
-            'h3',
-            null,
-            'Your Polls'
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'col-10 offset-1 col-md-6 offset-md-2' },
-          _react2.default.createElement(
-            'div',
-            { className: 'row' },
-            acctChart
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'col-10 offset-1 col-md-3 offset-md-1' },
-          _react2.default.createElement(
-            'div',
-            { className: 'summary row' },
-            _react2.default.createElement(
-              'div',
-              { className: 'polls-list' },
-              this.state.polls.map(function (poll) {
-                return _react2.default.createElement(
-                  'div',
-                  null,
-                  ' ',
-                  _react2.default.createElement(
-                    _reactRouterDom.Link,
-                    { to: '/polls/' + poll["id"] },
+                polls.forEach(function (val) {
+                    val["showEditTooltip"] = false;
+                    val["showDeleteTooltip"] = false;
+                });
+                console.log("test for poll adding tooltip, polls are " + JSON.stringify(polls));
+                _this2.setState({ polls: res.data["vote summary"] });
+                callback();
+            }).catch(function (err) {
+                console.log(err);
+            });
+        }
+    }, {
+        key: 'setLoadedTrue',
+        value: function setLoadedTrue() {
+            this.setState({
+                loaded: true
+            });
+        }
+    }, {
+        key: 'handleDelete',
+        value: function handleDelete(id, event) {
+            var _this3 = this;
+
+            if (confirm("Are you sure you want to delete this poll?")) {
+                var token = _Auth2.default.getToken();
+                _axios2.default.delete('/api/restricted/polls/' + id, {
+                    headers: { "Authorization": "bearer: " + token }
+                }).then(function (res) {
+                    _this3.loadPollsFromServer(_this3.setLoadedTrue.bind(_this3));
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            }
+        }
+    }, {
+        key: 'showTooltip',
+        value: function showTooltip() {
+            this.setState({
+                showDeleteTooltip: true
+            });
+        }
+    }, {
+        key: 'hideTooltip',
+        value: function hideTooltip() {
+            this.setState({
+                showDeleteTooltip: false
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this4 = this;
+
+            var acctChart = void 0;
+            if (this.state.loaded) {
+                acctChart = _react2.default.createElement(_AcctChart2.default, { polls: this.state.polls });
+            }
+            var editTooltip = void 0;
+            if (this.state.showEditTooltip) {
+                editTooltip = "Edit Poll";
+            }
+            var deleteTooltip = void 0;
+            if (this.state.showDeleteTooltip) {
+                deleteTooltip = "Delete Poll";
+            }
+            return _react2.default.createElement(
+                'div',
+                { className: 'row' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'col-10 offset-1 col-md-6 offset-md-2 graph-header' },
                     _react2.default.createElement(
-                      'span',
-                      null,
-                      poll.name
+                        'h3',
+                        null,
+                        'Your Polls'
                     )
-                  ),
-                  _react2.default.createElement(
-                    _reactRouterDom.Link,
-                    { to: '/polls/' + poll["id"] + '/edit' },
-                    ' ',
-                    _react2.default.createElement('i', { className: 'fa fa-pencil fa-fw' })
-                  ),
-                  _react2.default.createElement(
-                    _reactRouterDom.Link,
-                    { to: '/account/#' },
-                    ' ',
-                    _react2.default.createElement('i', { className: 'fa fa-trash-o fa-lg', onClick: _this4.handleDelete.bind(_this4, poll["id"]) })
-                  )
-                );
-              })
-            )
-          )
-        )
-      );
-    }
-  }]);
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'col-10 offset-1 col-md-6 offset-md-2' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'row' },
+                        acctChart
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'col-10 offset-1 col-md-3 offset-md-1' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'summary row' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'polls-list' },
+                            this.state.polls.map(function (poll, i) {
+                                return _react2.default.createElement(
+                                    'div',
+                                    null,
+                                    ' ',
+                                    _react2.default.createElement(
+                                        _reactRouterDom.Link,
+                                        { to: '/polls/' + poll["id"] },
+                                        _react2.default.createElement(
+                                            'span',
+                                            null,
+                                            poll.name
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        _reactRouterDom.Link,
+                                        { to: '/polls/' + poll["id"] + '/edit' },
+                                        ' ',
+                                        _react2.default.createElement('i', { className: 'fa fa-pencil fa-fw' })
+                                    ),
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'edit-tooltip' },
+                                        editTooltip
+                                    ),
+                                    _react2.default.createElement(
+                                        _reactRouterDom.Link,
+                                        { to: '/account/#' },
+                                        ' ',
+                                        _react2.default.createElement('i', { className: 'fa fa-trash-o fa-lg', onMouseOver: _this4.showTooltip.bind(_this4), onMouseOut: _this4.hideTooltip.bind(_this4),
+                                            onClick: _this4.handleDelete.bind(_this4, poll["id"]) })
+                                    )
+                                );
+                            })
+                        )
+                    )
+                )
+            );
+        }
+    }]);
 
-  return Account;
+    return Account;
 }(_react2.default.Component);
 
 exports.default = Account;
