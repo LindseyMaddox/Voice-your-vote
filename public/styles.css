@@ -10,7 +10,10 @@ h1 {
 }
 .poll {
     background-color: #e6f2ff ;
-    padding-top: 35px;
+    padding-bottom: 20px;
+}
+.poll-top {
+  padding-top: 35px;  
 }
 .polls-header {
     padding-bottom: 25px;

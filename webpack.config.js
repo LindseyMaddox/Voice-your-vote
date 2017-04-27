@@ -18,13 +18,7 @@ var config = {
                 loader : 'babel-loader'
             }
         ]
-    },
-        plugins: [
-        new webpack.ProvidePlugin({
-            'Promise': 'es6-promise',
-            'fetch': 'imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch'
-        })
-    ]
+    }
 };
 
 module.exports = config;

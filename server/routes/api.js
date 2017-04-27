@@ -13,7 +13,6 @@ const router = new express.Router();
 
    router.post('/polls/create', function (req,res){
        //validate form before adding
-      console.log("req is " + JSON.stringify(req.body));
        if(req.body.name == "" || req.body.options.length == 0){
           return  res.status(400).json( { errors: 
            { name: "Poll must contain a name.", options: "Poll must contain at least one option."}});
@@ -32,7 +31,6 @@ const router = new express.Router();
    });
    
      function addNewPoll(record, userEmail, callback){
-        console.log("in database add method, name is " + record["name"]);
         var item = { "name": record["name"], "description": record["description"], options: record["options"],user: userEmail };
          db.collection('polls').insert( item , function(err,result){ 
              if(err) throw err;
@@ -97,7 +95,6 @@ const router = new express.Router();
               temp_hash["votes"] = votes;
               account_summary.push(temp_hash);
           });
-          console.log("account summary is " + JSON.stringify(account_summary));
           res.json( { "vote summary": account_summary });
       }
   });

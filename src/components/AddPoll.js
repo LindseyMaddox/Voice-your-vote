@@ -13,8 +13,7 @@ class AddPoll extends React.Component {
      pollName: "",
      description: "",
      optionsList: [{"name": ""}, {"name": ""}],
-     filteredOptionsList: [],
-     numOfPollOptions: 2
+     filteredOptionsList: []
     };
    }
    
@@ -44,12 +43,23 @@ handleNameChange(event) {
         const options = this.state.optionsList;
         options.push({"name": ""});
         this.setState({
-            optionsList: options,
-            numOfPollOptions: this.state.numOfPollOptions + 1
+            optionsList: options
     
         });
     }
-    
+    handleRemoveOption(event){
+      event.preventDefault();
+      const options = this.state.optionsList;
+      var index = event.target.id.match(/\d+/)[0];
+      if(options.length == 1){
+          alert("Cannot delete option. A poll must contain at least one option");
+      } else {
+        options.splice(index,1);
+        this.setState({
+           optionsList: options
+        });  
+      }
+    }
     handleSubmit(event){
         event.preventDefault();
         this.removeEmptyOptions(this.postPollToServer.bind(this));
@@ -93,11 +103,12 @@ handleNameChange(event) {
     }
   render() {
       let options = [];
-      for(var i = 0; i < this.state.numOfPollOptions; i++){
+      for(var i = 0; i < this.state.optionsList.length; i++){
             var optionBlock =   <div className="form-group">
       <label htmlFor="newPollOptions">Options</label>
                 <input type="text" name="Options" className="form-control poll-options" placeholder="Option" 
                   id={"new-poll-options" + i} onChange={this.handleOptionsChange.bind(this)} value={this.state.optionsList[i].name}></input>
+                 <a href="#"><i className="fa fa-times" id={"poll-remove-options-icon-" +i} aria-hidden="true" onClick={this.handleRemoveOption.bind(this)}></i></a>
               </div>;
           options.push(optionBlock);
       }

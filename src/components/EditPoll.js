@@ -46,6 +46,7 @@ class EditPoll extends React.Component {
            options: options
            });
   }
+
     handleAddOptions(event){
         event.preventDefault();
         const options = this.state.additionalOptionsList;
@@ -55,13 +56,18 @@ class EditPoll extends React.Component {
         });
     }
     handleRemoveOption(event){
-       const options = this.state.additionalOptionsList;
+        event.preventDefault();
+      const options = this.state.additionalOptionsList;
       var index = event.target.id.match(/\d+/)[0];
       console.log("test for index, it's " + index);
-       options.slice(index,1);
-       this.setState({
-           additionalOptionsList:options
-       });
+      if(options.length == 1){
+          alert("Cannot delete option. You must add at least one item to edit a poll");
+      } else {
+        options.splice(index,1);
+        this.setState({
+           additionalOptionsList: options
+        });  
+      }
     }
     handleSubmit(event){
         event.preventDefault();
@@ -102,10 +108,11 @@ class EditPoll extends React.Component {
       let optionBlock;
     for(var i = 0; i < this.state.additionalOptionsList.length; i++){
           optionBlock = 
-          <div className="form-group">
+          <div className="form-group" id={"form-group-" + i}>
               <label htmlFor={"poll-options-" + i}> New Option</label>
-              <input type="text" className="form-control new-poll-options" placeholder="Option" id={"poll-options-" + i} onChange={this.handleChange.bind(this)} value={this.state.additionalOptionsList[i].name}></input>
-
+              <input type="text" className="form-control new-poll-options" placeholder="Option" id={"poll-options-" + i} 
+              onChange={this.handleChange.bind(this)} value={this.state.additionalOptionsList[i].name}></input>
+              <a href="#"><i className="fa fa-times" id={"poll-remove-options-icon-" +i} aria-hidden="true" onClick={this.handleRemoveOption.bind(this)}></i></a>
           </div>;
          newOptions.push(optionBlock);
      }

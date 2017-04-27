@@ -162,7 +162,7 @@ class PollPage extends React.Component {
        <div>
           {messageDiv}
         </div>
-        <div className="poll row">
+        <div className="poll poll-top row">
           <div className="col-10 offset-1 col-md-4 offset-md-2">
             <div className="row">
               <h2 className="poll-name">Poll: {poll.name}</h2>
