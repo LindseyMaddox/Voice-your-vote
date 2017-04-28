@@ -1,5 +1,4 @@
 import React from 'react';
-import { PollPreview } from './PollPreview';
 import axios from 'axios';
 import Auth from '../modules/Auth';
 import AcctChart from './AcctChart';
@@ -28,8 +27,7 @@ class Account extends React.Component {
          polls.forEach(function(val){
              val["showEditTooltip"] = false;
              val["showDeleteTooltip"] = false;
-         })
-         console.log("test for poll adding tooltip, polls are " + JSON.stringify(polls));
+         });
  this.setState({ polls: res.data["vote summary"] });
  callback();
  })
@@ -59,50 +57,50 @@ class Account extends React.Component {
       } 
   }
   
-  showTooltip(action){
-      
-      let polls = this.state.polls.splice();
-      let index = 0;//capture id of event
-     
-      if(action == "edit"){
-          polls[index].showEditTooltip = true;
-      }
+  showTooltip(action, event){
+      let polls = this.state.polls.slice();
+      var index = event.target.id.match(/\d+/);
+       if(action == "edit"){
+           polls[index].showEditTooltip = true;
+       }
        if(action == "delete"){
-          polls[index].showDeleteTooltip = true;
-      }
+           polls[index].showDeleteTooltip = true;
+       }
+       this.setState({
+           polls: polls
+       });
+  }
+  hideTooltip(action, event){
+       let polls = this.state.polls.slice();
+      let index = event.target.id.match(/\d+/)[0];
+       if(action == "edit"){
+           polls[index].showEditTooltip = false;
+       }
+       if(action == "delete"){
+           polls[index].showDeleteTooltip = false;
+       }
       this.setState({
           polls: polls
-      })
+      });
   }
-  hideTooltip(action){
-       let polls = this.state.polls.splice();
-      let index = 0;//capture id of event
-     
-      if(action == "edit"){
-          polls[index].showEditTooltip = false;
-      }
-       if(action == "delete"){
-          polls[index].showDeleteTooltip = false;
-      }
-      this.setState({
-          polls: polls
-      })
-  }
-  showPoll(poll){
+  showPoll(poll, index){
       let deleteTooltip;
       let editTooltip;
+      let deleteIconClass = "fa fa-trash-o fa-lg";
+      let editIconClass = "fa fa-pencil fa-fw";
       if(poll.showDeleteTooltip){
-          deleteTooltip = <div className="delete-tooltip">Delete</div>;
+          deleteTooltip = <div className="icon-tooltip">Delete Poll</div>;
+          deleteIconClass += " tooltip-parent";
       }
-        if(poll.showEditTooltip){
-          editTooltip = <div className="edit-tooltip">Edit Poll</div>;
-      }
+      if(poll.showEditTooltip){
+          editTooltip = <div className="icon-tooltip">Edit Poll</div>;
+          editIconClass += " tooltip-parent";
+      } 
      return (<div> 
                     <Link to={'/polls/' + poll["id"]}><span>{poll.name}</span></Link>
-                    <Link to={'/polls/' + poll["id"] + '/edit'}> <i className="fa fa-pencil fa-fw" onMouseOver={this.showTooltip.bind(this,"edit")} onMouseOut=
+                    <Link to={'/polls/' + poll["id"] + '/edit'}><i className={editIconClass} id={"edit-icon-" + index} onMouseOver={this.showTooltip.bind(this, "edit")} onMouseOut=
                          {this.hideTooltip.bind(this, "edit")}>{editTooltip}</i></Link> 
-                    <Link to="/account/#"> 
-                         <i className="fa fa-trash-o fa-lg" onMouseOver={this.showTooltip.bind(this, "delete")} onMouseOut=
+                    <Link to="/account/#"><i className={deleteIconClass} id={"delete-icon-" + index} onMouseOver={this.showTooltip.bind(this, "delete")} onMouseOut=
                          {this.hideTooltip.bind(this, "delete")} 
                     onClick={this.handleDelete.bind(this, poll["id"])}>{deleteTooltip}</i></Link>
                 </div> );
@@ -112,14 +110,7 @@ class Account extends React.Component {
       if(this.state.loaded){
           acctChart = <AcctChart polls={this.state.polls} />;
       }
-      let editTooltip;
-      if(this.state.showEditTooltip){
-          editTooltip = "Edit Poll";
-      }
-      let deleteTooltip;
-       if(this.state.showDeleteTooltip){
-         deleteTooltip = "Delete Poll";
-      }
+
     return (
         <div className="row">
           <div className="col-10 offset-1 col-md-6 offset-md-2 graph-header"><h3>Your Polls</h3></div>
@@ -130,7 +121,7 @@ class Account extends React.Component {
          </div>
          <div className="col-10 offset-1 col-md-3 offset-md-1">
             <div className="summary row"> 
-              <div className="polls-list" >{this.state.polls.map(poll => this.showPoll(poll)) }
+              <div className="polls-list" >{this.state.polls.map((poll,index) => this.showPoll(poll, index)) }
               </div>
              </div>
         </div>

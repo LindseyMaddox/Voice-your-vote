@@ -104,15 +104,18 @@ form .row {
     background-color: aliceblue;
 }
 
-.fa-trash-o {
+.tooltip-parent {
     position: relative;
 }
-.delete-tooltip {
-  display:block;
-  position:absolute;
-  bottom: 2em;       
-  left: 0;
-  color:#373535;
-  border:2px solid #D3D3D3;
-  background:#fffFff;
+.icon-tooltip {
+    display: block;
+  position: absolute; 
+  text-align: center;
+  top: 20px;
+  width: 125px;                  
+  height: 35px;                 
+  padding-top: 10px;              
+  background: lightgreen; 
+  color: #595959;
+  font-size: 20px;
 }
