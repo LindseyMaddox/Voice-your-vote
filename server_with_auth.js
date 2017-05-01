@@ -57,7 +57,7 @@ function getAllPolls(callback){
 });
 }
 function getPoll(id,callback){
-     db.collection('polls').find(  { _id: ObjectId(id)  } ).toArray(function(err, poll) {
+     db.collection('polls').find(  { _id: ObjectId(id)  } ).sort( { "name": 1, "options.name": 1 } ).toArray(function(err, poll) {
      if(err) throw err;
      callback(poll);
  });

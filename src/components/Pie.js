@@ -1,44 +1,52 @@
 import React from 'react';
 import * as d3 from "d3";
 
-export const Pie = (props) => {
 
-var pie = d3.pie()
-    .value(function(d) { return d.votes; }) (props.data);
-    const outerRadius = props.radius - 50;
-
- const label = d3.arc().innerRadius(50).outerRadius(outerRadius + 120);
- 
-    function getText(d) { var name  = d.data.name; if(name.length > 25) {
-        name = d.data.name.substring(0,25) + "...";
-    } return name; }
-    function transformAmount(i,x,offset) {
-        return "translate(" + x + "," + (i * 40 - offset) + ")";
-    }
-  
+export class Pie extends React.Component {
+ constructor(props) {
+    super(props);
+     this.state = {
+        margins: { "marginLeft": 50, "marginRight": 20,"marginTop": 70, "marginBottom": 50 }
+    };
+   }
+   
+   getPieSection(d,i){
+       console.log("arrived at get pie section with item " + JSON.stringify(d) + " at index " + i);
   const arcGen = d3.arc()
     .innerRadius(0)
     .outerRadius(100);
-  
 
- var color = d3.scaleOrdinal(d3.schemeCategory10);
-  function getColor(d) {
+  let color = d3.scaleOrdinal(d3.schemeCategory10);
+ let getColor = function (d) {
      return color(d.data.name);
-   }
-
-
-  return (<g transform="translate(150,150)">
-    {pie.map((d, i) => {
-
-      return (<g className="arc" key={'g-arc' + i}><path
-        key={'arc' + i}
-        fill={getColor(d)}
-        stroke={'white'}
-        d={arcGen(d)}/><rect fill={getColor(d)} transform={transformAmount(i,113,47)} height="10" width="10"></rect><text
-        key={'text' + i} 
-        stroke={'black'}
-        d={label(d)} transform={transformAmount(i,130,40)} fontSize="14px">{getText(d)}</text></g>);
-    })}
-    </g>
-);
  };
+return <g className="arc" key={'g-arc' + i}>
+                      <path key={'arc' + i} fill={getColor(d)} stroke={'white'} d={arcGen(d)} 
+                     onMouseOver={this.showTooltip.bind(this,d)}/>
+                </g>;
+ }
+ 
+  showTooltip (d){
+    console.log("test for this, it's " + this);
+       let tooltip  = this.refs.tooltip;
+         tooltip.transition().duration(200).style("opacity", .9);    
+      tooltip.html("<div><span><strong>" + d.data.name + "</strong></span><div><div>" + d.data.votes + " votes</div>")
+       .style("left", (d3.event.pageX) + "px")     
+       .style("top", (d3.event.pageY - 28) + "px"); 
+}
+   render() {
+      var pie = d3.pie()
+    .value(function(d) { return d.votes; }) (this.props.data);
+
+    return (
+     <div>
+        <g>
+               <g transform="translate(150,150)">
+                  {pie.map((d, i) => { this.getPieSection(d,i); }) }
+             </g>;
+        </g>
+        <div className="tooltip pie-tooltip" ref="tooltip"></div>
+    </div>
+    );
+  }
+}

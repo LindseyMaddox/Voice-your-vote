@@ -32106,9 +32106,11 @@ exports.default = NotFoundPage;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.Pie = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(1);
 
@@ -32122,57 +32124,82 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Pie = exports.Pie = function Pie(props) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    var pie = d3.pie().value(function (d) {
-        return d.votes;
-    })(props.data);
-    var outerRadius = props.radius - 50;
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-    var label = d3.arc().innerRadius(50).outerRadius(outerRadius + 120);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-    function getText(d) {
-        var name = d.data.name;if (name.length > 25) {
-            name = d.data.name.substring(0, 25) + "...";
-        }return name;
-    }
-    function transformAmount(i, x, offset) {
-        return "translate(" + x + "," + (i * 40 - offset) + ")";
-    }
+var Pie = exports.Pie = function (_React$Component) {
+  _inherits(Pie, _React$Component);
 
-    var arcGen = d3.arc().innerRadius(0).outerRadius(100);
+  function Pie(props) {
+    _classCallCheck(this, Pie);
 
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
-    function getColor(d) {
+    var _this = _possibleConstructorReturn(this, (Pie.__proto__ || Object.getPrototypeOf(Pie)).call(this, props));
+
+    _this.state = {
+      margins: { "marginLeft": 50, "marginRight": 20, "marginTop": 70, "marginBottom": 50 }
+    };
+    return _this;
+  }
+
+  _createClass(Pie, [{
+    key: "getPieSection",
+    value: function getPieSection(d, i) {
+      console.log("arrived at get pie section with item " + JSON.stringify(d) + " at index " + i);
+      var arcGen = d3.arc().innerRadius(0).outerRadius(100);
+
+      var color = d3.scaleOrdinal(d3.schemeCategory10);
+      var getColor = function getColor(d) {
         return color(d.data.name);
-    }
-
-    return _react2.default.createElement(
+      };
+      return _react2.default.createElement(
         "g",
-        { transform: "translate(150,150)" },
-        pie.map(function (d, i) {
+        { className: "arc", key: 'g-arc' + i },
+        _react2.default.createElement("path", { key: 'arc' + i, fill: getColor(d), stroke: 'white', d: arcGen(d),
+          onMouseOver: this.showTooltip.bind(this, d) })
+      );
+    }
+  }, {
+    key: "showTooltip",
+    value: function showTooltip(d) {
+      console.log("test for this, it's " + this);
+      var tooltip = this.refs.tooltip;
+      tooltip.transition().duration(200).style("opacity", .9);
+      tooltip.html("<div><span><strong>" + d.data.name + "</strong></span><div><div>" + d.data.votes + " votes</div>").style("left", d3.event.pageX + "px").style("top", d3.event.pageY - 28 + "px");
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
 
-            return _react2.default.createElement(
-                "g",
-                { className: "arc", key: 'g-arc' + i },
-                _react2.default.createElement("path", {
-                    key: 'arc' + i,
-                    fill: getColor(d),
-                    stroke: 'white',
-                    d: arcGen(d) }),
-                _react2.default.createElement("rect", { fill: getColor(d), transform: transformAmount(i, 113, 47), height: "10", width: "10" }),
-                _react2.default.createElement(
-                    "text",
-                    {
-                        key: 'text' + i,
-                        stroke: 'black',
-                        d: label(d), transform: transformAmount(i, 130, 40), fontSize: "14px" },
-                    getText(d)
-                )
-            );
-        })
-    );
-};
+      var pie = d3.pie().value(function (d) {
+        return d.votes;
+      })(this.props.data);
+
+      return _react2.default.createElement(
+        "div",
+        null,
+        _react2.default.createElement(
+          "g",
+          null,
+          _react2.default.createElement(
+            "g",
+            { transform: "translate(150,150)" },
+            pie.map(function (d, i) {
+              _this2.getPieSection(d, i);
+            })
+          ),
+          ";"
+        ),
+        _react2.default.createElement("div", { className: "tooltip pie-tooltip", ref: "tooltip" })
+      );
+    }
+  }]);
+
+  return Pie;
+}(_react2.default.Component);
 
 /***/ }),
 /* 151 */
