@@ -1,8 +1,8 @@
 import React from 'react';
-import { Pie } from './Pie';
+import { AltPieChart } from './AltPieChart';
 
 
-export class Chart extends React.Component {
+export class AltChart extends React.Component {
      
   constructor(props){
     super(props);
@@ -26,9 +26,8 @@ export class Chart extends React.Component {
     var radius = Math.min(width, height) / 2;
     let chart = "Chart loading";
      if(data.length > 0){
-       chart =  <Pie data={data} radius={radius}  width={width} height={height} />;
+       chart =  <AltPieChart width={width} height={height} data={data} radius={radius} />;
     }
-// console.log("radius is " + radius + " in the piechart main fx");
     return (
       <div>
         {chart}

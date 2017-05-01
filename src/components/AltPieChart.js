@@ -2,7 +2,7 @@ import React from 'react';
 import * as d3 from "d3";
 
 
-export class Pie extends React.Component {
+export class AltPieChart extends React.Component {
  constructor(props) {
     super(props);
      this.state = {
@@ -50,14 +50,16 @@ return (<g className="arc" key={'g-arc' + i}>
     .value(function(d) { return d.votes; }) (this.props.data);
 
     return (
+        <div>
         <svg width={this.props.width + 'px'} height={this.props.height + 'px'}>
             <g>
                    <g transform="translate(150,150)">
                       {pie.map((d, i) =>  this.getPieSection(d,i)) }
                  </g>;
             </g>
-            <div id="poll-tooltip" className="tooltip" ref="tooltip"></div>
         </svg>
+        <div id="poll-tooltip" className="tooltip" ref="tooltip"></div>
+        </div>
     );
   }
 }

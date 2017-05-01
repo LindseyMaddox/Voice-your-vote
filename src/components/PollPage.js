@@ -2,9 +2,10 @@ import React from 'react';
 import {
   Link
 } from 'react-router-dom';
-import EditPoll from './EditPoll';
+
 import { NotFoundPage } from './NotFoundPage';
 import { Chart } from './PieChart';
+import { AltChart } from './AltChart';
 import axios from 'axios';
 import Auth from '../modules/Auth';
 import PropTypes from 'prop-types'; 
