@@ -32331,7 +32331,8 @@ var Pie = exports.Pie = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Pie.__proto__ || Object.getPrototypeOf(Pie)).call(this, props));
 
         _this.state = {
-            colors: []
+            colors: [],
+            centroids: []
         };
         return _this;
     }
@@ -32357,23 +32358,47 @@ var Pie = exports.Pie = function (_React$Component) {
         key: "getPieSection",
         value: function getPieSection(d, i) {
             var arcGen = d3.arc().innerRadius(0).outerRadius(100);
+            var centroid = arcGen.centroid(d);
 
             return _react2.default.createElement(
                 "g",
                 { className: "arc", key: 'g-arc' + i },
-                _react2.default.createElement("path", { key: 'arc' + i, fill: this.state.colors[i], stroke: 'white', d: arcGen(d), onMouseOver: this.showTooltip.bind(this, d) })
+                _react2.default.createElement("path", { key: 'arc' + i, fill: this.state.colors[i], stroke: 'white',
+                    d: arcGen(d), onMouseOver: this.showTooltip.bind(this, d, centroid), onMouseOut: this.hideTooltip.bind(this) })
             );
         }
     }, {
         key: "showTooltip",
-        value: function showTooltip(d) {
+        value: function showTooltip(d, centroid) {
+
+            var width = 70;
+            var height = 30;
+            var charFromDefault = d.data.name.length - 10;
+            if (charFromDefault > 0) {
+                width = width + charFromDefault * 10;
+            }
+            if (charFromDefault < 0) {
+                width = width + charFromDefault * 2;
+            }
+            var rectX = centroid[0] - width / 2;
+            rectX = rectX.toString();
+            var rectY = centroid[1];
+            rectY = rectY.toString();
+
+            var textX = centroid[0] - width / 2 + 5;
+            textX.toString();
+            var textY = centroid[1] + 20;
+            textY.toString();
             var tooltip = d3.select("#poll-tooltip");
             tooltip.transition().duration(200).style("opacity", .9);
-            var voteText = "votes";
-            if (d.data.votes == 1) {
-                voteText = "vote";
-            }
-            tooltip.html("<div><span><strong>" + d.data.name + "</strong></span><div><div>" + d.data.votes + " " + voteText + "</div>");
+
+            tooltip.html("<rect x='" + rectX + "' y='" + rectY + "' width='" + width + "' height='" + height + "'></rect><text x='" + textX + "'y='" + textY + "' >" + d.data.name + ": " + d.data.votes + "</text>");
+        }
+    }, {
+        key: "hideTooltip",
+        value: function hideTooltip() {
+            var tooltip = d3.select("#poll-tooltip");
+            tooltip.transition().duration(1000).style("opacity", 0);
         }
     }, {
         key: "render",
@@ -32395,11 +32420,10 @@ var Pie = exports.Pie = function (_React$Component) {
                         { transform: "translate(150,150)" },
                         pie.map(function (d, i) {
                             return _this2.getPieSection(d, i);
-                        })
-                    ),
-                    ";"
-                ),
-                _react2.default.createElement("div", { id: "poll-tooltip", className: "tooltip", ref: "tooltip" })
+                        }),
+                        _react2.default.createElement("g", { id: "poll-tooltip" })
+                    )
+                )
             );
         }
     }]);

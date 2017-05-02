@@ -6,7 +6,8 @@ export class Pie extends React.Component {
  constructor(props) {
     super(props);
      this.state = {
-        colors: []
+        colors: [],
+        centroids: []
     };
    }
 
@@ -28,21 +29,45 @@ export class Pie extends React.Component {
  const arcGen = d3.arc()
     .innerRadius(0)
     .outerRadius(100);
+    let centroid = arcGen.centroid(d);
 
 return (<g className="arc" key={'g-arc' + i}>
-                       <path key={'arc' + i} fill={this.state.colors[i]} stroke={'white'} d={arcGen(d)} onMouseOver={this.showTooltip.bind(this, d)}/>
+                       <path key={'arc' + i} fill={this.state.colors[i]} stroke={'white'}
+                       d={arcGen(d)}  onMouseOver={this.showTooltip.bind(this, d,centroid)} onMouseOut={this.hideTooltip.bind(this)}/>
                  </g>);
 
  }
  
-  showTooltip (d){
+
+  showTooltip (d,centroid){
+
+      let width = 70;
+      let height = 30;
+      let charFromDefault = d.data.name.length - 10;
+       if(charFromDefault > 0){
+          width = width + (charFromDefault * 10); 
+      } 
+      if (charFromDefault <0){
+            width = width + (charFromDefault * 2); 
+      }
+      let rectX = centroid[0] - width/2;
+      rectX = rectX.toString();
+      let rectY = centroid[1];
+      rectY = rectY.toString();
+
+      let textX = centroid[0] - width/2 + 5;
+      textX.toString();
+            let textY = centroid[1] + 20;
+      textY.toString();
      let tooltip =  d3.select("#poll-tooltip");
      tooltip.transition().duration(200).style("opacity", .9); 
-     let voteText = "votes";
-     if(d.data.votes == 1){
-         voteText = "vote";
-     }
-     tooltip.html("<div><span><strong>" + d.data.name + "</strong></span><div><div>" + d.data.votes + " " + voteText + "</div>"); 
+
+     tooltip.html("<rect x='" +rectX + "' y='" + rectY + "' width='" + width + "' height='" + height + "'></rect><text x='" + textX + "'y='"+
+     textY + "' >" + d.data.name + ": " + d.data.votes + "</text>");
+}
+hideTooltip(){
+        let tooltip =  d3.select("#poll-tooltip");
+       tooltip.transition().duration(1000).style("opacity", 0); 
 }
 
    render() {
@@ -54,9 +79,10 @@ return (<g className="arc" key={'g-arc' + i}>
             <g>
                    <g transform="translate(150,150)">
                       {pie.map((d, i) =>  this.getPieSection(d,i)) }
-                 </g>;
+                      <g id="poll-tooltip"></g>
+                 </g>
+                 
             </g>
-            <div id="poll-tooltip" className="tooltip" ref="tooltip"></div>
         </svg>
     );
   }
