@@ -23,7 +23,6 @@ export default class AccountDataSeries extends React.Component {
   }
 
 wrap(text, width) {
-  console.log("test for wrap with text " + JSON.stringify(text) + " and width " + width);
   text.each(function() {
     var text = d3.select(this),
         words = text.text().split(/\s+/).reverse(),

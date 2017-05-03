@@ -125,7 +125,7 @@ form .row {
 }
 
 #poll-tooltip > rect {
-    fill: lightgreen;
+    fill: black;
     padding: 5px;
 }
 
@@ -138,6 +138,6 @@ form .row {
     padding: 5px;
 }
 
-#account-tooltip > text {
-   overflow-x: auto;
+#poll-tooltip > text { 
+    fill: white;
 }

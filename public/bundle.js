@@ -30858,7 +30858,6 @@ var AccountDataSeries = function (_React$Component) {
   }, {
     key: 'wrap',
     value: function wrap(text, width) {
-      console.log("test for wrap with text " + JSON.stringify(text) + " and width " + width);
       text.each(function () {
         var text = d3.select(this),
             words = text.text().split(/\s+/).reverse(),
@@ -32171,7 +32170,8 @@ var Pie = exports.Pie = function (_React$Component) {
 
         _this.state = {
             colors: [],
-            centroids: []
+            centroids: [],
+            data: _this.props.data
         };
         return _this;
     }
@@ -32180,6 +32180,7 @@ var Pie = exports.Pie = function (_React$Component) {
         key: "componentDidMount",
         value: function componentDidMount() {
             this.getColorScale();
+            this.checkDataLength();
         }
     }, {
         key: "getColorScale",
@@ -32254,13 +32255,84 @@ var Pie = exports.Pie = function (_React$Component) {
             tooltip.transition().duration(1000).style("opacity", 0);
         }
     }, {
-        key: "render",
-        value: function render() {
+        key: "checkDataLength",
+        value: function checkDataLength() {
+            if (this.state.data.length > 5) {
+                this.consolidateLongData();
+            }
+        }
+    }, {
+        key: "consolidateLongData",
+        value: function consolidateLongData() {
             var _this2 = this;
 
+            var data = this.state.data.slice();
+            var newArr = [];
+            var ct = 0;
+
+            var _loop = function _loop() {
+                var curMax = _this2.getCurMax(data);
+                //this means the value was 0 or name was "other"
+                if (!curMax) {
+                    console.log("there wasn't a current max");
+                    ct += 1;
+                } else {
+                    newArr.push(curMax);
+                    var idx = data.findIndex(function (x) {
+                        return x.name == curMax["name"];
+                    });
+                    data.splice(idx, 1);
+                    ct += 1;
+                }
+            };
+
+            while (ct < 4) {
+                _loop();
+            }
+            var others = this.sumOtherVotes(data);
+            newArr.push(others);
+            data = newArr;
+            this.setState({
+                data: data
+            });
+        }
+    }, {
+        key: "getCurMax",
+        value: function getCurMax(data) {
+            var curMaxAmt = 0;
+            var curMaxName = "";
+            for (var i = 0; i < data.length; i++) {
+                //if user has supplied an 'other' option, group its votes with the other low count options
+                if (data[i].votes > curMaxAmt && data[i].name != "Other") {
+                    curMaxAmt = data[i].votes;
+                    curMaxName = data[i].name;
+                    var newHsh = { "name": curMaxName, "votes": curMaxAmt };
+                    return newHsh;
+                }
+            }
+            return null;
+        }
+    }, {
+        key: "sumOtherVotes",
+        value: function sumOtherVotes(data) {
+            var voteCount = 0;
+
+            data.forEach(function (el) {
+                voteCount = voteCount + el["votes"];
+            });
+            var others = { "name": "Other", "votes": voteCount };
+            return others;
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _this3 = this;
+
+            var data = this.state.data;
+            console.log("data is " + JSON.stringify(data));
             var pie = d3.pie().value(function (d) {
                 return d.votes;
-            })(this.props.data);
+            })(data);
 
             return _react2.default.createElement(
                 "svg",
@@ -32272,7 +32344,7 @@ var Pie = exports.Pie = function (_React$Component) {
                         "g",
                         { transform: "translate(150,150)" },
                         pie.map(function (d, i) {
-                            return _this2.getPieSection(d, i);
+                            return _this3.getPieSection(d, i);
                         }),
                         _react2.default.createElement("g", { id: "poll-tooltip" })
                     )
@@ -32336,56 +32408,10 @@ var Chart = exports.Chart = function (_React$Component) {
       }
     }
   }, {
-    key: 'getCurMax',
-    value: function getCurMax(data) {
-      var curMaxAmt = 0;
-      var curMaxName = "";
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].votes > curMaxAmt) {
-          curMaxAmt = data[i].votes;
-          curMaxName = data[i].name;
-        }
-      }
-      var newHsh = { "name": curMaxName, "votes": curMaxAmt };
-      return newHsh;
-    }
-  }, {
-    key: 'sumOtherVotes',
-    value: function sumOtherVotes(data) {
-      var voteCount = 0;
-
-      data.forEach(function (el) {
-        voteCount = voteCount + el["votes"];
-      });
-      var others = { "name": "Other", "votes": voteCount };
-      return others;
-    }
-  }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
       var data = this.state.data.options;
-      if (data.length > 5) {
-        data = data.slice();
-        var newArr = [];
 
-        var _loop = function _loop() {
-          var curMax = _this2.getCurMax(data);
-          newArr.push(curMax);
-          var idx = data.findIndex(function (x) {
-            return x.name == curMax["name"];
-          });
-          data.splice(idx, 1);
-        };
-
-        while (newArr.length < 4) {
-          _loop();
-        }
-        var others = this.sumOtherVotes(data);
-        newArr.push(others);
-        data = newArr;
-      }
       var width = "450";
       var height = "300";
       var radius = Math.min(width, height) / 2;

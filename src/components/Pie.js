@@ -7,12 +7,14 @@ export class Pie extends React.Component {
     super(props);
      this.state = {
         colors: [],
-        centroids: []
+        centroids: [],
+        data: this.props.data
     };
    }
 
     componentDidMount(){
         this.getColorScale();
+        this.checkDataLength();
     }
     
     getColorScale(){
@@ -79,9 +81,64 @@ hideTooltip(){
        tooltip.transition().duration(1000).style("opacity", 0); 
 }
 
+  checkDataLength(){
+      if(this.state.data.length > 5){
+          this.consolidateLongData();
+      }
+  }
+  consolidateLongData(){
+     let data = this.state.data.slice();
+      let newArr = [];
+      let ct = 0;
+      while(ct < 4){
+        let curMax = this.getCurMax(data);
+          //this means the value was 0 or name was "other"
+          if(!curMax){
+            console.log("there wasn't a current max");
+            ct +=1;
+          } else {
+            newArr.push(curMax);
+            let idx =   data.findIndex(x => x.name == curMax["name"]);
+            data.splice(idx,1);
+            ct +=1;
+          }
+      }
+        let others = this.sumOtherVotes(data);
+        newArr.push(others);
+        data = newArr;
+        this.setState({
+            data: data
+        });
+  }
+  getCurMax(data){
+    let curMaxAmt = 0;
+    let curMaxName = "";
+    for(var i = 0; i< data.length; i++){
+      //if user has supplied an 'other' option, group its votes with the other low count options
+      if(data[i].votes > curMaxAmt && data[i].name != "Other"){
+        curMaxAmt = data[i].votes;
+        curMaxName = data[i].name;
+        let newHsh = {"name": curMaxName, "votes": curMaxAmt};
+        return newHsh;
+      }
+    }
+    return null;
+  }
+  
+  sumOtherVotes(data){
+    let voteCount = 0;
+    
+    data.forEach(function(el){
+      voteCount = voteCount + el["votes"];
+    });
+    let others = { "name": "Other", "votes": voteCount };
+    return others;
+  }
    render() {
+       let data = this.state.data;
+      console.log("data is " + JSON.stringify(data));
       var pie = d3.pie()
-    .value(function(d) { return d.votes; }) (this.props.data);
+    .value(function(d) { return d.votes; }) (data);
 
     return (
         <svg width={this.props.width + 'px'} height={this.props.height + 'px'}>
