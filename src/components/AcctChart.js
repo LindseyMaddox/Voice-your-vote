@@ -7,7 +7,7 @@
  constructor(props) {
     super(props);
     this.state = {
-        margins: { "marginLeft": 50, "marginRight": 20,"marginTop": 70, "marginBottom": 50 }
+        margins: { "marginLeft": 50, "marginRight": 20,"marginTop": 80, "marginBottom": 50 }
     };
   }
       render() {

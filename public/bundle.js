@@ -30884,14 +30884,20 @@ var AccountDataSeries = function (_React$Component) {
     }
   }, {
     key: 'showTooltip',
-    value: function showTooltip(d, x, y, barHeight, callback) {
-      var width = 100;
+    value: function showTooltip(d, x, y, barHeight) {
+      var width = 125;
       var tooltipHeight = 30;
 
-      var rectX = x;
+      var rectX = x - 10;
       rectX = rectX.toString();
       var rectY = y + barHeight / 2;
       rectY = rectY.toString();
+      console.log("test for name length, it's " + d.name.length);
+      var charFromDefault = d.name.length - 15;
+      if (charFromDefault > 0) {
+        console.log("test for name length inside if clause, it's " + d.name.length);
+        d.name = d.name.substring(0, 15) + "...";
+      }
 
       var textX = x + 5;
       textX.toString();
@@ -31013,7 +31019,7 @@ var AcctChart = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (AcctChart.__proto__ || Object.getPrototypeOf(AcctChart)).call(this, props));
 
     _this.state = {
-      margins: { "marginLeft": 50, "marginRight": 20, "marginTop": 70, "marginBottom": 50 }
+      margins: { "marginLeft": 50, "marginRight": 20, "marginTop": 80, "marginBottom": 50 }
     };
     return _this;
   }
@@ -32330,9 +32336,56 @@ var Chart = exports.Chart = function (_React$Component) {
       }
     }
   }, {
+    key: 'getCurMax',
+    value: function getCurMax(data) {
+      var curMaxAmt = 0;
+      var curMaxName = "";
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].votes > curMaxAmt) {
+          curMaxAmt = data[i].votes;
+          curMaxName = data[i].name;
+        }
+      }
+      var newHsh = { "name": curMaxName, "votes": curMaxAmt };
+      return newHsh;
+    }
+  }, {
+    key: 'sumOtherVotes',
+    value: function sumOtherVotes(data) {
+      var voteCount = 0;
+
+      data.forEach(function (el) {
+        voteCount = voteCount + el["votes"];
+      });
+      var others = { "name": "Other", "votes": voteCount };
+      return others;
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       var data = this.state.data.options;
+      if (data.length > 5) {
+        data = data.slice();
+        var newArr = [];
+
+        var _loop = function _loop() {
+          var curMax = _this2.getCurMax(data);
+          newArr.push(curMax);
+          var idx = data.findIndex(function (x) {
+            return x.name == curMax["name"];
+          });
+          data.splice(idx, 1);
+        };
+
+        while (newArr.length < 4) {
+          _loop();
+        }
+        var others = this.sumOtherVotes(data);
+        newArr.push(others);
+        data = newArr;
+      }
       var width = "450";
       var height = "300";
       var radius = Math.min(width, height) / 2;

@@ -95,6 +95,7 @@ form .row {
 
 .bar-chart-rectangle:hover {
   fill: #cccccc;
+  stroke: #cccccc;
 }
 #add-poll-options-button {
     margin-right: 15px;
@@ -128,9 +129,8 @@ form .row {
     padding: 5px;
 }
 
-#poll-tooltip  {
+#poll-tooltip, #account-tooltip  {
     font-size: 12px;
-    text-align: center;
 }
 
 #account-tooltip > rect {

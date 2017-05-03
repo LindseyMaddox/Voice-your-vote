@@ -47,14 +47,20 @@ wrap(text, width) {
   });
 }
 
-  showTooltip (d,x,y, barHeight, callback){
-      const width = 100;
+  showTooltip (d,x,y, barHeight){
+      const width = 125;
       const tooltipHeight = 30;
 
-      let rectX = x;
+      let rectX = x - 10;
       rectX = rectX.toString();
       let rectY = y + barHeight/2;
       rectY = rectY.toString();
+      console.log("test for name length, it's " + d.name.length);
+      let charFromDefault = d.name.length - 15;
+       if(charFromDefault > 0){
+          console.log("test for name length inside if clause, it's " + d.name.length);
+          d.name = d.name.substring(0,15) + "...";
+      } 
 
       let textX = x + 5;
       textX.toString();
