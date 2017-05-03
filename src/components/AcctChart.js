@@ -11,8 +11,8 @@
     };
   }
       render() {
-                       let width = 600;
-                       let height = 375;
+                       const width = 600;
+                       const height = 375;
                        let margins = this.state.margins;
                        let xScaleWidth = width - margins.marginLeft - margins.marginRight;
                        let yScaleHeight = height - margins.marginTop - margins.marginBottom;

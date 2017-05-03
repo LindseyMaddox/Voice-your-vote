@@ -51,7 +51,7 @@ return (<g className="arc" key={'g-arc' + i}>
   showTooltip (d,centroid){
 
       let width = 70;
-      let height = 30;
+      const height = 30;
       let charFromDefault = d.data.name.length - 10;
        if(charFromDefault > 0){
           width = width + (charFromDefault * 10); 

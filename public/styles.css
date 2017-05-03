@@ -133,4 +133,11 @@ form .row {
     text-align: center;
 }
 
+#account-tooltip > rect {
+    fill: lightgoldenrodyellow;
+    padding: 5px;
+}
 
+#account-tooltip > text {
+   overflow-x: auto;
+}

@@ -21,9 +21,9 @@ export class Chart extends React.Component {
   
   render() {
       let data = this.state.data.options;
-      var width = "450";
-      var height = "300";
-    var radius = Math.min(width, height) / 2;
+      const width = "450";
+      const height = "300";
+    const radius = Math.min(width, height) / 2;
     let chart = "Chart loading";
      if(data.length > 0){
        chart =  <Pie data={data} radius={radius}  width={width} height={height} />;
