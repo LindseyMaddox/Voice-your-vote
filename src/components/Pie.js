@@ -30,10 +30,19 @@ export class Pie extends React.Component {
     .innerRadius(0)
     .outerRadius(100);
     let centroid = arcGen.centroid(d);
-
+    let name = d.data.name;
+    if(name.length > 25) {
+        name = name.substring(0,25) + "...";
+    } 
+    const outerRadius = this.props.radius - 50;
+   const label = d3.arc().innerRadius(50).outerRadius(outerRadius + 120);
 return (<g className="arc" key={'g-arc' + i}>
                        <path key={'arc' + i} fill={this.state.colors[i]} stroke={'white'}
                        d={arcGen(d)}  onMouseOver={this.showTooltip.bind(this, d,centroid)} onMouseOut={this.hideTooltip.bind(this)}/>
+                 <rect fill={this.state.colors[i]} transform={"translate(" + 113 + "," + (i * 40 - 80) + ")"} height="10" width="10"></rect><text
+        key={'text' + i} 
+        stroke={'black'}
+        d={label(d)} transform={"translate(" + 130 + "," + (i * 40 - 70) + ")"} fontSize="14px">{name}</text>
                  </g>);
 
  }

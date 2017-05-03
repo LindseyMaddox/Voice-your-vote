@@ -32359,12 +32359,26 @@ var Pie = exports.Pie = function (_React$Component) {
         value: function getPieSection(d, i) {
             var arcGen = d3.arc().innerRadius(0).outerRadius(100);
             var centroid = arcGen.centroid(d);
-
+            var name = d.data.name;
+            if (name.length > 25) {
+                name = name.substring(0, 25) + "...";
+            }
+            var outerRadius = this.props.radius - 50;
+            var label = d3.arc().innerRadius(50).outerRadius(outerRadius + 120);
             return _react2.default.createElement(
                 "g",
                 { className: "arc", key: 'g-arc' + i },
                 _react2.default.createElement("path", { key: 'arc' + i, fill: this.state.colors[i], stroke: 'white',
-                    d: arcGen(d), onMouseOver: this.showTooltip.bind(this, d, centroid), onMouseOut: this.hideTooltip.bind(this) })
+                    d: arcGen(d), onMouseOver: this.showTooltip.bind(this, d, centroid), onMouseOut: this.hideTooltip.bind(this) }),
+                _react2.default.createElement("rect", { fill: this.state.colors[i], transform: "translate(" + 113 + "," + (i * 40 - 80) + ")", height: "10", width: "10" }),
+                _react2.default.createElement(
+                    "text",
+                    {
+                        key: 'text' + i,
+                        stroke: 'black',
+                        d: label(d), transform: "translate(" + 130 + "," + (i * 40 - 70) + ")", fontSize: "14px" },
+                    name
+                )
             );
         }
     }, {
@@ -32493,7 +32507,6 @@ var Chart = exports.Chart = function (_React$Component) {
       if (data.length > 0) {
         chart = _react2.default.createElement(_Pie.Pie, { data: data, radius: radius, width: width, height: height });
       }
-      // console.log("radius is " + radius + " in the piechart main fx");
       return _react2.default.createElement(
         'div',
         null,

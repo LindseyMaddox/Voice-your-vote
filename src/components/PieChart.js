@@ -28,7 +28,6 @@ export class Chart extends React.Component {
      if(data.length > 0){
        chart =  <Pie data={data} radius={radius}  width={width} height={height} />;
     }
-// console.log("radius is " + radius + " in the piechart main fx");
     return (
       <div>
         {chart}
